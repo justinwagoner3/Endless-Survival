@@ -23,7 +23,7 @@ class GameScene: SKScene {
     private var player: SKSpriteNode!
     
     // Define joystick properties
-    private var joystickRadius: CGFloat = 50.0 // Adjust as needed
+    private var joystickRadius: CGFloat = 75.0 // Adjust as needed
     private var isJoystickActive = false
     private var joystickSpeed: CGFloat = 5.0 // Adjust as needed
 
@@ -38,7 +38,7 @@ class GameScene: SKScene {
         
         // Create outer circle (grey)
         outerCircle = SKShapeNode(circleOfRadius: joystickRadius)
-        outerCircle.position = CGPoint(x: self.size.width*0.1, y: self.size.height * 0.3)
+        outerCircle.position = CGPoint(x: self.size.width*0.1, y: self.size.height * 0.2)
         outerCircle.fillColor = .gray
         outerCircle.alpha = 0.5
         outerCircle.zPosition = 1
