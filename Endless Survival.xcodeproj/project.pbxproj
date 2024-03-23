@@ -1,0 +1,612 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */; };
+		BB0EE5E52BAF4E9D0035F36B /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */; };
+		BB0EE5E72BAF4E9D0035F36B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = BB0EE5E62BAF4E9D0035F36B /* Actions.sks */; };
+		BB0EE5E92BAF4E9D0035F36B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */; };
+		BB0EE5EB2BAF4E9D0035F36B /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */; };
+		BB0EE5EE2BAF4E9D0035F36B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BB0EE5ED2BAF4E9D0035F36B /* Base */; };
+		BB0EE5F02BAF4E9E0035F36B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */; };
+		BB0EE5F32BAF4E9E0035F36B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BB0EE5F22BAF4E9E0035F36B /* Base */; };
+		BB0EE5FD2BAF4E9E0035F36B /* Endless_SurvivalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE5FC2BAF4E9E0035F36B /* Endless_SurvivalTests.swift */; };
+		BB0EE6072BAF4E9E0035F36B /* Endless_SurvivalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE6062BAF4E9E0035F36B /* Endless_SurvivalUITests.swift */; };
+		BB0EE6092BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE6082BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BB0EE5F92BAF4E9E0035F36B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB0EE5D72BAF4E9D0035F36B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB0EE5DE2BAF4E9D0035F36B;
+			remoteInfo = "Endless Survival";
+		};
+		BB0EE6032BAF4E9E0035F36B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB0EE5D72BAF4E9D0035F36B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB0EE5DE2BAF4E9D0035F36B;
+			remoteInfo = "Endless Survival";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BB0EE5DF2BAF4E9D0035F36B /* Endless Survival.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Endless Survival.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		BB0EE5E62BAF4E9D0035F36B /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		BB0EE5ED2BAF4E9D0035F36B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB0EE5F22BAF4E9E0035F36B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BB0EE5F82BAF4E9E0035F36B /* Endless SurvivalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Endless SurvivalTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0EE5FC2BAF4E9E0035F36B /* Endless_SurvivalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endless_SurvivalTests.swift; sourceTree = "<group>"; };
+		BB0EE6022BAF4E9E0035F36B /* Endless SurvivalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Endless SurvivalUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0EE6062BAF4E9E0035F36B /* Endless_SurvivalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endless_SurvivalUITests.swift; sourceTree = "<group>"; };
+		BB0EE6082BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endless_SurvivalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BB0EE5DC2BAF4E9D0035F36B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0EE5F52BAF4E9E0035F36B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0EE5FF2BAF4E9E0035F36B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BB0EE5D62BAF4E9D0035F36B = {
+			isa = PBXGroup;
+			children = (
+				BB0EE5E12BAF4E9D0035F36B /* Endless Survival */,
+				BB0EE5FB2BAF4E9E0035F36B /* Endless SurvivalTests */,
+				BB0EE6052BAF4E9E0035F36B /* Endless SurvivalUITests */,
+				BB0EE5E02BAF4E9D0035F36B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BB0EE5E02BAF4E9D0035F36B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BB0EE5DF2BAF4E9D0035F36B /* Endless Survival.app */,
+				BB0EE5F82BAF4E9E0035F36B /* Endless SurvivalTests.xctest */,
+				BB0EE6022BAF4E9E0035F36B /* Endless SurvivalUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BB0EE5E12BAF4E9D0035F36B /* Endless Survival */ = {
+			isa = PBXGroup;
+			children = (
+				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
+				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
+				BB0EE5E62BAF4E9D0035F36B /* Actions.sks */,
+				BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */,
+				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
+				BB0EE5EC2BAF4E9D0035F36B /* Main.storyboard */,
+				BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */,
+				BB0EE5F12BAF4E9E0035F36B /* LaunchScreen.storyboard */,
+			);
+			path = "Endless Survival";
+			sourceTree = "<group>";
+		};
+		BB0EE5FB2BAF4E9E0035F36B /* Endless SurvivalTests */ = {
+			isa = PBXGroup;
+			children = (
+				BB0EE5FC2BAF4E9E0035F36B /* Endless_SurvivalTests.swift */,
+			);
+			path = "Endless SurvivalTests";
+			sourceTree = "<group>";
+		};
+		BB0EE6052BAF4E9E0035F36B /* Endless SurvivalUITests */ = {
+			isa = PBXGroup;
+			children = (
+				BB0EE6062BAF4E9E0035F36B /* Endless_SurvivalUITests.swift */,
+				BB0EE6082BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift */,
+			);
+			path = "Endless SurvivalUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BB0EE5DE2BAF4E9D0035F36B /* Endless Survival */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB0EE60C2BAF4E9E0035F36B /* Build configuration list for PBXNativeTarget "Endless Survival" */;
+			buildPhases = (
+				BB0EE5DB2BAF4E9D0035F36B /* Sources */,
+				BB0EE5DC2BAF4E9D0035F36B /* Frameworks */,
+				BB0EE5DD2BAF4E9D0035F36B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Endless Survival";
+			productName = "Endless Survival";
+			productReference = BB0EE5DF2BAF4E9D0035F36B /* Endless Survival.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BB0EE5F72BAF4E9E0035F36B /* Endless SurvivalTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB0EE60F2BAF4E9E0035F36B /* Build configuration list for PBXNativeTarget "Endless SurvivalTests" */;
+			buildPhases = (
+				BB0EE5F42BAF4E9E0035F36B /* Sources */,
+				BB0EE5F52BAF4E9E0035F36B /* Frameworks */,
+				BB0EE5F62BAF4E9E0035F36B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB0EE5FA2BAF4E9E0035F36B /* PBXTargetDependency */,
+			);
+			name = "Endless SurvivalTests";
+			productName = "Endless SurvivalTests";
+			productReference = BB0EE5F82BAF4E9E0035F36B /* Endless SurvivalTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BB0EE6012BAF4E9E0035F36B /* Endless SurvivalUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB0EE6122BAF4E9E0035F36B /* Build configuration list for PBXNativeTarget "Endless SurvivalUITests" */;
+			buildPhases = (
+				BB0EE5FE2BAF4E9E0035F36B /* Sources */,
+				BB0EE5FF2BAF4E9E0035F36B /* Frameworks */,
+				BB0EE6002BAF4E9E0035F36B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB0EE6042BAF4E9E0035F36B /* PBXTargetDependency */,
+			);
+			name = "Endless SurvivalUITests";
+			productName = "Endless SurvivalUITests";
+			productReference = BB0EE6022BAF4E9E0035F36B /* Endless SurvivalUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BB0EE5D72BAF4E9D0035F36B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					BB0EE5DE2BAF4E9D0035F36B = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					BB0EE5F72BAF4E9E0035F36B = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = BB0EE5DE2BAF4E9D0035F36B;
+					};
+					BB0EE6012BAF4E9E0035F36B = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = BB0EE5DE2BAF4E9D0035F36B;
+					};
+				};
+			};
+			buildConfigurationList = BB0EE5DA2BAF4E9D0035F36B /* Build configuration list for PBXProject "Endless Survival" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BB0EE5D62BAF4E9D0035F36B;
+			productRefGroup = BB0EE5E02BAF4E9D0035F36B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BB0EE5DE2BAF4E9D0035F36B /* Endless Survival */,
+				BB0EE5F72BAF4E9E0035F36B /* Endless SurvivalTests */,
+				BB0EE6012BAF4E9E0035F36B /* Endless SurvivalUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BB0EE5DD2BAF4E9D0035F36B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB0EE5E52BAF4E9D0035F36B /* GameScene.sks in Resources */,
+				BB0EE5EE2BAF4E9D0035F36B /* Base in Resources */,
+				BB0EE5F02BAF4E9E0035F36B /* Assets.xcassets in Resources */,
+				BB0EE5E72BAF4E9D0035F36B /* Actions.sks in Resources */,
+				BB0EE5F32BAF4E9E0035F36B /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0EE5F62BAF4E9E0035F36B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0EE6002BAF4E9E0035F36B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BB0EE5DB2BAF4E9D0035F36B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB0EE5E92BAF4E9D0035F36B /* GameScene.swift in Sources */,
+				BB0EE5EB2BAF4E9D0035F36B /* GameViewController.swift in Sources */,
+				BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0EE5F42BAF4E9E0035F36B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB0EE5FD2BAF4E9E0035F36B /* Endless_SurvivalTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB0EE5FE2BAF4E9E0035F36B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB0EE6072BAF4E9E0035F36B /* Endless_SurvivalUITests.swift in Sources */,
+				BB0EE6092BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB0EE5FA2BAF4E9E0035F36B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB0EE5DE2BAF4E9D0035F36B /* Endless Survival */;
+			targetProxy = BB0EE5F92BAF4E9E0035F36B /* PBXContainerItemProxy */;
+		};
+		BB0EE6042BAF4E9E0035F36B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB0EE5DE2BAF4E9D0035F36B /* Endless Survival */;
+			targetProxy = BB0EE6032BAF4E9E0035F36B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BB0EE5EC2BAF4E9D0035F36B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BB0EE5ED2BAF4E9D0035F36B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BB0EE5F12BAF4E9E0035F36B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BB0EE5F22BAF4E9E0035F36B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BB0EE60A2BAF4E9E0035F36B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BB0EE60B2BAF4E9E0035F36B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BB0EE60D2BAF4E9E0035F36B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Personal.Endless-Survival";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BB0EE60E2BAF4E9E0035F36B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Personal.Endless-Survival";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BB0EE6102BAF4E9E0035F36B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Personal.Endless-SurvivalTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Endless Survival.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Endless Survival";
+			};
+			name = Debug;
+		};
+		BB0EE6112BAF4E9E0035F36B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Personal.Endless-SurvivalTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Endless Survival.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Endless Survival";
+			};
+			name = Release;
+		};
+		BB0EE6132BAF4E9E0035F36B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Personal.Endless-SurvivalUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Endless Survival";
+			};
+			name = Debug;
+		};
+		BB0EE6142BAF4E9E0035F36B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Personal.Endless-SurvivalUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Endless Survival";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BB0EE5DA2BAF4E9D0035F36B /* Build configuration list for PBXProject "Endless Survival" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB0EE60A2BAF4E9E0035F36B /* Debug */,
+				BB0EE60B2BAF4E9E0035F36B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB0EE60C2BAF4E9E0035F36B /* Build configuration list for PBXNativeTarget "Endless Survival" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB0EE60D2BAF4E9E0035F36B /* Debug */,
+				BB0EE60E2BAF4E9E0035F36B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB0EE60F2BAF4E9E0035F36B /* Build configuration list for PBXNativeTarget "Endless SurvivalTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB0EE6102BAF4E9E0035F36B /* Debug */,
+				BB0EE6112BAF4E9E0035F36B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB0EE6122BAF4E9E0035F36B /* Build configuration list for PBXNativeTarget "Endless SurvivalUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB0EE6132BAF4E9E0035F36B /* Debug */,
+				BB0EE6142BAF4E9E0035F36B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BB0EE5D72BAF4E9D0035F36B /* Project object */;
+}
