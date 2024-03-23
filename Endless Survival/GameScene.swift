@@ -14,54 +14,68 @@ class GameScene: SKScene {
     var graphs = [String : GKGraph]()
     
     private var lastUpdateTime : TimeInterval = 0
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    
+    // Define joystick nodes
+    private var outerCircle: SKShapeNode!
+    private var innerCircle: SKShapeNode!
+    
+    // Define player node
+    private var player: SKSpriteNode!
+    
+    // Define joystick properties
+    private var joystickRadius: CGFloat = 50.0 // Adjust as needed
+    private var isJoystickActive = false
+    private var joystickSpeed: CGFloat = 5.0 // Adjust as needed
+
     
     override func sceneDidLoad() {
-        
+            
+        // Create the background (solid green)
         let background = SKSpriteNode(color: SKColor.green, size: self.size)
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
         background.zPosition = 0
         self.addChild(background)
         
-        let player = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
-        player.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-        player.zPosition = 2
-        self.addChild(player)
+        // Create outer circle (grey)
+        outerCircle = SKShapeNode(circleOfRadius: joystickRadius)
+        outerCircle.position = CGPoint(x: self.size.width*0.1, y: self.size.height * 0.3)
+        outerCircle.fillColor = .gray
+        outerCircle.alpha = 0.5
+        outerCircle.zPosition = 1
+        addChild(outerCircle)
         
+        // Create inner circle (black)
+        innerCircle = SKShapeNode(circleOfRadius: 20) // Adjust size as needed
+        innerCircle.position = outerCircle.position
+        innerCircle.fillColor = .black
+        innerCircle.zPosition = 2
+        addChild(innerCircle)
+        
+        // Create player
+        player = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50)) // Adjust size and color as needed
+        player.position = CGPoint(x: size.width / 2, y: size.height / 2) // Adjust starting position as needed
+        player.zPosition = 3;
+        addChild(player)
+
+        print("x: \(self.size.width)")
+        print("y: \(self.size.height)")
+        print("\(outerCircle.position)")
+        print("\(player.position)")
+
         
     }
     
     
     func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.white
-            self.addChild(n)
-        }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
-        
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
