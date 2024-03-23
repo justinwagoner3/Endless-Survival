@@ -56,13 +56,6 @@ class GameScene: SKScene {
         player.position = CGPoint(x: size.width / 2, y: size.height / 2) // Adjust starting position as needed
         player.zPosition = 3;
         addChild(player)
-
-        print("x: \(self.size.width)")
-        print("y: \(self.size.height)")
-        print("\(outerCircle.position)")
-        print("\(player.position)")
-
-        
     }
     
     
@@ -101,16 +94,8 @@ class GameScene: SKScene {
             innerCircle.position = CGPoint(x: outerCircle.position.x + cos(angle) * joystickRadius,
                                            y: outerCircle.position.y + sin(angle) * joystickRadius)
         }
-        
-        // Calculate movement vector
-        let movementX = cos(angle) * joystickSpeed
-        let movementY = sin(angle) * joystickSpeed
-        
-        // Move the player
-        player.position.x += movementX
-        player.position.y += movementY
     }
-    
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isJoystickActive = false
         // Reset inner circle position to outer circle's center
@@ -121,23 +106,33 @@ class GameScene: SKScene {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
-    
+    // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        // Calculate distance between the inner circle and the outer circle's center
+        let dx = innerCircle.position.x - outerCircle.position.x
+        let dy = innerCircle.position.y - outerCircle.position.y
+        let distance = sqrt(dx * dx + dy * dy)
         
-        // Initialize _lastUpdateTime if it has not already been
-        if (self.lastUpdateTime == 0) {
-            self.lastUpdateTime = currentTime
+        // Calculate the maximum distance (radius of the outer circle)
+        let maxDistance = joystickRadius
+        
+        // Calculate the distance ratio
+        let distanceRatio = distance / maxDistance
+        
+        // Calculate the speed multiplier
+        let speedMultiplier = distanceRatio
+        
+        // Calculate movement vector
+        let angle = atan2(dy, dx)
+        let movementX = cos(angle) * joystickSpeed * speedMultiplier
+        let movementY = sin(angle) * joystickSpeed * speedMultiplier
+        
+        // Move the player
+        if(isJoystickActive && dx != 0.0 && dy != 0.0){
+            player.position.x += movementX
+            player.position.y += movementY
         }
-        
-        // Calculate time since last update
-        let dt = currentTime - self.lastUpdateTime
-        
-        // Update entities
-        for entity in self.entities {
-            entity.update(deltaTime: dt)
-        }
-        
-        self.lastUpdateTime = currentTime
     }
 }
+
+
