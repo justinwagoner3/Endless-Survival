@@ -1,31 +1,62 @@
+//
+//  GameViewController.swift
+//  Endless Survival
+//
+//  Created by justin.wagoner on 3/23/24.
+//
+
 import UIKit
 import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
-        if let scene = GKScene(fileNamed: "GameScene") {
+        if let view = self.view as? SKView {
             
-            // Get the SKScene from the loaded GKScene
-            if let sceneNode = scene.rootNode as! GameScene? {
-                
-                // Set the scale mode to scale to fit the window
-                sceneNode.scaleMode = .aspectFill
-                
-                // Present the scene
-                if let view = self.view as! SKView? {
-                    view.presentScene(sceneNode)
-                    
-                    view.ignoresSiblingOrder = true
-                    view.showsFPS = true
-                    view.showsNodeCount = true
-                }
+            // Get the screen size
+            let screenSize = UIScreen.main.bounds.size
+            
+            // Determine the aspect ratio
+            let aspectRatio = screenSize.width / screenSize.height
+            
+            // Define the base size for your scene (you can adjust this as needed)
+            let baseWidth: CGFloat = 2048.0
+            let baseHeight: CGFloat = 1536.0
+            
+            // Calculate the scaled size based on the aspect ratio
+            var sceneSize: CGSize
+            if aspectRatio > 1.0 {
+                // Landscape orientation
+                sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
+            } else {
+                // Portrait orientation
+                sceneSize = CGSize(width: baseHeight * aspectRatio, height: baseHeight)
             }
+            
+            // Load the SKScene with the calculated size
+            let scene = GameScene(size: sceneSize)
+            scene.scaleMode = .aspectFill
+            
+            // Present the scene
+            view.presentScene(scene)
+            view.ignoresSiblingOrder = true
+            view.showsFPS = true
+            view.showsNodeCount = true
         }
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .allButUpsideDown
+        } else {
+            return .all
+        }
+    }
+
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
 }
