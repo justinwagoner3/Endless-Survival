@@ -76,15 +76,45 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        guard let touch = touches.first else { return }
+        let touchLocation = touch.location(in: self)
+        
+        if innerCircle.contains(touchLocation) {
+            isJoystickActive = true
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        guard isJoystickActive, let touch = touches.first else { return }
+        let touchLocation = touch.location(in: self)
+        
+        // Calculate distance and angle from outer circle's center
+        let dx = touchLocation.x - outerCircle.position.x
+        let dy = touchLocation.y - outerCircle.position.y
+        let distance = sqrt(dx * dx + dy * dy)
+        let angle = atan2(dy, dx)
+        
+        // Limit inner circle's movement to the outer circle's bounds
+        if distance <= joystickRadius {
+            innerCircle.position = touchLocation
+        } else {
+            innerCircle.position = CGPoint(x: outerCircle.position.x + cos(angle) * joystickRadius,
+                                           y: outerCircle.position.y + sin(angle) * joystickRadius)
+        }
+        
+        // Calculate movement vector
+        let movementX = cos(angle) * joystickSpeed
+        let movementY = sin(angle) * joystickSpeed
+        
+        // Move the player
+        player.position.x += movementX
+        player.position.y += movementY
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        isJoystickActive = false
+        // Reset inner circle position to outer circle's center
+        innerCircle.position = outerCircle.position
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
