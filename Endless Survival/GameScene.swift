@@ -43,6 +43,7 @@ class GameScene: SKScene {
         self.addChild(background)
 
         // Set up the camera
+        self.camera = cameraNode;
         cameraNode.position = background.position
         addChild(cameraNode)
 
@@ -154,6 +155,9 @@ class GameScene: SKScene {
             cameraNode.position.x += movementX
             cameraNode.position.y += movementY
         }
+        
+        mp("cameraNode.position",cameraNode.position)
+
     }
 }
 
