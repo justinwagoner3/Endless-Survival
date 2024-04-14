@@ -49,9 +49,9 @@ class GameScene: SKScene {
 
         // Create player as child of camera
         player = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
-        player.position = CGPoint.zero
+        player.position = background.position
         player.zPosition = 3;
-        cameraNode.addChild(player)
+        self.addChild(player)
 
         // Calculate the position of the outer circle in screen coordinates
         let outerCircleScreenPosition = CGPoint(x: self.size.width * 0.1, y: self.size.height * 0.2)
@@ -73,11 +73,6 @@ class GameScene: SKScene {
         innerCircle.fillColor = .black
         innerCircle.zPosition = 2
         outerCircle.addChild(innerCircle)
-        
-        mp("cameraNode.position",cameraNode.position)
-        mp("player.position",player.position)
-        mp("outerCircle.position",outerCircle.position)
-        mp("innerCircle.position",innerCircle.position)
     }
 
     
@@ -117,7 +112,6 @@ class GameScene: SKScene {
         if distance <= joystickRadius {
             innerCircle.position = touchLocationInOuterCircle
         } else {
-            print("this triggered")
             innerCircle.position = CGPoint(x: cos(angle) * joystickRadius,
                                            y: sin(angle) * joystickRadius)
         }
@@ -150,14 +144,14 @@ class GameScene: SKScene {
         let movementX = cos(angle) * speedMultiplier
         let movementY = sin(angle) * speedMultiplier
         
-        // Move the camera
+        // Move the player
         if isJoystickActive {
-            cameraNode.position.x += movementX
-            cameraNode.position.y += movementY
+            player.position.x += movementX
+            player.position.y += movementY
         }
         
-        mp("cameraNode.position",cameraNode.position)
-
+        // Have camera follow playr
+        cameraNode.position = player.position
     }
 }
 
