@@ -8,6 +8,7 @@
 import SpriteKit
 import GameplayKit
 
+// print func for logging
 func mp<T>(_ name: String, _ value: T) {
     print("\(name): \(value)")
 }
@@ -30,7 +31,7 @@ class GameScene: SKScene {
     // Define joystick properties
     private var joystickRadius: CGFloat = 75.0 // Adjust as needed
     private var isJoystickActive = false
-    private var joystickSpeed: CGFloat = 0.2 // Adjust as needed
+    private var joystickSpeed: CGFloat = 1 // Adjust as needed
 
     private var cameraNode = SKCameraNode()
 
@@ -38,6 +39,8 @@ class GameScene: SKScene {
     override func sceneDidLoad() {
         // Create the background (solid green)
         let background = SKSpriteNode(color: SKColor.green, size: self.size)
+        //let background = SKSpriteNode(imageNamed:"background_generic")
+        background.size = CGSize(width: self.size.width, height: self.size.height)
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
         background.zPosition = 0
         self.addChild(background)
@@ -47,7 +50,7 @@ class GameScene: SKScene {
         cameraNode.position = background.position
         addChild(cameraNode)
 
-        // Create player as child of camera
+        // Create player
         player = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
         player.position = background.position
         player.zPosition = 3;
@@ -68,7 +71,7 @@ class GameScene: SKScene {
         cameraNode.addChild(outerCircle)
 
         // Create inner circle (black) as child of outer circle
-        innerCircle = SKShapeNode(circleOfRadius: 20)
+        innerCircle = SKShapeNode(circleOfRadius: 20) // Adjust as needed
         innerCircle.position = CGPoint.zero
         innerCircle.fillColor = .black
         innerCircle.zPosition = 2
@@ -102,9 +105,6 @@ class GameScene: SKScene {
         // Calculate distance and angle from outer circle's center
         let dx = touchLocationInOuterCircle.x
         let dy = touchLocationInOuterCircle.y
-        if(touchLocationInOuterCircle != CGPoint.zero){
-            //print(touchLocationInOuterCircle)
-        }
         let distance = sqrt(dx * dx + dy * dy)
         let angle = atan2(dy, dx)
                 
