@@ -22,8 +22,8 @@ class GameScene: SKScene {
     private var lastUpdateTime : TimeInterval = 0
     
     // Define joystick nodes
-    private var outerCircle: SKShapeNode!
-    private var innerCircle: SKShapeNode!
+    private var joystickOuterCircle: SKShapeNode!
+    private var joystickInnerCircle: SKShapeNode!
     
     // Define player node
     private var player: SKSpriteNode!
@@ -31,7 +31,7 @@ class GameScene: SKScene {
     // Define joystick properties
     private var joystickRadius: CGFloat = 75.0 // Adjust as needed
     private var isJoystickActive = false
-    private var joystickSpeed: CGFloat = 1 // Adjust as needed
+    private var speedMultiplier: CGFloat = 1 // Adjust as needed
 
     private var cameraNode = SKCameraNode()
 
@@ -51,31 +51,31 @@ class GameScene: SKScene {
         addChild(cameraNode)
 
         // Create player
-        player = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
+        player = SKSpriteNode(color: .blue, size: CGSize(width: 25, height: 25))
         player.position = background.position
         player.zPosition = 3;
         self.addChild(player)
 
         // Calculate the position of the outer circle in screen coordinates
-        let outerCircleScreenPosition = CGPoint(x: self.size.width * 0.1, y: self.size.height * 0.2)
+        let joystickOuterCircleScreenPosition = CGPoint(x: self.size.width * 0.1, y: self.size.height * 0.2)
 
         // Convert screen coordinates to world coordinates
-        let outerCircleWorldPosition = self.convert(outerCircleScreenPosition, to: cameraNode)
+        let joystickOuterCircleWorldPosition = self.convert(joystickOuterCircleScreenPosition, to: cameraNode)
 
         // Create outer circle (grey) as child of camera
-        outerCircle = SKShapeNode(circleOfRadius: joystickRadius)
-        outerCircle.position = outerCircleWorldPosition
-        outerCircle.fillColor = .gray
-        outerCircle.alpha = 0.5
-        outerCircle.zPosition = 1
-        cameraNode.addChild(outerCircle)
+        joystickOuterCircle = SKShapeNode(circleOfRadius: joystickRadius)
+        joystickOuterCircle.position = joystickOuterCircleWorldPosition
+        joystickOuterCircle.fillColor = .gray
+        joystickOuterCircle.alpha = 0.5
+        joystickOuterCircle.zPosition = 1
+        cameraNode.addChild(joystickOuterCircle)
 
         // Create inner circle (black) as child of outer circle
-        innerCircle = SKShapeNode(circleOfRadius: 20) // Adjust as needed
-        innerCircle.position = CGPoint.zero
-        innerCircle.fillColor = .black
-        innerCircle.zPosition = 2
-        outerCircle.addChild(innerCircle)
+        joystickInnerCircle = SKShapeNode(circleOfRadius: 20) // Adjust as needed
+        joystickInnerCircle.position = CGPoint.zero
+        joystickInnerCircle.fillColor = .black
+        joystickInnerCircle.zPosition = 2
+        joystickOuterCircle.addChild(joystickInnerCircle)
     }
 
     
@@ -90,9 +90,9 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        let touchLocation = touch.location(in: outerCircle) // Convert to outer circle's coordinate system
+        let touchLocation = touch.location(in: joystickOuterCircle) // Convert to outer circle's coordinate system
         
-        if innerCircle.contains(touchLocation) {
+        if joystickInnerCircle.contains(touchLocation) {
             isJoystickActive = true
         }
     }
@@ -100,19 +100,19 @@ class GameScene: SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard isJoystickActive, let touch = touches.first else { return }
         let touchLocation = touch.location(in: self) // Convert to scene's coordinate system
-        let touchLocationInOuterCircle = convert(touchLocation, to: outerCircle) // Convert to outer circle's coordinate system
+        let touchLocationInjoystickOuterCircle = convert(touchLocation, to: joystickOuterCircle) // Convert to outer circle's coordinate system
 
         // Calculate distance and angle from outer circle's center
-        let dx = touchLocationInOuterCircle.x
-        let dy = touchLocationInOuterCircle.y
+        let dx = touchLocationInjoystickOuterCircle.x
+        let dy = touchLocationInjoystickOuterCircle.y
         let distance = sqrt(dx * dx + dy * dy)
         let angle = atan2(dy, dx)
                 
         // Limit inner circle's movement to the outer circle's bounds
         if distance <= joystickRadius {
-            innerCircle.position = touchLocationInOuterCircle
+            joystickInnerCircle.position = touchLocationInjoystickOuterCircle
         } else {
-            innerCircle.position = CGPoint(x: cos(angle) * joystickRadius,
+            joystickInnerCircle.position = CGPoint(x: cos(angle) * joystickRadius,
                                            y: sin(angle) * joystickRadius)
         }
     }
@@ -121,7 +121,7 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isJoystickActive = false
         // Reset inner circle position to outer circle's center
-        innerCircle.position = CGPoint.zero
+        joystickInnerCircle.position = CGPoint.zero
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -131,15 +131,12 @@ class GameScene: SKScene {
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
         // Calculate movement vector
-        let dx = innerCircle.position.x
-        let dy = innerCircle.position.y
+        let dx = joystickInnerCircle.position.x
+        let dy = joystickInnerCircle.position.y
         
         // Calculate movement direction
         let angle = atan2(dy, dx)
-        
-        // Calculate the speed multiplier
-        let speedMultiplier = joystickSpeed
-        
+                
         // Calculate movement vector
         let movementX = cos(angle) * speedMultiplier
         let movementY = sin(angle) * speedMultiplier
@@ -152,6 +149,8 @@ class GameScene: SKScene {
         
         // Have camera follow playr
         cameraNode.position = player.position
+        
+        //mp("player.position",player.position)
     }
 }
 
