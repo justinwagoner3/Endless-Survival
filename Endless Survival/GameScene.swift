@@ -13,6 +13,27 @@ func mp<T>(_ name: String, _ value: T) {
     print("\(name): \(value)")
 }
 
+extension GameScene {
+    // Function to animate the player's attack with a white border
+    func animateAttack() {
+        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
+        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
+        let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
+        player.run(attackAnimation)
+        
+        // Create a white border sprite
+        let whiteBorder = SKSpriteNode(color: .white, size: CGSize(width: player.size.width + 20, height: player.size.height + 20))
+        whiteBorder.zPosition = player.zPosition - 1 // Place behind the player
+        whiteBorder.position = player.position
+        addChild(whiteBorder)
+        
+        // Fade out and remove the white border sprite
+        let fadeOutAction = SKAction.fadeOut(withDuration: 0.2)
+        let removeAction = SKAction.removeFromParent()
+        let sequence = SKAction.sequence([fadeOutAction, removeAction])
+        whiteBorder.run(sequence)
+    }
+}
 
 class GameScene: SKScene {
     
@@ -253,7 +274,9 @@ class GameScene: SKScene {
             return false
         }
         print("attacking")
-        
+        // Animate the attack
+        animateAttack()
+
         // Decrease the enemy's hitpoints
         closestEnemy.hitpoints -= 1
         
@@ -314,15 +337,13 @@ class Enemy: SKSpriteNode {
     // Method to highlight the enemy
     func highlight() {
         // Add code to visually highlight the enemy, e.g., change color or add a glow effect
-        // For example:
         self.colorBlendFactor = 0.5
-        self.color = UIColor.yellow
+        self.color = UIColor.white
     }
     
     // Method to remove highlighting from the enemy
     func unhighlight() {
         // Add code to remove the visual highlighting effect applied to the enemy
-        // For example:
         self.colorBlendFactor = 0.0
         self.color = UIColor.red
     }
