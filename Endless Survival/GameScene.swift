@@ -70,6 +70,14 @@ class GameScene: SKScene {
     private var healthBarRed: SKSpriteNode!
     private var lastInjuryTime: TimeInterval?
     private var lastHealTime: TimeInterval = 0
+    
+    // Resources
+    var resources: [Resource] = []
+    private var resourceCounter: ResourceCounter!
+    private var playerCoinCount: Int = 0
+    private var playerWoodCount: Int = 0
+    private var playerStoneCount: Int = 0
+    private var playerOreCount: Int = 0
 
     // tbd
     private let attackCooldown: TimeInterval = 2.0
@@ -131,10 +139,30 @@ class GameScene: SKScene {
         cameraNode.addChild(healthBarRed)
         
         updateHealthBar()
+        
+        // Create resource counter node
+        resourceCounter = ResourceCounter()
+        resourceCounter.position = CGPoint(x: -400, y: 400)
+        cameraNode.addChild(resourceCounter)
+
 
         // Spawn enemies
         spawnEnemies(count: 10)
         
+        // Spawn resources
+        let coin = Coin(bounds:worldSize,resourceCount:1)
+        addChild(coin)
+        resources.append(coin)
+        let wood = Wood(bounds:worldSize,resourceCount:10)
+        addChild(wood)
+        resources.append(wood)
+        let stone = Stone(bounds:worldSize,resourceCount:10)
+        addChild(stone)
+        resources.append(stone)
+        let ore = Ore(bounds:worldSize,resourceCount:10)
+        addChild(ore)
+        resources.append(ore)
+
         // logging initial state
         mp("worldSize",worldSize)
         mp("player.position",player.position)
@@ -199,72 +227,7 @@ class GameScene: SKScene {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
-    
-    // Called before each frame is rendered
-    override func update(_ currentTime: TimeInterval) {
-        // logging
-        let oldPlayerPosition = player.position
         
-        // Calculate movement vector
-        let dx = joystickInnerCircle.position.x
-        let dy = joystickInnerCircle.position.y
-        
-        // Calculate movement direction
-        let angle = atan2(dy, dx)
-                
-        // Calculate movement vector
-        let movementX = cos(angle) * speedMultiplier
-        let movementY = sin(angle) * speedMultiplier
-        
-        // Move the player
-        if isJoystickActive {
-            // Keep the player within bounds of the world
-            let potentialPlayerX = player.position.x + movementX
-            let potentialPlayerY = player.position.y + movementY
-            
-            let clampedPlayerX = max(min(potentialPlayerX, worldSize.width - player.size.width / 2), player.size.width / 2)
-            let clampedPlayerY = max(min(potentialPlayerY, worldSize.height - player.size.height / 2), player.size.height / 2)
-            
-            
-            player.position = CGPoint(x: clampedPlayerX, y: clampedPlayerY)
-        }
-        
-        // Update the camera position to follow the player
-        cameraNode.position = player.position
-
-        // don't log when standing still
-        if(oldPlayerPosition != player.position){
-            //mp("player.position",player.position)
-            //mp("cameraNode.position",cameraNode.position)
-        }
-        
-        // Highlight + Attack closest enemy with a cooldown
-        highlightClosestEnemy(radius: 200)
-        if let lastAttackTime = lastAttackTime {
-            let timeSinceLastAttack = currentTime - lastAttackTime
-            if timeSinceLastAttack >= attackCooldown {
-                // Only reset the cooldown if the attack was successful
-                if attackClosestEnemy() {
-                    self.lastAttackTime = currentTime
-                }
-            }
-        } else {
-            lastAttackTime = currentTime
-        }
-        
-        // Loop through enemies to check if they can attack the player
-        for enemy in enemies {
-            enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime)
-        }
-
-        // Healing
-        if shouldHealPlayer(currentTime) {
-            mp("Healing to ",playerCurrentHealth+1)
-            increaseHealth(amount: 1,currentTime: currentTime)
-        }
-
-    }
-    
     // Method to spawn multiple enemies
     private func spawnEnemies(count: Int) {
         for _ in 0..<count {
@@ -394,6 +357,131 @@ class GameScene: SKScene {
         
         return false
     }
+    
+    // Method to check for player-resource contact and collect resources
+    private func checkAndCollectResources() {
+        for resource in resources {
+            // Check if the player's bounding box intersects with the resource's bounding box
+            if player.frame.intersects(resource.frame) {
+                // Perform resource collection logic
+                switch resource {
+                case is Coin:
+                    playerCoinCount += 1
+                    (resource as? Coin)?.resourceCount -= 1
+                    if let coin = resource as? Coin, coin.resourceCount <= 0 {
+                        resource.removeFromParent()
+                        if let index = resources.firstIndex(of: coin) {
+                            resources.remove(at: index)
+                        }
+                    }
+                    resourceCounter.updateCoinCount(playerCoinCount)
+                case is Wood:
+                    playerWoodCount += 1
+                    (resource as? Wood)?.resourceCount -= 1
+                    if let wood = resource as? Wood, wood.resourceCount <= 0 {
+                        resource.removeFromParent()
+                        if let index = resources.firstIndex(of: wood) {
+                            resources.remove(at: index)
+                        }
+                    }
+                    resourceCounter.updateWoodCount(playerWoodCount)
+                case is Stone:
+                    playerStoneCount += 1
+                    (resource as? Stone)?.resourceCount -= 1
+                    if let stone = resource as? Stone, stone.resourceCount <= 0 {
+                        resource.removeFromParent()
+                        if let index = resources.firstIndex(of: stone) {
+                            resources.remove(at: index)
+                        }
+                    }
+                    resourceCounter.updateStoneCount(playerStoneCount)
+                case is Ore:
+                    playerOreCount += 1
+                    (resource as? Ore)?.resourceCount -= 1
+                    if let ore = resource as? Ore, ore.resourceCount <= 0 {
+                        resource.removeFromParent()
+                        if let index = resources.firstIndex(of: ore) {
+                            resources.remove(at: index)
+                        }
+                    }
+                    resourceCounter.updateOreCount(playerOreCount)
+                // Similar cases for other types of resources (Wood, Stone, Ore)
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    // Called before each frame is rendered
+    override func update(_ currentTime: TimeInterval) {
+        // logging
+        let oldPlayerPosition = player.position
+        
+        // Calculate movement vector
+        let dx = joystickInnerCircle.position.x
+        let dy = joystickInnerCircle.position.y
+        
+        // Calculate movement direction
+        let angle = atan2(dy, dx)
+                
+        // Calculate movement vector
+        let movementX = cos(angle) * speedMultiplier
+        let movementY = sin(angle) * speedMultiplier
+        
+        // Move the player
+        if isJoystickActive {
+            // Keep the player within bounds of the world
+            let potentialPlayerX = player.position.x + movementX
+            let potentialPlayerY = player.position.y + movementY
+            
+            let clampedPlayerX = max(min(potentialPlayerX, worldSize.width - player.size.width / 2), player.size.width / 2)
+            let clampedPlayerY = max(min(potentialPlayerY, worldSize.height - player.size.height / 2), player.size.height / 2)
+            
+            
+            player.position = CGPoint(x: clampedPlayerX, y: clampedPlayerY)
+        }
+        
+        // Update the camera position to follow the player
+        cameraNode.position = player.position
+
+        // don't log when standing still
+        if(oldPlayerPosition != player.position){
+            //mp("player.position",player.position)
+            //mp("cameraNode.position",cameraNode.position)
+        }
+        
+        // Highlight + Attack closest enemy with a cooldown
+        highlightClosestEnemy(radius: 200)
+        if let lastAttackTime = lastAttackTime {
+            let timeSinceLastAttack = currentTime - lastAttackTime
+            if timeSinceLastAttack >= attackCooldown {
+                // Only reset the cooldown if the attack was successful
+                if attackClosestEnemy() {
+                    self.lastAttackTime = currentTime
+                }
+            }
+        } else {
+            lastAttackTime = currentTime
+        }
+        
+        // Loop through enemies to check if they can attack the player
+        for enemy in enemies {
+            enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime)
+        }
+
+        // Healing
+        if shouldHealPlayer(currentTime) {
+            //mp("Healing to ",playerCurrentHealth+1)
+            increaseHealth(amount: 1,currentTime: currentTime)
+        }
+        
+        // Resource Collection
+        checkAndCollectResources()
+
+    }
+
+
 }
 
 class Enemy: SKSpriteNode {
@@ -480,6 +568,8 @@ class Enemy: SKSpriteNode {
             lastAttackTime = currentTime
         }
     }
+    
+    
 }
 
 extension Enemy {
@@ -515,5 +605,141 @@ extension Enemy {
         let removeAction = SKAction.removeFromParent()
         let sequence = SKAction.sequence([fadeOutAction, removeAction])
         blackBorder.run(sequence)
+    }
+}
+
+class Resource: SKSpriteNode {
+    // Common properties and methods for all resources can go here
+    var bounds: CGSize
+    var resourceCount: Int
+
+    init(color: UIColor, bounds: CGSize, resourceCount: Int) {
+        self.bounds = bounds
+        self.resourceCount = resourceCount
+
+        super.init(texture: nil, color: color, size: CGSize(width: 50, height: 50))
+
+        self.zPosition = 2 // Or adjust zPosition as needed
+        self.position = randomPosition()
+
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // Method to generate random position within worldSize
+    private func randomPosition() -> CGPoint {
+        let randomX = CGFloat.random(in: 0...(bounds.width - size.width))
+        let randomY = CGFloat.random(in: 0...(bounds.height - size.height))
+        return CGPoint(x: randomX, y: randomY)
+    }
+}
+
+class Coin: Resource {
+    init(bounds: CGSize, resourceCount: Int) {
+        super.init(color: .yellow, bounds: bounds, resourceCount: resourceCount)
+        // Additional coin-specific customization can go here
+        self.size = CGSize(width: 25, height: 25) // Set the size of the coin
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class Wood: Resource {
+    init(bounds: CGSize, resourceCount: Int) {
+        super.init(color: .brown, bounds: bounds, resourceCount: resourceCount)
+        // Additional wood-specific customization can go here
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class Stone: Resource {
+    init(bounds: CGSize, resourceCount: Int) {
+        super.init(color: .gray, bounds: bounds, resourceCount: resourceCount)
+        // Additional stone-specific customization can go here
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class Ore: Resource {
+    init(bounds: CGSize, resourceCount: Int) {
+        super.init(color: .black, bounds: bounds, resourceCount: resourceCount)
+        // Additional ore-specific customization can go here
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class ResourceCounter: SKNode {
+    private var coinCountLabel: SKLabelNode!
+    private var woodCountLabel: SKLabelNode!
+    private var stoneCountLabel: SKLabelNode!
+    private var oreCountLabel: SKLabelNode!
+
+    override init() {
+        super.init()
+
+        // Create and configure labels for coins, wood, stone, and ore counts
+        coinCountLabel = createLabel(text: "Coins: 0")
+        coinCountLabel.position = CGPoint(x: 0, y: 0)
+        addChild(coinCountLabel)
+        
+        woodCountLabel = createLabel(text: "Wood: 0")
+        woodCountLabel.position = CGPoint(x: 0, y: -30)
+        addChild(woodCountLabel)
+
+        stoneCountLabel = createLabel(text: "Stone: 0")
+        stoneCountLabel.position = CGPoint(x: 0, y: -60) // Adjust vertical position as needed
+        addChild(stoneCountLabel)
+
+        oreCountLabel = createLabel(text: "Ore: 0")
+        oreCountLabel.position = CGPoint(x: 0, y: -90) // Adjust vertical position as needed
+        addChild(oreCountLabel)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // Method to update ore count
+    func updateCoinCount(_ count: Int) {
+        coinCountLabel.text = "Coins: \(count)"
+    }
+
+    // Method to update wood count
+    func updateWoodCount(_ count: Int) {
+        woodCountLabel.text = "Wood: \(count)"
+    }
+
+    // Method to update stone count
+    func updateStoneCount(_ count: Int) {
+        stoneCountLabel.text = "Stone: \(count)"
+    }
+
+    // Method to update ore count
+    func updateOreCount(_ count: Int) {
+        oreCountLabel.text = "Ore: \(count)"
+    }
+    
+
+    // Helper method to create and configure label nodes
+    private func createLabel(text: String) -> SKLabelNode {
+        let label = SKLabelNode(text: text)
+        label.fontName = "Arial"
+        label.fontSize = 30
+        label.fontColor = .white
+        label.horizontalAlignmentMode = .left
+        return label
     }
 }
