@@ -37,6 +37,12 @@ class GameScene: SKScene {
 
     private var worldSize = CGSize(width: 0, height: 0)
     private var scaleFactor: CGFloat = 1
+    
+    private var enemies: [Enemy] = []
+    private var selectedEnemy: Enemy? // Store the currently targeted enemy
+
+    private let attackCooldown: TimeInterval = 2.0
+    private var lastAttackTime: TimeInterval? // Stores the time of the last attack
 
     override func sceneDidLoad() {
         worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
@@ -81,6 +87,9 @@ class GameScene: SKScene {
         joystickInnerCircle.zPosition = 2
         joystickOuterCircle.addChild(joystickInnerCircle)
         
+        // Spawn enemies
+        spawnEnemies(count: 10)
+        
         // logging initial state
         mp("worldSize",worldSize)
         mp("player.position",player.position)
@@ -104,7 +113,7 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let touchLocation = touch.location(in: self) // Convert touch location to scene's coordinate system
-        print("Touched at position: \(touchLocation)")
+        //print("Touched at position: \(touchLocation)")
         
         let touchLocationInJoystickOuterCircle = touch.location(in: joystickOuterCircle) // Convert touch location to joystick outer circle's coordinate system
         
@@ -180,10 +189,147 @@ class GameScene: SKScene {
 
         // don't log when standing still
         if(oldPlayerPosition != player.position){
-            mp("player.position",player.position)
-            mp("cameraNode.position",cameraNode.position)
+            //mp("player.position",player.position)
+            //mp("cameraNode.position",cameraNode.position)
         }
+        
+        // Highlight + Attack closest enemy with a cooldown
+        highlightClosestEnemy(radius: 200)
+        if var lastAttackTime = lastAttackTime {
+            let timeSinceLastAttack = currentTime - lastAttackTime
+            if timeSinceLastAttack >= attackCooldown {
+                // Only reset the cooldown if the attack was successful
+                if attackClosestEnemy() {
+                    self.lastAttackTime = currentTime
+                }
+            }
+        } else {
+            lastAttackTime = currentTime
+        }
+    }
+    
+    // Method to spawn multiple enemies
+    private func spawnEnemies(count: Int) {
+        for _ in 0..<count {
+            let enemy = Enemy(movementSpeed: 1.5, hitpoints: 10, bounds: worldSize)
+            addChild(enemy)
+            enemies.append(enemy)
+        }
+    }
+    
+    // Method to highlight the closest enemy within a radius
+    private func highlightClosestEnemy(radius: CGFloat) {
+        // Reset previously selected enemy
+        if let selectedEnemy = selectedEnemy {
+            // Unhighlight the previously selected enemy
+            selectedEnemy.unhighlight()
+        }
+        
+        // Find the closest enemy within the radius
+        var closestEnemy: Enemy? = nil
+        var closestDistance: CGFloat = CGFloat.infinity
+        for enemy in enemies {
+            let distance = enemy.distance(to: player.position)
+            if distance <= radius && distance < closestDistance {
+                closestDistance = distance
+                closestEnemy = enemy
+            }
+        }
+        
+        // Highlight the closest enemy
+        if let closestEnemy = closestEnemy {
+            closestEnemy.highlight()
+            selectedEnemy = closestEnemy
+        } else {
+            selectedEnemy = nil
+        }
+    }
+    
+    // Method to attack the highlighted enemy
+    // Method to attack the highlighted enemy
+    private func attackClosestEnemy() -> Bool {
+        guard let closestEnemy = selectedEnemy else {
+            // If no enemy is selected, return false
+            return false
+        }
+        print("attacking")
+        
+        // Decrease the enemy's hitpoints
+        closestEnemy.hitpoints -= 1
+        
+        // Check if the enemy's hitpoints have reached zero
+        if closestEnemy.hitpoints <= 0 {
+            // If hitpoints are zero or less, remove the enemy from the scene and enemies array
+            closestEnemy.removeFromParent()
+            if let index = enemies.firstIndex(of: closestEnemy) {
+                enemies.remove(at: index)
+            }
+            selectedEnemy = nil // Reset selectedEnemy as it's no longer valid
+        }
+        
+        // Return true indicating a successful attack
+        return true
     }
 }
 
+class Enemy: SKSpriteNode {
+    
+    // Enemy attributes
+    var movementSpeed: CGFloat
+    var hitpoints: Int
+    var bounds: CGSize
 
+    // Initializer with default appearance
+    init(movementSpeed: CGFloat, hitpoints: Int, bounds: CGSize) {
+        self.movementSpeed = movementSpeed
+        self.hitpoints = hitpoints
+        self.bounds = bounds
+        
+        let size = CGSize(width: 25, height: 25)
+        let color = UIColor.red
+        super.init(texture: nil, color: color, size: size)
+        
+        self.zPosition = 3
+        self.position = randomPosition()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // Method to generate random position within worldSize
+    private func randomPosition() -> CGPoint {
+        let randomX = CGFloat.random(in: 0...(bounds.width - size.width))
+        let randomY = CGFloat.random(in: 0...(bounds.height - size.height))
+        return CGPoint(x: randomX, y: randomY)
+    }
+    
+    // Method to calculate distance between two points
+    func distance(to point: CGPoint) -> CGFloat {
+        let dx = point.x - position.x
+        let dy = point.y - position.y
+        return sqrt(dx * dx + dy * dy)
+    }
+    
+    // Method to highlight the enemy
+    func highlight() {
+        // Add code to visually highlight the enemy, e.g., change color or add a glow effect
+        // For example:
+        self.colorBlendFactor = 0.5
+        self.color = UIColor.yellow
+    }
+    
+    // Method to remove highlighting from the enemy
+    func unhighlight() {
+        // Add code to remove the visual highlighting effect applied to the enemy
+        // For example:
+        self.colorBlendFactor = 0.0
+        self.color = UIColor.red
+    }
+    
+    // Additional methods/functions for enemy behavior
+    // For example, you can add a method to handle enemy movement
+    func moveTowards(_ targetPosition: CGPoint) {
+        // Add movement logic here
+    }
+}
