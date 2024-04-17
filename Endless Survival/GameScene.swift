@@ -22,7 +22,7 @@ extension GameScene {
         player.run(attackAnimation)
         
         // Create a white border sprite
-        let whiteBorder = SKSpriteNode(color: .white, size: CGSize(width: player.size.width + 20, height: player.size.height + 20))
+        let whiteBorder = SKSpriteNode(color: .white, size: CGSize(width: player.size.width + 25, height: player.size.height + 25))
         whiteBorder.zPosition = player.zPosition - 1 // Place behind the player
         whiteBorder.position = player.position
         addChild(whiteBorder)
@@ -42,26 +42,34 @@ class GameScene: SKScene {
     
     private var lastUpdateTime : TimeInterval = 0
     
-    // Define joystick nodes
+    // Joystick
     private var joystickOuterCircle: SKShapeNode!
     private var joystickInnerCircle: SKShapeNode!
-    
-    // Define player node
-    private var player: SKSpriteNode!
-    
-    // Define joystick properties
     private var joystickRadius: CGFloat = 75.0 // Adjust as needed
     private var isJoystickActive = false
     private var speedMultiplier: CGFloat = 2 // Adjust as needed
 
+    // Player
+    private var player: SKSpriteNode!
+    
+    // Camera
     private var cameraNode = SKCameraNode()
 
+    // World
     private var worldSize = CGSize(width: 0, height: 0)
     private var scaleFactor: CGFloat = 1
     
+    // Enemies
     private var enemies: [Enemy] = []
     private var selectedEnemy: Enemy? // Store the currently targeted enemy
 
+    // Health Bar
+    private var totalHealth: CGFloat = 100.0 // Total health value
+    private var currentHealth: CGFloat = 100.0 // Current health value
+    private var healthBarGray: SKSpriteNode!
+    private var healthBarRed: SKSpriteNode!
+
+    // tbd
     private let attackCooldown: TimeInterval = 2.0
     private var lastAttackTime: TimeInterval? // Stores the time of the last attack
 
@@ -108,6 +116,20 @@ class GameScene: SKScene {
         joystickInnerCircle.zPosition = 2
         joystickOuterCircle.addChild(joystickInnerCircle)
         
+        // Create health bar nodes
+        let healthBarSize = CGSize(width: 400, height: 20) // Adjust size as needed
+        healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
+        healthBarGray.zPosition = 10 // Place on top of other nodes
+        healthBarGray.position = CGPoint(x: -750, y: 400)
+        cameraNode.addChild(healthBarGray)
+        
+        healthBarRed = SKSpriteNode(color: .red, size: healthBarSize)
+        healthBarRed.zPosition = 11 // Place on top of gray bar
+        healthBarRed.position = healthBarGray.position
+        cameraNode.addChild(healthBarRed)
+        
+        updateHealthBar()
+
         // Spawn enemies
         spawnEnemies(count: 10)
         
@@ -133,7 +155,7 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        let touchLocation = touch.location(in: self) // Convert touch location to scene's coordinate system
+        //let touchLocation = touch.location(in: self) // Convert touch location to scene's coordinate system
         //print("Touched at position: \(touchLocation)")
         
         let touchLocationInJoystickOuterCircle = touch.location(in: joystickOuterCircle) // Convert touch location to joystick outer circle's coordinate system
@@ -216,7 +238,7 @@ class GameScene: SKScene {
         
         // Highlight + Attack closest enemy with a cooldown
         highlightClosestEnemy(radius: 200)
-        if var lastAttackTime = lastAttackTime {
+        if let lastAttackTime = lastAttackTime {
             let timeSinceLastAttack = currentTime - lastAttackTime
             if timeSinceLastAttack >= attackCooldown {
                 // Only reset the cooldown if the attack was successful
@@ -227,12 +249,19 @@ class GameScene: SKScene {
         } else {
             lastAttackTime = currentTime
         }
+        
+        // Loop through enemies to check if they can attack the player
+        for enemy in enemies {
+            enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime)
+        }
+
     }
     
     // Method to spawn multiple enemies
     private func spawnEnemies(count: Int) {
         for _ in 0..<count {
             let enemy = Enemy(movementSpeed: 1.5, hitpoints: 10, bounds: worldSize)
+            enemy.gameScene = self // Pass reference to GameScene
             addChild(enemy)
             enemies.append(enemy)
         }
@@ -267,7 +296,6 @@ class GameScene: SKScene {
     }
     
     // Method to attack the highlighted enemy
-    // Method to attack the highlighted enemy
     private func attackClosestEnemy() -> Bool {
         guard let closestEnemy = selectedEnemy else {
             // If no enemy is selected, return false
@@ -293,14 +321,50 @@ class GameScene: SKScene {
         // Return true indicating a successful attack
         return true
     }
+    
+    // Update the size of the red health bar based on current health percentage
+    private func updateHealthBar() {
+        let healthPercentage = currentHealth / totalHealth
+        let newWidth = healthBarGray.size.width * healthPercentage
+        healthBarRed.size.width = max(newWidth, 0) // Ensure width is non-negative
+        
+        // Set the anchor point of the health bar to the right
+        healthBarRed.anchorPoint = CGPoint(x: 1.0, y: 0.5)
+        
+        // Adjust the position of the health bar to align with the right edge of the gray bar
+        healthBarRed.position.x = healthBarGray.position.x + healthBarGray.size.width / 2
+    }
+
+    // Method to decrease player's health
+    public func decreaseHealth(amount: CGFloat) {
+        currentHealth -= amount
+        // Ensure current health doesn't go below 0
+        currentHealth = max(currentHealth, 0)
+        updateHealthBar()
+    }
+    
+    // Method to increase player's health
+    private func increaseHealth(amount: CGFloat) {
+        currentHealth += amount
+        // Ensure current health doesn't exceed total health
+        currentHealth = min(currentHealth, totalHealth)
+        updateHealthBar()
+    }
 }
 
 class Enemy: SKSpriteNode {
     
+    // Reference to the GameScene instance
+    weak var gameScene: GameScene?
+
     // Enemy attributes
     var movementSpeed: CGFloat
     var hitpoints: Int
     var bounds: CGSize
+    
+    private let attackRadius: CGFloat = 50.0 // Adjust as needed
+    private let attackCooldown: TimeInterval = 2 // Adjust as needed
+    private var lastAttackTime: TimeInterval = 0
 
     // Initializer with default appearance
     init(movementSpeed: CGFloat, hitpoints: Int, bounds: CGSize) {
@@ -352,5 +416,23 @@ class Enemy: SKSpriteNode {
     // For example, you can add a method to handle enemy movement
     func moveTowards(_ targetPosition: CGPoint) {
         // Add movement logic here
+    }
+    
+    // Method to check if the player is within attack range and initiate attack if cooldown is over
+    func checkAndAttackPlayer(playerPosition: CGPoint, currentTime: TimeInterval) {
+        // Calculate distance between enemy and player
+        let distanceToPlayer = distance(to: playerPosition)
+        
+        // Check if player is within attack range and if enough time has passed since last attack
+        if distanceToPlayer <= attackRadius && currentTime - lastAttackTime >= attackCooldown {
+            // Initiate attack
+            // You can implement attack animation or logic here
+            print("Enemy is attacking!")
+            
+            gameScene?.decreaseHealth(amount: 10) // Call decreaseHealth method
+
+            // Update last attack time
+            lastAttackTime = currentTime
+        }
     }
 }
