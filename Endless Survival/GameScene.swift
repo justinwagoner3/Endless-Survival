@@ -63,11 +63,13 @@ class GameScene: SKScene {
     private var enemies: [Enemy] = []
     private var selectedEnemy: Enemy? // Store the currently targeted enemy
 
-    // Health Bar
-    private var totalHealth: CGFloat = 100.0 // Total health value
-    private var currentHealth: CGFloat = 100.0 // Current health value
+    // Health
+    private var playerTotalHealth: CGFloat = 100.0 // Total health value
+    private var playerCurrentHealth: CGFloat = 100.0 // Current health value
     private var healthBarGray: SKSpriteNode!
     private var healthBarRed: SKSpriteNode!
+    private var lastInjuryTime: TimeInterval?
+    private var lastHealTime: TimeInterval = 0
 
     // tbd
     private let attackCooldown: TimeInterval = 2.0
@@ -255,6 +257,12 @@ class GameScene: SKScene {
             enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime)
         }
 
+        // Healing
+        if shouldHealPlayer(currentTime) {
+            mp("Healing to ",playerCurrentHealth+1)
+            increaseHealth(amount: 1,currentTime: currentTime)
+        }
+
     }
     
     // Method to spawn multiple enemies
@@ -324,7 +332,7 @@ class GameScene: SKScene {
     
     // Update the size of the red health bar based on current health percentage
     private func updateHealthBar() {
-        let healthPercentage = currentHealth / totalHealth
+        let healthPercentage = playerCurrentHealth / playerTotalHealth
         let newWidth = healthBarGray.size.width * healthPercentage
         healthBarRed.size.width = max(newWidth, 0) // Ensure width is non-negative
         
@@ -337,18 +345,54 @@ class GameScene: SKScene {
 
     // Method to decrease player's health
     public func decreaseHealth(amount: CGFloat) {
-        currentHealth -= amount
+        playerCurrentHealth -= amount
         // Ensure current health doesn't go below 0
-        currentHealth = max(currentHealth, 0)
+        playerCurrentHealth = max(playerCurrentHealth, 0)
         updateHealthBar()
+        
+        // Update last injury time
+        lastInjuryTime = CACurrentMediaTime()
     }
     
     // Method to increase player's health
-    private func increaseHealth(amount: CGFloat) {
-        currentHealth += amount
+    private func increaseHealth(amount: CGFloat, currentTime: TimeInterval) {
+        playerCurrentHealth += amount
         // Ensure current health doesn't exceed total health
-        currentHealth = min(currentHealth, totalHealth)
+        playerCurrentHealth = min(playerCurrentHealth, playerTotalHealth)
         updateHealthBar()
+        
+        // Update last heal time
+        lastHealTime = currentTime
+    }
+
+    // Method to check if the player should receive passive healing
+    private func shouldHealPlayer(_ currentTime: TimeInterval) -> Bool {
+        // Quick return false if player health is full
+        if(playerCurrentHealth == playerTotalHealth){
+            return false
+        }
+
+        guard let lastInjuryTime = lastInjuryTime else {
+            // If the player has never been injured, no need to passive healing to start
+            return false
+        }
+        
+        
+        // Calculate time since last injury
+        let timeSinceInjury = currentTime - lastInjuryTime
+        
+        // Check if the player is not moving
+        let isPlayerMoving = isJoystickActive
+
+        // Check if the player has not been injured in the last 5 seconds and is not moving
+        if timeSinceInjury >= 5 && !isPlayerMoving {
+            // Check if enough time has passed since the last healing
+            if currentTime - lastHealTime >= 1.0 {
+                return true
+            }
+        }
+        
+        return false
     }
 }
 
