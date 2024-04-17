@@ -15,7 +15,7 @@ func mp<T>(_ name: String, _ value: T) {
 
 extension GameScene {
     // Function to animate the player's attack with a white border
-    func animateAttack() {
+    func animatePlayerAttack() {
         let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
         let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
         let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
@@ -50,7 +50,7 @@ class GameScene: SKScene {
     private var speedMultiplier: CGFloat = 2 // Adjust as needed
 
     // Player
-    private var player: SKSpriteNode!
+    public var player: SKSpriteNode!
     
     // Camera
     private var cameraNode = SKCameraNode()
@@ -303,7 +303,7 @@ class GameScene: SKScene {
         }
         print("attacking")
         // Animate the attack
-        animateAttack()
+        animatePlayerAttack()
 
         // Decrease the enemy's hitpoints
         closestEnemy.hitpoints -= 1
@@ -428,11 +428,48 @@ class Enemy: SKSpriteNode {
             // Initiate attack
             // You can implement attack animation or logic here
             print("Enemy is attacking!")
+            animateEnemyAttack()
             
             gameScene?.decreaseHealth(amount: 10) // Call decreaseHealth method
 
             // Update last attack time
             lastAttackTime = currentTime
         }
+    }
+}
+
+extension Enemy {
+    // Function to animate the enemy's attack with a black border
+    func animateEnemyAttack() {
+        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
+        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
+        let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
+        run(attackAnimation)
+        
+        // Access the player instance
+        if let player = gameScene?.player {
+            // Temporarily change player color to red
+            player.color = .red
+            // Revert player color to blue after 0.5 seconds
+            let revertColorAction = SKAction.run {
+                player.color = .blue
+            }
+            let colorChangeDuration = 0.1
+            let waitAction = SKAction.wait(forDuration: colorChangeDuration)
+            let revertColorSequence = SKAction.sequence([waitAction, revertColorAction])
+            gameScene?.run(revertColorSequence)
+        }
+        
+        // Create a black border sprite
+        let blackBorder = SKSpriteNode(color: .black, size: CGSize(width: size.width + 25, height: size.height + 25))
+        blackBorder.zPosition = zPosition - 1 // Place behind the enemy
+        blackBorder.position = position
+        parent?.addChild(blackBorder)
+        
+        // Fade out and remove the black border sprite
+        let fadeOutAction = SKAction.fadeOut(withDuration: 0.2)
+        let removeAction = SKAction.removeFromParent()
+        let sequence = SKAction.sequence([fadeOutAction, removeAction])
+        blackBorder.run(sequence)
     }
 }
