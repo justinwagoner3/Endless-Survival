@@ -506,16 +506,18 @@ class GameScene: SKScene {
         
         // Highlight + Attack closest enemy with a cooldown
         highlightClosestEnemy(radius: 200)
-        if let lastAttackTime = lastAttackTime {
-            let timeSinceLastAttack = currentTime - lastAttackTime
-            if timeSinceLastAttack >= attackCooldown {
-                // Only reset the cooldown if the attack was successful
-                if attackClosestEnemy() {
-                    self.lastAttackTime = currentTime
+        if !isHarvesting {
+            if let lastAttackTime = lastAttackTime {
+                let timeSinceLastAttack = currentTime - lastAttackTime
+                if timeSinceLastAttack >= attackCooldown {
+                    // Only reset the cooldown if the attack was successful
+                    if attackClosestEnemy() {
+                        self.lastAttackTime = currentTime
+                    }
                 }
+            } else {
+                lastAttackTime = currentTime
             }
-        } else {
-            lastAttackTime = currentTime
         }
         
         // Loop through enemies to check if they can attack the player
