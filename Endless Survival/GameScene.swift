@@ -48,6 +48,9 @@ class GameScene: SKScene {
     private var joystickRadius: CGFloat = 75.0 // Adjust as needed
     private var isJoystickActive = false
     private var speedMultiplier: CGFloat = 2 // Adjust as needed
+    
+    // Harvest button
+    private var harvestCircle: SKShapeNode!
 
     // Player
     public var player: SKSpriteNode!
@@ -78,6 +81,11 @@ class GameScene: SKScene {
     private var playerWoodCount: Int = 0
     private var playerStoneCount: Int = 0
     private var playerOreCount: Int = 0
+    private let resourceCollectionCooldown: TimeInterval = 1.0 // Adjust as needed
+    private var lastResourceCollectionTime: TimeInterval = 0
+    private var isHarvesting = false
+
+
 
     // tbd
     private let attackCooldown: TimeInterval = 2.0
@@ -126,6 +134,15 @@ class GameScene: SKScene {
         joystickInnerCircle.zPosition = 2
         joystickOuterCircle.addChild(joystickInnerCircle)
         
+        // Create harvest circle as child of camera
+        harvestCircle = SKShapeNode(circleOfRadius: 50)
+        harvestCircle.position = CGPoint(x: -850, y: -150)
+        harvestCircle.fillColor = .gray
+        harvestCircle.alpha = 0.5
+        harvestCircle.zPosition = 1
+        harvestCircle.isHidden = true
+        cameraNode.addChild(harvestCircle)
+
         // Create health bar nodes
         let healthBarSize = CGSize(width: 400, height: 20) // Adjust size as needed
         healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
@@ -142,6 +159,7 @@ class GameScene: SKScene {
         
         // Create resource counter node
         resourceCounter = ResourceCounter()
+        resourceCounter.zPosition = 10
         resourceCounter.position = CGPoint(x: -400, y: 400)
         cameraNode.addChild(resourceCounter)
 
@@ -185,9 +203,8 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        //let touchLocation = touch.location(in: self) // Convert touch location to scene's coordinate system
-        //print("Touched at position: \(touchLocation)")
-        
+
+        // Check if touching the joystick
         let touchLocationInJoystickOuterCircle = touch.location(in: joystickOuterCircle) // Convert touch location to joystick outer circle's coordinate system
         
         // Check if the touch occurred inside the inner circle of the joystick
@@ -195,6 +212,14 @@ class GameScene: SKScene {
             isJoystickActive = true
         }
         
+        // Check if touching the harvest button
+        let touchLocationInHarvestCircle = touch.location(in: cameraNode) // Convert touch location to harvest circle's coordinate system
+        
+        // Check if the touch occurred inside the harvest circle
+        if harvestCircle.contains(touchLocationInHarvestCircle) {
+            isHarvesting = true
+        }
+    
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -222,6 +247,7 @@ class GameScene: SKScene {
         isJoystickActive = false
         // Reset inner circle position to outer circle's center
         joystickInnerCircle.position = CGPoint.zero
+        isHarvesting = false
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -358,8 +384,33 @@ class GameScene: SKScene {
         return false
     }
     
+    // Update this method to show/hide the harvest circle based on the player's proximity to resources
+    private func updateHarvestCircleVisibility() {
+        // Check if there are any resources nearby
+        var resourcesNearby = false
+        for resource in resources {
+            if player.frame.intersects(resource.frame) {
+                resourcesNearby = true
+                break
+            }
+        }
+        // Show or hide the harvest circle accordingly
+        harvestCircle.isHidden = !resourcesNearby
+    }
+    
     // Method to check for player-resource contact and collect resources
-    private func checkAndCollectResources() {
+    private func checkAndCollectResources(currentTime: TimeInterval) {
+        // Check if enough time has passed since the last resource collection
+        guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
+            return // Resource collection is still on cooldown
+        }
+
+        // Check if harvesting is active
+        guard isHarvesting else {
+            return // Harvesting is not active, so don't collect resources
+        }
+
+        // Iterate through resources and check for player-resource contact
         for resource in resources {
             // Check if the player's bounding box intersects with the resource's bounding box
             if player.frame.intersects(resource.frame) {
@@ -409,10 +460,12 @@ class GameScene: SKScene {
                 default:
                     break
                 }
+                // Update the last resource collection time
+                lastResourceCollectionTime = currentTime
             }
         }
     }
-    
+
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
         // logging
@@ -477,7 +530,8 @@ class GameScene: SKScene {
         }
         
         // Resource Collection
-        checkAndCollectResources()
+        updateHarvestCircleVisibility()
+        checkAndCollectResources(currentTime: currentTime)
 
     }
 
