@@ -400,22 +400,13 @@ class GameScene: SKScene {
     
     // Method to check for player-resource contact and collect resources
     private func checkAndCollectResources(currentTime: TimeInterval) {
-        // Check if enough time has passed since the last resource collection
-        guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
-            return // Resource collection is still on cooldown
-        }
-
-        // Check if harvesting is active
-        guard isHarvesting else {
-            return // Harvesting is not active, so don't collect resources
-        }
-
         // Iterate through resources and check for player-resource contact
         for resource in resources {
             // Check if the player's bounding box intersects with the resource's bounding box
             if player.frame.intersects(resource.frame) {
                 // Perform resource collection logic
                 switch resource {
+                // No restrictions on collecting coins
                 case is Coin:
                     playerCoinCount += 1
                     (resource as? Coin)?.resourceCount -= 1
@@ -426,7 +417,17 @@ class GameScene: SKScene {
                         }
                     }
                     resourceCounter.updateCoinCount(playerCoinCount)
+                // Have to restrict other resources by isHarvesting and the cooldown
                 case is Wood:
+                    // Check if enough time has passed since the last resource collection
+                    guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
+                        return // Resource collection is still on cooldown
+                    }
+
+                    // Check if harvesting is active
+                    guard isHarvesting else {
+                        return // Harvesting is not active, so don't collect resources
+                    }
                     playerWoodCount += 1
                     (resource as? Wood)?.resourceCount -= 1
                     if let wood = resource as? Wood, wood.resourceCount <= 0 {
@@ -437,6 +438,15 @@ class GameScene: SKScene {
                     }
                     resourceCounter.updateWoodCount(playerWoodCount)
                 case is Stone:
+                    // Check if enough time has passed since the last resource collection
+                    guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
+                        return // Resource collection is still on cooldown
+                    }
+
+                    // Check if harvesting is active
+                    guard isHarvesting else {
+                        return // Harvesting is not active, so don't collect resources
+                    }
                     playerStoneCount += 1
                     (resource as? Stone)?.resourceCount -= 1
                     if let stone = resource as? Stone, stone.resourceCount <= 0 {
@@ -447,6 +457,15 @@ class GameScene: SKScene {
                     }
                     resourceCounter.updateStoneCount(playerStoneCount)
                 case is Ore:
+                    // Check if enough time has passed since the last resource collection
+                    guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
+                        return // Resource collection is still on cooldown
+                    }
+
+                    // Check if harvesting is active
+                    guard isHarvesting else {
+                        return // Harvesting is not active, so don't collect resources
+                    }
                     playerOreCount += 1
                     (resource as? Ore)?.resourceCount -= 1
                     if let ore = resource as? Ore, ore.resourceCount <= 0 {
