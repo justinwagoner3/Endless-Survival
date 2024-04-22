@@ -309,6 +309,7 @@ class GameScene: SKScene {
         if closestEnemy.hitpoints <= 0 {
             // If hitpoints are zero or less, remove the enemy from the scene and enemies array
             closestEnemy.removeFromParent()
+            spawnCoins(at: closestEnemy.position)
             if let index = enemies.firstIndex(of: closestEnemy) {
                 enemies.remove(at: index)
             }
@@ -483,6 +484,16 @@ class GameScene: SKScene {
                 lastResourceCollectionTime = currentTime
             }
         }
+    }
+    
+    // Method to spawn coins when a zombie dies
+    func spawnCoins(at position: CGPoint) {
+        let coin = Coin(bounds: worldSize, resourceCount: 1) // Create a new coin instance
+        coin.position = position // Position the coin at the location where the zombie died
+        addChild(coin) // Add the coin to the scene
+        
+        // Add the coin to the resources array
+        resources.append(coin)
     }
 
     // Called before each frame is rendered
