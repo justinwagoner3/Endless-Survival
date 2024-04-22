@@ -55,6 +55,9 @@ class GameScene: SKScene {
     // Player
     public var player: SKSpriteNode!
     
+    // Base
+    public var base: SKSpriteNode!
+
     // Camera
     private var cameraNode = SKCameraNode()
 
@@ -183,6 +186,12 @@ class GameScene: SKScene {
         let ore = Ore(bounds:worldSize,resourceCount:10)
         addChild(ore)
         resources.append(ore)
+        
+        // Create a base
+        base = SKSpriteNode(color: .white, size: CGSize(width: 100, height: 100))
+        base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
+        base.zPosition = 2;
+        self.addChild(base)
 
         // logging initial state
         mp("worldSize",worldSize)
