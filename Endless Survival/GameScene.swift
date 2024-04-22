@@ -81,9 +81,12 @@ class GameScene: SKScene {
     private var playerWoodCount: Int = 0
     private var playerStoneCount: Int = 0
     private var playerOreCount: Int = 0
-    private let resourceCollectionCooldown: TimeInterval = 1.0 // Adjust as needed
+    private let resourceCollectionHarvestTime: TimeInterval = 1.0 // Adjust as needed
     private var lastResourceCollectionTime: TimeInterval = 0
     private var isHarvesting = false
+    private var totalHarvestButtonHoldTime: TimeInterval = 0
+    private var harvestButtonStartTime: TimeInterval = 0
+    
 
 
 
@@ -219,7 +222,6 @@ class GameScene: SKScene {
         if harvestCircle.contains(touchLocationInHarvestCircle) {
             isHarvesting = true
         }
-    
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -400,90 +402,66 @@ class GameScene: SKScene {
     }
     
     // Method to check for player-resource contact and collect resources
-    private func checkAndCollectResources(currentTime: TimeInterval) {
-        // Iterate through resources and check for player-resource contact
-        for resource in resources {
-            // Check if the player's bounding box intersects with the resource's bounding box
-            if player.frame.intersects(resource.frame) {
-                // Perform resource collection logic
-                switch resource {
-                // No restrictions on collecting coins
-                case is Coin:
-                    playerCoinCount += 1
-                    (resource as? Coin)?.resourceCount -= 1
-                    if let coin = resource as? Coin, coin.resourceCount <= 0 {
+    private func checkAndCollectResources() {
+        // Check if the total hold time exceeds the required harvest time
+        if totalHarvestButtonHoldTime >= resourceCollectionHarvestTime {
+            // Iterate through resources and check for player-resource contact
+            for resource in resources {
+                // Check if the player's bounding box intersects with the resource's bounding box
+                if player.frame.intersects(resource.frame) {
+                    // Perform resource collection logic based on the resource type
+                    switch resource {
+                    case is Coin:
+                        playerCoinCount += 1
+                        resourceCounter.updateCoinCount(playerCoinCount)
+                    case is Wood:
+                        playerWoodCount += 1
+                        resourceCounter.updateWoodCount(playerWoodCount)
+                    case is Stone:
+                        playerStoneCount += 1
+                        resourceCounter.updateStoneCount(playerStoneCount)
+                    case is Ore:
+                        playerOreCount += 1
+                        resourceCounter.updateOreCount(playerOreCount)
+                    default:
+                        break
+                    }
+                    // Update resource count
+                    resource.resourceCount -= 1
+                    if(resource.resourceCount <= 0){
                         resource.removeFromParent()
-                        if let index = resources.firstIndex(of: coin) {
+                        if let index = resources.firstIndex(of: resource) {
                             resources.remove(at: index)
                         }
                     }
-                    resourceCounter.updateCoinCount(playerCoinCount)
-                // Have to restrict other resources by isHarvesting and the cooldown
-                case is Wood:
-                    // Check if enough time has passed since the last resource collection
-                    guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
-                        return // Resource collection is still on cooldown
-                    }
-
-                    // Check if harvesting is active
-                    guard isHarvesting else {
-                        return // Harvesting is not active, so don't collect resources
-                    }
-                    playerWoodCount += 1
-                    (resource as? Wood)?.resourceCount -= 1
-                    if let wood = resource as? Wood, wood.resourceCount <= 0 {
-                        resource.removeFromParent()
-                        if let index = resources.firstIndex(of: wood) {
-                            resources.remove(at: index)
-                        }
-                    }
-                    resourceCounter.updateWoodCount(playerWoodCount)
-                case is Stone:
-                    // Check if enough time has passed since the last resource collection
-                    guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
-                        return // Resource collection is still on cooldown
-                    }
-
-                    // Check if harvesting is active
-                    guard isHarvesting else {
-                        return // Harvesting is not active, so don't collect resources
-                    }
-                    playerStoneCount += 1
-                    (resource as? Stone)?.resourceCount -= 1
-                    if let stone = resource as? Stone, stone.resourceCount <= 0 {
-                        resource.removeFromParent()
-                        if let index = resources.firstIndex(of: stone) {
-                            resources.remove(at: index)
-                        }
-                    }
-                    resourceCounter.updateStoneCount(playerStoneCount)
-                case is Ore:
-                    // Check if enough time has passed since the last resource collection
-                    guard currentTime - lastResourceCollectionTime >= resourceCollectionCooldown else {
-                        return // Resource collection is still on cooldown
-                    }
-
-                    // Check if harvesting is active
-                    guard isHarvesting else {
-                        return // Harvesting is not active, so don't collect resources
-                    }
-                    playerOreCount += 1
-                    (resource as? Ore)?.resourceCount -= 1
-                    if let ore = resource as? Ore, ore.resourceCount <= 0 {
-                        resource.removeFromParent()
-                        if let index = resources.firstIndex(of: ore) {
-                            resources.remove(at: index)
-                        }
-                    }
-                    resourceCounter.updateOreCount(playerOreCount)
-                // Similar cases for other types of resources (Wood, Stone, Ore)
-                default:
-                    break
+                    
+                    // Reset the total hold time
+                    totalHarvestButtonHoldTime = 0
+                                        
+                    // Exit the loop after collecting one resource
+                    return
                 }
-                // Update the last resource collection time
-                lastResourceCollectionTime = currentTime
             }
         }
+    }
+    
+    private func updateHarvestTime(currentTime: TimeInterval){
+        guard isHarvesting else {
+            // Don't update time if not harvesting
+            lastUpdateTime = currentTime
+            return
+        }
+        
+        // Calculate the time since the last frame
+        let deltaTime = currentTime - lastUpdateTime
+        mp("deltaTime",deltaTime)
+        
+        // Increment the total hold time by the time since the last frame
+        totalHarvestButtonHoldTime += deltaTime
+        mp("totalHarvestButtonHoldTime",totalHarvestButtonHoldTime)
+        
+        // Update the last update time for the next frame
+        lastUpdateTime = currentTime
     }
     
     // Method to spawn coins when a zombie dies
@@ -563,7 +541,8 @@ class GameScene: SKScene {
         
         // Resource Collection
         updateHarvestCircleVisibility()
-        checkAndCollectResources(currentTime: currentTime)
+        updateHarvestTime(currentTime: currentTime)
+        checkAndCollectResources()
 
     }
 
