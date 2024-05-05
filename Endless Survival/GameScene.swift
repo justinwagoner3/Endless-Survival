@@ -250,17 +250,6 @@ class GameScene: SKScene {
         // Adjust the position of the health bar to align with the right edge of the gray bar
         healthBarRed.position.x = healthBarGray.position.x + healthBarGray.size.width / 2
     }
-
-    // Method to decrease player's health
-    public func decreaseHealth(amount: CGFloat) {
-        player.currentHealth -= amount
-        // Ensure current health doesn't go below 0
-        player.currentHealth = max(player.currentHealth, 0)
-        updateHealthBar()
-        
-        // Update last injury time
-        player.lastInjuryTime = CACurrentMediaTime()
-    }
         
     // Update this method to show/hide the harvest circle based on the player's proximity to resources
     private func updateHarvestCircleVisibility() {
@@ -380,7 +369,9 @@ class GameScene: SKScene {
 
         // Loop through enemies to check if they can attack the player
         for enemy in enemies {
-            enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime)
+            if let damage = enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime){
+                player.decreaseHealth(amount: damage)
+            }
         }
 
         // Healing

@@ -135,7 +135,6 @@ class Player : SKSpriteNode {
         return false
     }
 
-    
     // Method to increase player's health
     func increaseHealth(amount: CGFloat, currentTime: TimeInterval) {
         currentHealth += amount
@@ -145,8 +144,17 @@ class Player : SKSpriteNode {
         // Update last heal time
         lastHealTime = currentTime
     }
-
     
+    // Method to decrease player's health
+    public func decreaseHealth(amount: CGFloat) {
+        currentHealth -= amount
+        // Ensure current health doesn't go below 0
+        currentHealth = max(currentHealth, 0)
+        
+        // Update last injury time
+        lastInjuryTime = CACurrentMediaTime()
+    }
+
     // Method to check for player-coin contact and collect coins
     func checkAndCollectCoins(resources: inout [Resource]) {
         // Iterate through resources and check for player-resource contact

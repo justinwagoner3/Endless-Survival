@@ -9,9 +9,10 @@ class Enemy: SKSpriteNode {
     var movementSpeed: CGFloat
     var hitpoints: Int
     var bounds: CGSize
-    
-    private let attackRadius: CGFloat = 50.0 // Adjust as needed
-    private let attackCooldown: TimeInterval = 2 // Adjust as needed
+
+    private var damage: CGFloat = 10.0
+    private let attackRadius: CGFloat = 50.0
+    private let attackCooldown: TimeInterval = 2
     private var lastAttackTime: TimeInterval = 0
 
     // Initializer with default appearance
@@ -67,7 +68,7 @@ class Enemy: SKSpriteNode {
     }
     
     // Method to check if the player is within attack range and initiate attack if cooldown is over
-    func checkAndAttackPlayer(playerPosition: CGPoint, currentTime: TimeInterval) {
+    func checkAndAttackPlayer(playerPosition: CGPoint, currentTime: TimeInterval) -> CGFloat? {
         // Calculate distance between enemy and player
         let distanceToPlayer = distance(to: playerPosition)
         
@@ -77,13 +78,13 @@ class Enemy: SKSpriteNode {
             // You can implement attack animation or logic here
             print("Enemy is attacking!")
             animateEnemyAttack()
-            
-            gameScene?.decreaseHealth(amount: 10) // Call decreaseHealth method
 
             // Update last attack time
             lastAttackTime = currentTime
+            
+            return damage
         }
+        
+        return nil
     }
-    
-    
 }
