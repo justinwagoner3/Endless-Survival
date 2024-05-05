@@ -5,10 +5,12 @@ class Resource: SKSpriteNode {
     // Common properties and methods for all resources can go here
     var bounds: CGSize
     var resourceCount: Int
+    var collectionHarvestTime: TimeInterval
 
-    init(color: UIColor, bounds: CGSize, resourceCount: Int) {
+    init(color: UIColor, bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
         self.bounds = bounds
         self.resourceCount = resourceCount
+        self.collectionHarvestTime = collectionHarvestTime
 
         super.init(texture: nil, color: color, size: CGSize(width: 50, height: 50))
 
@@ -30,8 +32,8 @@ class Resource: SKSpriteNode {
 }
 
 class Coin: Resource {
-    init(bounds: CGSize, resourceCount: Int) {
-        super.init(color: .yellow, bounds: bounds, resourceCount: resourceCount)
+    init(bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
+        super.init(color: .yellow, bounds: bounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         // Additional coin-specific customization can go here
         self.size = CGSize(width: 25, height: 25) // Set the size of the coin
     }
@@ -42,8 +44,9 @@ class Coin: Resource {
 }
 
 class Wood: Resource {
-    init(bounds: CGSize, resourceCount: Int) {
-        super.init(color: .brown, bounds: bounds, resourceCount: resourceCount)
+
+    init(bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
+        super.init(color: .brown, bounds: bounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         // Additional wood-specific customization can go here
     }
     
@@ -53,8 +56,8 @@ class Wood: Resource {
 }
 
 class Stone: Resource {
-    init(bounds: CGSize, resourceCount: Int) {
-        super.init(color: .gray, bounds: bounds, resourceCount: resourceCount)
+    init(bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
+        super.init(color: .gray, bounds: bounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         // Additional stone-specific customization can go here
     }
     
@@ -64,8 +67,8 @@ class Stone: Resource {
 }
 
 class Ore: Resource {
-    init(bounds: CGSize, resourceCount: Int) {
-        super.init(color: .black, bounds: bounds, resourceCount: resourceCount)
+    init(bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
+        super.init(color: .black, bounds: bounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         // Additional ore-specific customization can go here
     }
     

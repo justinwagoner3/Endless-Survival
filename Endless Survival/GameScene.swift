@@ -137,16 +137,16 @@ class GameScene: SKScene {
         spawnEnemies(count: 10)
         
         // Spawn resources
-        let coin = Coin(bounds:worldSize,resourceCount:1)
+        let coin = Coin(bounds: worldSize, resourceCount: 1, collectionHarvestTime: 0.1)
         addChild(coin)
         resources.append(coin)
-        let wood = Wood(bounds:worldSize,resourceCount:10)
+        let wood = Wood(bounds:worldSize,resourceCount:10, collectionHarvestTime: 1.0)
         addChild(wood)
         resources.append(wood)
-        let stone = Stone(bounds:worldSize,resourceCount:10)
+        let stone = Stone(bounds:worldSize,resourceCount:10, collectionHarvestTime: 2.0)
         addChild(stone)
         resources.append(stone)
-        let ore = Ore(bounds:worldSize,resourceCount:10)
+        let ore = Ore(bounds:worldSize,resourceCount:10, collectionHarvestTime: 3.0)
         addChild(ore)
         resources.append(ore)
         
@@ -267,10 +267,10 @@ class GameScene: SKScene {
     
     // Method to check for player-resource contact and collect resources
     private func checkAndCollectResources() {
-        // Check if the total hold time exceeds the required harvest time
-        if totalHarvestButtonHoldTime >= resourceCollectionHarvestTime {
-            // Iterate through resources and check for player-resource contact
-            for resource in resources {
+        // Iterate through resources and check for player-resource contact
+        for resource in resources {
+            // Check if the total hold time exceeds the required harvest time
+            if totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
                 // Check if the player's bounding box intersects with the resource's bounding box
                 if player.frame.intersects(resource.frame) {
                     // Perform resource collection logic based on the resource type
@@ -327,7 +327,7 @@ class GameScene: SKScene {
     
     // Method to spawn coins when a zombie dies
     func spawnCoins(at position: CGPoint) {
-        let coin = Coin(bounds: worldSize, resourceCount: 1) // Create a new coin instance
+        let coin = Coin(bounds: worldSize, resourceCount: 1, collectionHarvestTime: 0.1) // Create a new coin instance
         coin.position = position // Position the coin at the location where the zombie died
         addChild(coin) // Add the coin to the scene
         
