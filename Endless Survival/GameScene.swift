@@ -49,7 +49,6 @@ class GameScene: SKScene {
     // Health
     private var healthBarGray: SKSpriteNode!
     private var healthBarRed: SKSpriteNode!
-    private var lastInjuryTime: TimeInterval?
     
     // Resources
     var resources: [Resource] = []
@@ -318,39 +317,9 @@ class GameScene: SKScene {
         updateHealthBar()
         
         // Update last injury time
-        lastInjuryTime = CACurrentMediaTime()
+        player.lastInjuryTime = CACurrentMediaTime()
     }
-    
-    // Method to check if the player should receive passive healing
-    private func shouldHealPlayer(_ currentTime: TimeInterval) -> Bool {
-        // Quick return false if player health is full
-        if(player.currentHealth == player.totalHealth){
-            return false
-        }
-
-        guard let lastInjuryTime = lastInjuryTime else {
-            // If the player has never been injured, no need to passive healing to start
-            return false
-        }
         
-        
-        // Calculate time since last injury
-        let timeSinceInjury = currentTime - lastInjuryTime
-        
-        // Check if the player is not moving
-        let isPlayerMoving = isJoystickActive
-
-        // Check if the player has not been injured in the last 5 seconds and is not moving
-        if timeSinceInjury >= 5 && !isPlayerMoving {
-            // Check if enough time has passed since the last healing
-            if currentTime - player.lastHealTime >= 1.0 {
-                return true
-            }
-        }
-        
-        return false
-    }
-    
     // Update this method to show/hide the harvest circle based on the player's proximity to resources
     private func updateHarvestCircleVisibility() {
         // Check if there are any resources nearby
@@ -495,7 +464,7 @@ class GameScene: SKScene {
         }
 
         // Healing
-        if shouldHealPlayer(currentTime) {
+        if player.shouldHeal(currentTime, isJoystickActive: isJoystickActive) {
             //mp("Healing to ",player.playerCurrentHealth+1)
             player.increaseHealth(amount: 1,currentTime: currentTime)
         }

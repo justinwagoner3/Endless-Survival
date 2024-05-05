@@ -12,8 +12,38 @@ class Player : SKSpriteNode {
     var isHarvesting = false
     let attackCooldown: TimeInterval = 2.0
     var lastHealTime: TimeInterval = 0
+    var lastInjuryTime: TimeInterval?
 
-    
+    // Method to check if the player should receive passive healing
+    func shouldHeal(_ currentTime: TimeInterval, isJoystickActive: Bool) -> Bool {
+        // Quick return false if player health is full
+        if(currentHealth == totalHealth){
+            return false
+        }
+
+        guard let lastInjuryTime = lastInjuryTime else {
+            // If the player has never been injured, no need to passive healing to start
+            return false
+        }
+        
+        
+        // Calculate time since last injury
+        let timeSinceInjury = currentTime - lastInjuryTime
+        
+        // Check if the player is not moving
+        let isPlayerMoving = isJoystickActive
+
+        // Check if the player has not been injured in the last 5 seconds and is not moving
+        if timeSinceInjury >= 5 && !isPlayerMoving {
+            // Check if enough time has passed since the last healing
+            if currentTime - lastHealTime >= 1.0 {
+                return true
+            }
+        }
+        
+        return false
+    }
+
     
     // Method to increase player's health
     func increaseHealth(amount: CGFloat, currentTime: TimeInterval) {
