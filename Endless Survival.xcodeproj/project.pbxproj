@@ -18,6 +18,11 @@
 		BB0EE5FD2BAF4E9E0035F36B /* Endless_SurvivalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE5FC2BAF4E9E0035F36B /* Endless_SurvivalTests.swift */; };
 		BB0EE6072BAF4E9E0035F36B /* Endless_SurvivalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE6062BAF4E9E0035F36B /* Endless_SurvivalUITests.swift */; };
 		BB0EE6092BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EE6082BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift */; };
+		BBA5F8842BE8252900D4E1EB /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8832BE8252900D4E1EB /* Enemy.swift */; };
+		BBA5F8862BE825AE00D4E1EB /* EnemyExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */; };
+		BBA5F8882BE825F600D4E1EB /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8872BE825F600D4E1EB /* Resource.swift */; };
+		BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */; };
+		BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +57,11 @@
 		BB0EE6022BAF4E9E0035F36B /* Endless SurvivalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Endless SurvivalUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB0EE6062BAF4E9E0035F36B /* Endless_SurvivalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endless_SurvivalUITests.swift; sourceTree = "<group>"; };
 		BB0EE6082BAF4E9E0035F36B /* Endless_SurvivalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endless_SurvivalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BBA5F8832BE8252900D4E1EB /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemyExt.swift; sourceTree = "<group>"; };
+		BBA5F8872BE825F600D4E1EB /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCounter.swift; sourceTree = "<group>"; };
+		BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,10 +116,15 @@
 				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
 				BB0EE5E62BAF4E9D0035F36B /* Actions.sks */,
 				BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */,
+				BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */,
 				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
 				BB0EE5EC2BAF4E9D0035F36B /* Main.storyboard */,
 				BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */,
 				BB0EE5F12BAF4E9E0035F36B /* LaunchScreen.storyboard */,
+				BBA5F8832BE8252900D4E1EB /* Enemy.swift */,
+				BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */,
+				BBA5F8872BE825F600D4E1EB /* Resource.swift */,
+				BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */,
 			);
 			path = "Endless Survival";
 			sourceTree = "<group>";
@@ -264,8 +279,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBA5F8842BE8252900D4E1EB /* Enemy.swift in Sources */,
 				BB0EE5E92BAF4E9D0035F36B /* GameScene.swift in Sources */,
 				BB0EE5EB2BAF4E9D0035F36B /* GameViewController.swift in Sources */,
+				BBA5F8882BE825F600D4E1EB /* Resource.swift in Sources */,
+				BBA5F8862BE825AE00D4E1EB /* EnemyExt.swift in Sources */,
+				BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */,
+				BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */,
 				BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
