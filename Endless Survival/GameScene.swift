@@ -412,50 +412,44 @@ class GameScene: SKScene {
     
     // Method to check for player-resource contact and collect resources
     private func checkAndCollectResources() {
-        // Iterate through resources and check for player-resource contact
-        for resource in resources {
-            // Check if the player's bounding box intersects with the resource's bounding box
-            if player.frame.intersects(resource.frame) {
-                // Perform resource collection logic based on the resource type
-                switch resource {
-                case is Coin:
-                    playerCoinCount += 1
-                    resourceCounter.updateCoinCount(playerCoinCount)
-                case is Wood:
-                    // Check if the total hold time exceeds the required harvest time
-                    if totalHarvestButtonHoldTime >= resourceCollectionHarvestTime {
+        // Check if the total hold time exceeds the required harvest time
+        if totalHarvestButtonHoldTime >= resourceCollectionHarvestTime {
+            // Iterate through resources and check for player-resource contact
+            for resource in resources {
+                // Check if the player's bounding box intersects with the resource's bounding box
+                if player.frame.intersects(resource.frame) {
+                    // Perform resource collection logic based on the resource type
+                    switch resource {
+                    case is Coin:
+                        playerCoinCount += 1
+                        resourceCounter.updateCoinCount(playerCoinCount)
+                    case is Wood:
                         playerWoodCount += 1
                         resourceCounter.updateWoodCount(playerWoodCount)
-                    }
-                case is Stone:
-                    // Check if the total hold time exceeds the required harvest time
-                    if totalHarvestButtonHoldTime >= resourceCollectionHarvestTime {
+                    case is Stone:
                         playerStoneCount += 1
                         resourceCounter.updateStoneCount(playerStoneCount)
-                    }
-                case is Ore:
-                    // Check if the total hold time exceeds the required harvest time
-                    if totalHarvestButtonHoldTime >= resourceCollectionHarvestTime {
+                    case is Ore:
                         playerOreCount += 1
                         resourceCounter.updateOreCount(playerOreCount)
+                    default:
+                        break
                     }
-                default:
-                    break
-                }
-                // Update resource count
-                resource.resourceCount -= 1
-                if(resource.resourceCount <= 0){
-                    resource.removeFromParent()
-                    if let index = resources.firstIndex(of: resource) {
-                        resources.remove(at: index)
+                    // Update resource count
+                    resource.resourceCount -= 1
+                    if(resource.resourceCount <= 0){
+                        resource.removeFromParent()
+                        if let index = resources.firstIndex(of: resource) {
+                            resources.remove(at: index)
+                        }
                     }
+                    
+                    // Reset the total hold time
+                    totalHarvestButtonHoldTime = 0
+                                        
+                    // Exit the loop after collecting one resource
+                    return
                 }
-                
-                // Reset the total hold time
-                totalHarvestButtonHoldTime = 0
-                                    
-                // Exit the loop after collecting one resource
-                return
             }
         }
     }
