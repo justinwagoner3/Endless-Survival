@@ -2,6 +2,9 @@ import SpriteKit
 import GameplayKit
 
 class Player : SKSpriteNode {
+    
+    weak var delegate: PlayerDelegate?
+
     var totalHealth: CGFloat = 100.0
     var currentHealth: CGFloat = 100.0
     var coinCount: Int = 0
@@ -11,6 +14,7 @@ class Player : SKSpriteNode {
     var movementSpeed: CGFloat = 2 
     var isHarvesting = false
     let attackCooldown: TimeInterval = 2.0
+    var lastAttackTime: TimeInterval? // Stores the time of the last attack
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
     var selectedEnemy: Enemy?
@@ -45,7 +49,7 @@ class Player : SKSpriteNode {
     // Method to highlight the closest enemy within a radius
     func highlightClosestEnemy(radius: CGFloat, _ enemies: [Enemy]) {
         // Reset previously selected enemy
-        if var selectedEnemy = selectedEnemy {
+        if let selectedEnemy = selectedEnemy {
             // Unhighlight the previously selected enemy
             selectedEnemy.unhighlight()
         }
@@ -62,7 +66,7 @@ class Player : SKSpriteNode {
         }
         
         // Highlight the closest enemy
-        if var closestEnemy = closestEnemy {
+        if let closestEnemy = closestEnemy {
             closestEnemy.highlight()
             selectedEnemy = closestEnemy
         } else {
@@ -70,6 +74,37 @@ class Player : SKSpriteNode {
         }
     }
     
+    // Method to attack the highlighted enemy
+    func attackClosestEnemy(_ enemies: inout [Enemy]) -> Bool {
+        guard let closestEnemy = selectedEnemy else {
+            // If no enemy is selected, return false
+            return false
+        }
+        print("attacking")
+        // Animate the attack
+        animatePlayerAttack()
+
+        // Decrease the enemy's hitpoints
+        closestEnemy.hitpoints -= 1
+        
+        // Check if the enemy's hitpoints have reached zero
+        if closestEnemy.hitpoints <= 0 {
+            if let delegate = delegate {
+                delegate.playerDidKillEnemy(at: position)
+            }
+            // If hitpoints are zero or less, remove the enemy from the scene and enemies array
+            closestEnemy.removeFromParent()
+            //spawnCoins(at: closestEnemy.position)
+            if let index = enemies.firstIndex(of: closestEnemy) {
+                enemies.remove(at: index)
+            }
+            selectedEnemy = nil // Reset player.selectedEnemy as it's no longer valid
+        }
+        
+        // Return true indicating a successful attack
+        return true
+    }
+
     // Method to check if the player should receive passive healing
     func shouldHeal(_ currentTime: TimeInterval, isJoystickActive: Bool) -> Bool {
         // Quick return false if player health is full
@@ -133,5 +168,28 @@ class Player : SKSpriteNode {
             }
         }
     }
+    
+    // Function to animate the player's attack with a white border
+    func animatePlayerAttack() {
+        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
+        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
+        let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
+        run(attackAnimation)
+        
+        // Create a white border sprite
+        let whiteBorder = SKSpriteNode(color: .white, size: CGSize(width: size.width + 25, height: size.height + 25))
+        whiteBorder.zPosition = zPosition - 1 // Place behind the player
+        whiteBorder.position = position
+        addChild(whiteBorder)
+        
+        // Fade out and remove the white border sprite
+        let fadeOutAction = SKAction.fadeOut(withDuration: 0.2)
+        let removeAction = SKAction.removeFromParent()
+        let sequence = SKAction.sequence([fadeOutAction, removeAction])
+        whiteBorder.run(sequence)
+    }
+}
 
+protocol PlayerDelegate: AnyObject {
+    func playerDidKillEnemy(at position: CGPoint)
 }

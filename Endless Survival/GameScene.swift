@@ -58,9 +58,7 @@ class GameScene: SKScene {
     private var harvestButtonStartTime: TimeInterval = 0
     
 
-    // tbd
-    private var lastAttackTime: TimeInterval? // Stores the time of the last attack
-
+    
     override func sceneDidLoad() {
         worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
 
@@ -75,6 +73,7 @@ class GameScene: SKScene {
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.position = background.position
         player.zPosition = 3;
+        player.delegate = self
         self.addChild(player)
 
         // Set up the camera
@@ -238,35 +237,7 @@ class GameScene: SKScene {
             enemies.append(enemy)
         }
     }
-        
-    // Method to attack the highlighted enemy
-    private func attackClosestEnemy() -> Bool {
-        guard let closestEnemy = player.selectedEnemy else {
-            // If no enemy is selected, return false
-            return false
-        }
-        print("attacking")
-        // Animate the attack
-        animatePlayerAttack()
-
-        // Decrease the enemy's hitpoints
-        closestEnemy.hitpoints -= 1
-        
-        // Check if the enemy's hitpoints have reached zero
-        if closestEnemy.hitpoints <= 0 {
-            // If hitpoints are zero or less, remove the enemy from the scene and enemies array
-            closestEnemy.removeFromParent()
-            spawnCoins(at: closestEnemy.position)
-            if let index = enemies.firstIndex(of: closestEnemy) {
-                enemies.remove(at: index)
-            }
-            player.selectedEnemy = nil // Reset player.selectedEnemy as it's no longer valid
-        }
-        
-        // Return true indicating a successful attack
-        return true
-    }
-    
+            
     // Update the size of the red health bar based on current health percentage
     private func updateHealthBar() {
         let healthPercentage = player.currentHealth / player.totalHealth
@@ -394,19 +365,19 @@ class GameScene: SKScene {
         // Highlight + Attack closest enemy with a cooldown
         player.highlightClosestEnemy(radius: 200, enemies)
         if !player.isHarvesting {
-            if let lastAttackTime = lastAttackTime {
+            if let lastAttackTime = player.lastAttackTime {
                 let timeSinceLastAttack = currentTime - lastAttackTime
                 if timeSinceLastAttack >= player.attackCooldown {
                     // Only reset the cooldown if the attack was successful
-                    if attackClosestEnemy() {
-                        self.lastAttackTime = currentTime
+                    if player.attackClosestEnemy(&enemies) {
+                        player.lastAttackTime = currentTime
                     }
                 }
             } else {
-                lastAttackTime = currentTime
+                player.lastAttackTime = currentTime
             }
         }
-        
+
         // Loop through enemies to check if they can attack the player
         for enemy in enemies {
             enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime)
@@ -414,7 +385,6 @@ class GameScene: SKScene {
 
         // Healing
         if player.shouldHeal(currentTime, isJoystickActive: isJoystickActive) {
-            //mp("Healing to ",player.playerCurrentHealth+1)
             player.increaseHealth(amount: 1,currentTime: currentTime)
         }
         updateHealthBar()
