@@ -50,7 +50,6 @@ class GameScene: SKScene {
     private var healthBarGray: SKSpriteNode!
     private var healthBarRed: SKSpriteNode!
     private var lastInjuryTime: TimeInterval?
-    private var lastHealTime: TimeInterval = 0
     
     // Resources
     var resources: [Resource] = []
@@ -322,17 +321,6 @@ class GameScene: SKScene {
         lastInjuryTime = CACurrentMediaTime()
     }
     
-    // Method to increase player's health
-    private func increaseHealth(amount: CGFloat, currentTime: TimeInterval) {
-        player.currentHealth += amount
-        // Ensure current health doesn't exceed total health
-        player.currentHealth = min(player.currentHealth, player.totalHealth)
-        updateHealthBar()
-        
-        // Update last heal time
-        lastHealTime = currentTime
-    }
-
     // Method to check if the player should receive passive healing
     private func shouldHealPlayer(_ currentTime: TimeInterval) -> Bool {
         // Quick return false if player health is full
@@ -355,7 +343,7 @@ class GameScene: SKScene {
         // Check if the player has not been injured in the last 5 seconds and is not moving
         if timeSinceInjury >= 5 && !isPlayerMoving {
             // Check if enough time has passed since the last healing
-            if currentTime - lastHealTime >= 1.0 {
+            if currentTime - player.lastHealTime >= 1.0 {
                 return true
             }
         }
@@ -417,30 +405,6 @@ class GameScene: SKScene {
             }
         }
     }
-    
-    // Method to check for player-coin contact and collect coins
-    private func checkAndCollectCoins() {
-        // Iterate through resources and check for player-resource contact
-        for resource in resources {
-            // Check if the player's bounding box intersects with the resource's bounding box
-            if player.frame.intersects(resource.frame) {
-                // make sure it's coin
-                if resource is Coin {
-                    player.coinCount += 1
-                    resourceCounter.updateCoinCount(player.coinCount)
-                    // Update resource count
-                    resource.resourceCount -= 1
-                    if(resource.resourceCount <= 0){
-                        resource.removeFromParent()
-                        if let index = resources.firstIndex(of: resource) {
-                            resources.remove(at: index)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     
     private func updateHarvestTime(currentTime: TimeInterval){
         guard player.isHarvesting else {
@@ -533,14 +497,16 @@ class GameScene: SKScene {
         // Healing
         if shouldHealPlayer(currentTime) {
             //mp("Healing to ",player.playerCurrentHealth+1)
-            increaseHealth(amount: 1,currentTime: currentTime)
+            player.increaseHealth(amount: 1,currentTime: currentTime)
         }
+        updateHealthBar()
         
         // Resource Collection
         updateHarvestCircleVisibility()
         updateHarvestTime(currentTime: currentTime)
         checkAndCollectResources()
-        checkAndCollectCoins()
+        player.checkAndCollectCoins(resources: &resources)
+        resourceCounter.updateCoinCount(player.coinCount)
 
     }
 }
