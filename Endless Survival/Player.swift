@@ -106,7 +106,7 @@ class Player : SKSpriteNode {
     }
 
     // Method to check if the player should receive passive healing
-    func shouldHeal(_ currentTime: TimeInterval, isJoystickActive: Bool) -> Bool {
+    func shouldHeal(_ currentTime: TimeInterval, _ isJoystickActive: Bool) -> Bool {
         // Quick return false if player health is full
         if(currentHealth == totalHealth){
             return false
@@ -155,6 +155,7 @@ class Player : SKSpriteNode {
         lastInjuryTime = CACurrentMediaTime()
     }
 
+    
     // Method to check for player-coin contact and collect coins
     func checkAndCollectCoins(resources: inout [Resource]) {
         // Iterate through resources and check for player-resource contact

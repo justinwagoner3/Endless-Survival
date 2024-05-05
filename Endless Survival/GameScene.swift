@@ -367,15 +367,13 @@ class GameScene: SKScene {
             }
         }
 
-        // Loop through enemies to check if they can attack the player
+        // Get attacked + heal
         for enemy in enemies {
             if let damage = enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime){
                 player.decreaseHealth(amount: damage)
             }
         }
-
-        // Healing
-        if player.shouldHeal(currentTime, isJoystickActive: isJoystickActive) {
+        if player.shouldHeal(currentTime, isJoystickActive) {
             player.increaseHealth(amount: 1,currentTime: currentTime)
         }
         updateHealthBar()
