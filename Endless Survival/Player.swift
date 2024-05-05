@@ -13,7 +13,63 @@ class Player : SKSpriteNode {
     let attackCooldown: TimeInterval = 2.0
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
+    var selectedEnemy: Enemy?
 
+    // Movement
+    func move(_ joystickInnerCircle: SKShapeNode, _ isJoystickActive: Bool, _ worldSize: CGSize){
+        // Calculate movement vector
+        let dx = joystickInnerCircle.position.x
+        let dy = joystickInnerCircle.position.y
+        
+        // Calculate movement direction
+        let angle = atan2(dy, dx)
+                
+        // Calculate movement vector
+        let movementX = cos(angle) * movementSpeed
+        let movementY = sin(angle) * movementSpeed
+        
+        // Move the player
+        if isJoystickActive {
+            // Keep the player within bounds of the world
+            let potentialPlayerX = position.x + movementX
+            let potentialPlayerY = position.y + movementY
+            
+            let clampedPlayerX = max(min(potentialPlayerX, worldSize.width - size.width / 2), size.width / 2)
+            let clampedPlayerY = max(min(potentialPlayerY, worldSize.height - size.height / 2), size.height / 2)
+            
+            
+            position = CGPoint(x: clampedPlayerX, y: clampedPlayerY)
+        }
+    }
+    
+    // Method to highlight the closest enemy within a radius
+    func highlightClosestEnemy(radius: CGFloat, _ enemies: [Enemy]) {
+        // Reset previously selected enemy
+        if var selectedEnemy = selectedEnemy {
+            // Unhighlight the previously selected enemy
+            selectedEnemy.unhighlight()
+        }
+        
+        // Find the closest enemy within the radius
+        var closestEnemy: Enemy? = nil
+        var closestDistance: CGFloat = CGFloat.infinity
+        for enemy in enemies {
+            let distance = enemy.distance(to: position)
+            if distance <= radius && distance < closestDistance {
+                closestDistance = distance
+                closestEnemy = enemy
+            }
+        }
+        
+        // Highlight the closest enemy
+        if var closestEnemy = closestEnemy {
+            closestEnemy.highlight()
+            selectedEnemy = closestEnemy
+        } else {
+            selectedEnemy = nil
+        }
+    }
+    
     // Method to check if the player should receive passive healing
     func shouldHeal(_ currentTime: TimeInterval, isJoystickActive: Bool) -> Bool {
         // Quick return false if player health is full

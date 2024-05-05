@@ -44,7 +44,6 @@ class GameScene: SKScene {
     
     // Enemies
     private var enemies: [Enemy] = []
-    private var selectedEnemy: Enemy? // Store the currently targeted enemy
 
     // Health
     private var healthBarGray: SKSpriteNode!
@@ -239,38 +238,10 @@ class GameScene: SKScene {
             enemies.append(enemy)
         }
     }
-    
-    // Method to highlight the closest enemy within a radius
-    private func highlightClosestEnemy(radius: CGFloat) {
-        // Reset previously selected enemy
-        if let selectedEnemy = selectedEnemy {
-            // Unhighlight the previously selected enemy
-            selectedEnemy.unhighlight()
-        }
         
-        // Find the closest enemy within the radius
-        var closestEnemy: Enemy? = nil
-        var closestDistance: CGFloat = CGFloat.infinity
-        for enemy in enemies {
-            let distance = enemy.distance(to: player.position)
-            if distance <= radius && distance < closestDistance {
-                closestDistance = distance
-                closestEnemy = enemy
-            }
-        }
-        
-        // Highlight the closest enemy
-        if let closestEnemy = closestEnemy {
-            closestEnemy.highlight()
-            selectedEnemy = closestEnemy
-        } else {
-            selectedEnemy = nil
-        }
-    }
-    
     // Method to attack the highlighted enemy
     private func attackClosestEnemy() -> Bool {
-        guard let closestEnemy = selectedEnemy else {
+        guard let closestEnemy = player.selectedEnemy else {
             // If no enemy is selected, return false
             return false
         }
@@ -289,7 +260,7 @@ class GameScene: SKScene {
             if let index = enemies.firstIndex(of: closestEnemy) {
                 enemies.remove(at: index)
             }
-            selectedEnemy = nil // Reset selectedEnemy as it's no longer valid
+            player.selectedEnemy = nil // Reset player.selectedEnemy as it's no longer valid
         }
         
         // Return true indicating a successful attack
@@ -409,29 +380,7 @@ class GameScene: SKScene {
         // logging
         let oldPlayerPosition = player.position
         
-        // Calculate movement vector
-        let dx = joystickInnerCircle.position.x
-        let dy = joystickInnerCircle.position.y
-        
-        // Calculate movement direction
-        let angle = atan2(dy, dx)
-                
-        // Calculate movement vector
-        let movementX = cos(angle) * player.movementSpeed
-        let movementY = sin(angle) * player.movementSpeed
-        
-        // Move the player
-        if isJoystickActive {
-            // Keep the player within bounds of the world
-            let potentialPlayerX = player.position.x + movementX
-            let potentialPlayerY = player.position.y + movementY
-            
-            let clampedPlayerX = max(min(potentialPlayerX, worldSize.width - player.size.width / 2), player.size.width / 2)
-            let clampedPlayerY = max(min(potentialPlayerY, worldSize.height - player.size.height / 2), player.size.height / 2)
-            
-            
-            player.position = CGPoint(x: clampedPlayerX, y: clampedPlayerY)
-        }
+        player.move(joystickInnerCircle, isJoystickActive, worldSize)
         
         // Update the camera position to follow the player
         cameraNode.position = player.position
@@ -443,7 +392,7 @@ class GameScene: SKScene {
         }
         
         // Highlight + Attack closest enemy with a cooldown
-        highlightClosestEnemy(radius: 200)
+        player.highlightClosestEnemy(radius: 200, enemies)
         if !player.isHarvesting {
             if let lastAttackTime = lastAttackTime {
                 let timeSinceLastAttack = currentTime - lastAttackTime
