@@ -9,5 +9,10 @@ class Player : SKSpriteNode {
     var stoneCount: Int = 0
     var oreCount: Int = 0
     var movementSpeed: CGFloat = 2 
+    var isHarvesting = false
+    let attackCooldown: TimeInterval = 2.0
 
+    
+    
+    
 }

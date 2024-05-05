@@ -57,13 +57,11 @@ class GameScene: SKScene {
     private var resourceCounter: ResourceCounter!
     private let resourceCollectionHarvestTime: TimeInterval = 1.0 // Adjust as needed
     private var lastResourceCollectionTime: TimeInterval = 0
-    private var isHarvesting = false
     private var totalHarvestButtonHoldTime: TimeInterval = 0
     private var harvestButtonStartTime: TimeInterval = 0
     
 
     // tbd
-    private let attackCooldown: TimeInterval = 2.0
     private var lastAttackTime: TimeInterval? // Stores the time of the last attack
 
     override func sceneDidLoad() {
@@ -198,7 +196,7 @@ class GameScene: SKScene {
         
         // Check if the touch occurred inside the harvest circle
         if harvestCircle.contains(touchLocationInHarvestCircle) {
-            isHarvesting = true
+            player.isHarvesting = true
         }
     }
 
@@ -227,7 +225,7 @@ class GameScene: SKScene {
         isJoystickActive = false
         // Reset inner circle position to outer circle's center
         joystickInnerCircle.position = CGPoint.zero
-        isHarvesting = false
+        player.isHarvesting = false
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -445,7 +443,7 @@ class GameScene: SKScene {
 
     
     private func updateHarvestTime(currentTime: TimeInterval){
-        guard isHarvesting else {
+        guard player.isHarvesting else {
             // Don't update time if not harvesting
             lastUpdateTime = currentTime
             return
@@ -513,10 +511,10 @@ class GameScene: SKScene {
         
         // Highlight + Attack closest enemy with a cooldown
         highlightClosestEnemy(radius: 200)
-        if !isHarvesting {
+        if !player.isHarvesting {
             if let lastAttackTime = lastAttackTime {
                 let timeSinceLastAttack = currentTime - lastAttackTime
-                if timeSinceLastAttack >= attackCooldown {
+                if timeSinceLastAttack >= player.attackCooldown {
                     // Only reset the cooldown if the attack was successful
                     if attackClosestEnemy() {
                         self.lastAttackTime = currentTime
