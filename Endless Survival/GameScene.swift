@@ -25,13 +25,12 @@ class GameScene: SKScene {
     private var joystickInnerCircle: SKShapeNode!
     private var joystickRadius: CGFloat = 75.0 // Adjust as needed
     private var isJoystickActive = false
-    private var speedMultiplier: CGFloat = 2 // Adjust as needed
     
     // Harvest button
     private var harvestCircle: SKShapeNode!
 
     // Player
-    public var player: SKSpriteNode!
+    public var player: Player!
     
     // Base
     public var base: SKSpriteNode!
@@ -48,8 +47,6 @@ class GameScene: SKScene {
     private var selectedEnemy: Enemy? // Store the currently targeted enemy
 
     // Health
-    private var playerTotalHealth: CGFloat = 100.0 // Total health value
-    private var playerCurrentHealth: CGFloat = 100.0 // Current health value
     private var healthBarGray: SKSpriteNode!
     private var healthBarRed: SKSpriteNode!
     private var lastInjuryTime: TimeInterval?
@@ -58,18 +55,12 @@ class GameScene: SKScene {
     // Resources
     var resources: [Resource] = []
     private var resourceCounter: ResourceCounter!
-    private var playerCoinCount: Int = 0
-    private var playerWoodCount: Int = 0
-    private var playerStoneCount: Int = 0
-    private var playerOreCount: Int = 0
     private let resourceCollectionHarvestTime: TimeInterval = 1.0 // Adjust as needed
     private var lastResourceCollectionTime: TimeInterval = 0
     private var isHarvesting = false
     private var totalHarvestButtonHoldTime: TimeInterval = 0
     private var harvestButtonStartTime: TimeInterval = 0
     
-
-
 
     // tbd
     private let attackCooldown: TimeInterval = 2.0
@@ -86,7 +77,7 @@ class GameScene: SKScene {
         self.addChild(background)
 
         // Create player
-        player = SKSpriteNode(color: .blue, size: CGSize(width: 25, height: 25))
+        player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.position = background.position
         player.zPosition = 3;
         self.addChild(player)
@@ -311,7 +302,7 @@ class GameScene: SKScene {
     
     // Update the size of the red health bar based on current health percentage
     private func updateHealthBar() {
-        let healthPercentage = playerCurrentHealth / playerTotalHealth
+        let healthPercentage = player.currentHealth / player.totalHealth
         let newWidth = healthBarGray.size.width * healthPercentage
         healthBarRed.size.width = max(newWidth, 0) // Ensure width is non-negative
         
@@ -324,9 +315,9 @@ class GameScene: SKScene {
 
     // Method to decrease player's health
     public func decreaseHealth(amount: CGFloat) {
-        playerCurrentHealth -= amount
+        player.currentHealth -= amount
         // Ensure current health doesn't go below 0
-        playerCurrentHealth = max(playerCurrentHealth, 0)
+        player.currentHealth = max(player.currentHealth, 0)
         updateHealthBar()
         
         // Update last injury time
@@ -335,9 +326,9 @@ class GameScene: SKScene {
     
     // Method to increase player's health
     private func increaseHealth(amount: CGFloat, currentTime: TimeInterval) {
-        playerCurrentHealth += amount
+        player.currentHealth += amount
         // Ensure current health doesn't exceed total health
-        playerCurrentHealth = min(playerCurrentHealth, playerTotalHealth)
+        player.currentHealth = min(player.currentHealth, player.totalHealth)
         updateHealthBar()
         
         // Update last heal time
@@ -347,7 +338,7 @@ class GameScene: SKScene {
     // Method to check if the player should receive passive healing
     private func shouldHealPlayer(_ currentTime: TimeInterval) -> Bool {
         // Quick return false if player health is full
-        if(playerCurrentHealth == playerTotalHealth){
+        if(player.currentHealth == player.totalHealth){
             return false
         }
 
@@ -399,14 +390,14 @@ class GameScene: SKScene {
                     // Perform resource collection logic based on the resource type
                     switch resource {
                     case is Wood:
-                        playerWoodCount += 1
-                        resourceCounter.updateWoodCount(playerWoodCount)
+                        player.woodCount += 1
+                        resourceCounter.updateWoodCount(player.woodCount)
                     case is Stone:
-                        playerStoneCount += 1
-                        resourceCounter.updateStoneCount(playerStoneCount)
+                        player.stoneCount += 1
+                        resourceCounter.updateStoneCount(player.stoneCount)
                     case is Ore:
-                        playerOreCount += 1
-                        resourceCounter.updateOreCount(playerOreCount)
+                        player.oreCount += 1
+                        resourceCounter.updateOreCount(player.oreCount)
                     default:
                         break
                     }
@@ -437,8 +428,8 @@ class GameScene: SKScene {
             if player.frame.intersects(resource.frame) {
                 // make sure it's coin
                 if resource is Coin {
-                    playerCoinCount += 1
-                    resourceCounter.updateCoinCount(playerCoinCount)
+                    player.coinCount += 1
+                    resourceCounter.updateCoinCount(player.coinCount)
                     // Update resource count
                     resource.resourceCount -= 1
                     if(resource.resourceCount <= 0){
@@ -495,8 +486,8 @@ class GameScene: SKScene {
         let angle = atan2(dy, dx)
                 
         // Calculate movement vector
-        let movementX = cos(angle) * speedMultiplier
-        let movementY = sin(angle) * speedMultiplier
+        let movementX = cos(angle) * player.movementSpeed
+        let movementY = sin(angle) * player.movementSpeed
         
         // Move the player
         if isJoystickActive {
@@ -543,7 +534,7 @@ class GameScene: SKScene {
 
         // Healing
         if shouldHealPlayer(currentTime) {
-            //mp("Healing to ",playerCurrentHealth+1)
+            //mp("Healing to ",player.playerCurrentHealth+1)
             increaseHealth(amount: 1,currentTime: currentTime)
         }
         

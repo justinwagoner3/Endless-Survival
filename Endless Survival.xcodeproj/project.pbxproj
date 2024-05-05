@@ -23,6 +23,7 @@
 		BBA5F8882BE825F600D4E1EB /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8872BE825F600D4E1EB /* Resource.swift */; };
 		BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */; };
 		BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */; };
+		BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88D2BE828C900D4E1EB /* Player.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		BBA5F8872BE825F600D4E1EB /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCounter.swift; sourceTree = "<group>"; };
 		BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExt.swift; sourceTree = "<group>"; };
+		BBA5F88D2BE828C900D4E1EB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,19 +114,20 @@
 		BB0EE5E12BAF4E9D0035F36B /* Endless Survival */ = {
 			isa = PBXGroup;
 			children = (
-				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
-				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
-				BB0EE5E62BAF4E9D0035F36B /* Actions.sks */,
+				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
 				BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */,
 				BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */,
-				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
-				BB0EE5EC2BAF4E9D0035F36B /* Main.storyboard */,
-				BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */,
-				BB0EE5F12BAF4E9E0035F36B /* LaunchScreen.storyboard */,
+				BBA5F88D2BE828C900D4E1EB /* Player.swift */,
 				BBA5F8832BE8252900D4E1EB /* Enemy.swift */,
 				BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */,
 				BBA5F8872BE825F600D4E1EB /* Resource.swift */,
 				BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */,
+				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
+				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
+				BB0EE5E62BAF4E9D0035F36B /* Actions.sks */,
+				BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */,
+				BB0EE5EC2BAF4E9D0035F36B /* Main.storyboard */,
+				BB0EE5F12BAF4E9E0035F36B /* LaunchScreen.storyboard */,
 			);
 			path = "Endless Survival";
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				BBA5F8862BE825AE00D4E1EB /* EnemyExt.swift in Sources */,
 				BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */,
 				BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */,
+				BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */,
 				BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
