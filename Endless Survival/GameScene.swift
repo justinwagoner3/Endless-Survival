@@ -55,9 +55,7 @@ class GameScene: SKScene {
     private let resourceCollectionHarvestTime: TimeInterval = 1.0 // Adjust as needed
     private var lastResourceCollectionTime: TimeInterval = 0
     private var totalHarvestButtonHoldTime: TimeInterval = 0
-    private var harvestButtonStartTime: TimeInterval = 0
     
-
     
     override func sceneDidLoad() {
         worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
