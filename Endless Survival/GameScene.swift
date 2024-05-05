@@ -420,9 +420,6 @@ class GameScene: SKScene {
                 if player.frame.intersects(resource.frame) {
                     // Perform resource collection logic based on the resource type
                     switch resource {
-                    case is Coin:
-                        playerCoinCount += 1
-                        resourceCounter.updateCoinCount(playerCoinCount)
                     case is Wood:
                         playerWoodCount += 1
                         resourceCounter.updateWoodCount(playerWoodCount)
@@ -453,6 +450,30 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    // Method to check for player-coin contact and collect coins
+    private func checkAndCollectCoins() {
+        // Iterate through resources and check for player-resource contact
+        for resource in resources {
+            // Check if the player's bounding box intersects with the resource's bounding box
+            if player.frame.intersects(resource.frame) {
+                // make sure it's coin
+                if resource is Coin {
+                    playerCoinCount += 1
+                    resourceCounter.updateCoinCount(playerCoinCount)
+                    // Update resource count
+                    resource.resourceCount -= 1
+                    if(resource.resourceCount <= 0){
+                        resource.removeFromParent()
+                        if let index = resources.firstIndex(of: resource) {
+                            resources.remove(at: index)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     
     private func updateHarvestTime(currentTime: TimeInterval){
         guard isHarvesting else {
@@ -552,6 +573,7 @@ class GameScene: SKScene {
         updateHarvestCircleVisibility()
         updateHarvestTime(currentTime: currentTime)
         checkAndCollectResources()
+        checkAndCollectCoins()
 
     }
 
