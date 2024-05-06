@@ -19,13 +19,7 @@ class GameScene: SKScene {
     var graphs = [String : GKGraph]()
         
     // Joystick
-    private var joystickOuterCircle: SKShapeNode!
-    private var joystickInnerCircle: SKShapeNode!
-    private var joystickRadius: CGFloat = 75.0 // Adjust as needed
-    private var isJoystickActive = false
-    
-    // Harvest button
-    private var harvestCircle: SKShapeNode!
+    private var joystick: Joystick!
 
     // Player
     public var player: Player!
@@ -50,7 +44,8 @@ class GameScene: SKScene {
     // Resources
     var resources: [Resource] = []
     private var resourceCounter: ResourceCounter!
-    
+    private var harvestCircle: SKShapeNode!
+
     
     override func sceneDidLoad() {
         worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
@@ -74,25 +69,9 @@ class GameScene: SKScene {
         cameraNode.position = player.position
         addChild(cameraNode)
 
-        // Convert screen coordinates to world coordinates
-        //let joystickOuterCircleRelativeToCameraPosition = self.convert(joystickOuterCircleScreenPosition, to: cameraNode)
-        let joystickOuterCircleRelativeToCameraPosition = CGPoint(x: -819.2000122070312, y: -283.40283203125)
+        // Joystick
+        joystick = Joystick(radius: 75.0, position: CGPoint(x: -819.2000122070312, y: -283.40283203125), parent: cameraNode)
 
-        // Create outer circle (grey) as child of camera
-        joystickOuterCircle = SKShapeNode(circleOfRadius: joystickRadius)
-        joystickOuterCircle.position = joystickOuterCircleRelativeToCameraPosition
-        joystickOuterCircle.fillColor = .gray
-        joystickOuterCircle.alpha = 0.5
-        joystickOuterCircle.zPosition = 1
-        cameraNode.addChild(joystickOuterCircle)
-
-        // Create inner circle (black) as child of outer circle
-        joystickInnerCircle = SKShapeNode(circleOfRadius: 20) // Adjust as needed
-        joystickInnerCircle.position = CGPoint.zero
-        joystickInnerCircle.fillColor = .black
-        joystickInnerCircle.zPosition = 2
-        joystickOuterCircle.addChild(joystickInnerCircle)
-        
         // Create harvest circle as child of camera
         harvestCircle = SKShapeNode(circleOfRadius: 50)
         harvestCircle.position = CGPoint(x: -850, y: -150)
@@ -157,13 +136,8 @@ class GameScene: SKScene {
         guard let touch = touches.first else { return }
 
         // Check if touching the joystick
-        let touchLocationInJoystickOuterCircle = touch.location(in: joystickOuterCircle) // Convert touch location to joystick outer circle's coordinate system
-        
-        // Check if the touch occurred inside the inner circle of the joystick
-        if joystickInnerCircle.contains(touchLocationInJoystickOuterCircle) {
-            isJoystickActive = true
-        }
-        
+        joystick.handleTouch(touch)
+
         // Check if touching the harvest button
         let touchLocationInHarvestCircle = touch.location(in: cameraNode) // Convert touch location to harvest circle's coordinate system
         
@@ -174,29 +148,16 @@ class GameScene: SKScene {
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard isJoystickActive, let touch = touches.first else { return }
+        guard joystick.isActive, let touch = touches.first else { return }
         let touchLocation = touch.location(in: self) // Convert to scene's coordinate system
-        let touchLocationInjoystickOuterCircle = convert(touchLocation, to: joystickOuterCircle) // Convert to outer circle's coordinate system
+        let touchLocationInjoystickOuterCircle = convert(touchLocation, to: joystick.outerCircle) // Convert to outer circle's coordinate system
 
-        // Calculate distance and angle from outer circle's center
-        let dx = touchLocationInjoystickOuterCircle.x
-        let dy = touchLocationInjoystickOuterCircle.y
-        let distance = sqrt(dx * dx + dy * dy)
-        let angle = atan2(dy, dx)
-                
-        // Limit inner circle's movement to the outer circle's bounds
-        if distance <= joystickRadius {
-            joystickInnerCircle.position = touchLocationInjoystickOuterCircle
-        } else {
-            joystickInnerCircle.position = CGPoint(x: cos(angle) * joystickRadius,
-                                           y: sin(angle) * joystickRadius)
-        }
+        joystick.updatePosition(touchLocationInjoystickOuterCircle)
     }
 
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isJoystickActive = false
-        joystickInnerCircle.position = CGPoint.zero
+        joystick.reset()
         player.isHarvesting = false
     }
     
@@ -246,7 +207,7 @@ class GameScene: SKScene {
         // logging
         let oldPlayerPosition = player.position
         
-        player.move(joystickInnerCircle, isJoystickActive, worldSize)
+        player.move(joystick.innerCircle, joystick.isActive, worldSize)
         
         // Update the camera position to follow the player
         cameraNode.position = player.position
@@ -279,7 +240,7 @@ class GameScene: SKScene {
                 player.decreaseHealth(amount: damage)
             }
         }
-        if player.shouldHeal(currentTime, isJoystickActive) {
+        if player.shouldHeal(currentTime, joystick.isActive) {
             player.increaseHealth(amount: 1,currentTime: currentTime)
         }
         updateHealthBar()
