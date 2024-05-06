@@ -50,7 +50,6 @@ class GameScene: SKScene {
     // Resources
     var resources: [Resource] = []
     private var resourceCounter: ResourceCounter!
-    private var lastResourceCollectionTime: TimeInterval = 0
     
     
     override func sceneDidLoad() {
@@ -258,38 +257,6 @@ class GameScene: SKScene {
         harvestCircle.isHidden = true
         return nil
     }
-
-    // Method to check for player-resource contact and collect resources
-    private func checkAndCollectResources(_ resource: Resource) {
-        // Check if the total hold time exceeds the required harvest time
-        if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
-            // Perform resource collection logic based on the resource type
-            switch resource {
-            case is Wood:
-                player.woodCount += 1
-            case is Stone:
-                player.stoneCount += 1
-            case is Ore:
-                player.oreCount += 1
-            default:
-                break
-            }
-            // Update resource count
-            resource.resourceCount -= 1
-            if(resource.resourceCount <= 0){
-                resource.removeFromParent()
-                if let index = resources.firstIndex(of: resource) {
-                    resources.remove(at: index)
-                }
-            }
-            
-            // Reset the total hold time
-            resource.totalHarvestButtonHoldTime = 0
-                                
-            // Exit the loop after collecting one resource
-            return
-        }
-    }
         
     // Method to spawn coins when a zombie dies
     func spawnCoins(at position: CGPoint) {
@@ -347,7 +314,7 @@ class GameScene: SKScene {
         // Resource Collection
         if let resource = updateHarvestCircleVisibility() {
             player.updateHarvestTime(currentTime: currentTime, resource)
-            checkAndCollectResources(resource)
+            player.checkAndCollectResources(resource, &resources)
             resourceCounter.updateWoodCount(player.woodCount)
             resourceCounter.updateStoneCount(player.stoneCount)
             resourceCounter.updateOreCount(player.oreCount)

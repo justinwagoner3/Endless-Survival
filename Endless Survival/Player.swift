@@ -175,6 +175,38 @@ class Player : SKSpriteNode {
         lastUpdateHarvestTime = currentTime
     }
 
+    // Method to check for player-resource contact and collect resources
+    func checkAndCollectResources(_ resource: Resource, _ resources: inout [Resource]) {
+        // Check if the total hold time exceeds the required harvest time
+        if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
+            // Perform resource collection logic based on the resource type
+            switch resource {
+            case is Wood:
+                woodCount += 1
+            case is Stone:
+                stoneCount += 1
+            case is Ore:
+                oreCount += 1
+            default:
+                break
+            }
+            // Update resource count
+            resource.resourceCount -= 1
+            if(resource.resourceCount <= 0){
+                resource.removeFromParent()
+                if let index = resources.firstIndex(of: resource) {
+                    resources.remove(at: index)
+                }
+            }
+            
+            // Reset the total hold time
+            resource.totalHarvestButtonHoldTime = 0
+                                
+            // Exit the loop after collecting one resource
+            return
+        }
+    }
+
     // Method to check for player-coin contact and collect coins
     func checkAndCollectCoins(resources: inout [Resource]) {
         // Iterate through resources and check for player-resource contact
