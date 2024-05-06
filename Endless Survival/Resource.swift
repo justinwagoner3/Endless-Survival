@@ -6,6 +6,9 @@ class Resource: SKSpriteNode {
     var bounds: CGSize
     var resourceCount: Int
     var collectionHarvestTime: TimeInterval
+    
+    var totalHarvestButtonHoldTime: TimeInterval = 0
+
 
     init(color: UIColor, bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
         self.bounds = bounds

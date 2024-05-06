@@ -53,7 +53,6 @@ class GameScene: SKScene {
     var resources: [Resource] = []
     private var resourceCounter: ResourceCounter!
     private var lastResourceCollectionTime: TimeInterval = 0
-    private var totalHarvestButtonHoldTime: TimeInterval = 0
     
     
     override func sceneDidLoad() {
@@ -267,7 +266,7 @@ class GameScene: SKScene {
         // Iterate through resources and check for player-resource contact
         for resource in resources {
             // Check if the total hold time exceeds the required harvest time
-            if totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
+            if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
                 // Check if the player's bounding box intersects with the resource's bounding box
                 if player.frame.intersects(resource.frame) {
                     // Perform resource collection logic based on the resource type
@@ -294,7 +293,7 @@ class GameScene: SKScene {
                     }
                     
                     // Reset the total hold time
-                    totalHarvestButtonHoldTime = 0
+                    resource.totalHarvestButtonHoldTime = 0
                                         
                     // Exit the loop after collecting one resource
                     return
@@ -303,7 +302,7 @@ class GameScene: SKScene {
         }
     }
     
-    private func updateHarvestTime(currentTime: TimeInterval){
+    private func updateHarvestTime(currentTime: TimeInterval, _ resource: Resource){
         // Don't update time if not harvesting
         guard player.isHarvesting else {
             lastUpdateTime = currentTime
@@ -315,8 +314,8 @@ class GameScene: SKScene {
         mp("deltaTime",deltaTime)
         
         // Increment the total hold time by the time since the last frame
-        totalHarvestButtonHoldTime += deltaTime
-        mp("totalHarvestButtonHoldTime",totalHarvestButtonHoldTime)
+        resource.totalHarvestButtonHoldTime += deltaTime
+        mp("totalHarvestButtonHoldTime",resource.totalHarvestButtonHoldTime)
         
         // Update the last update time for the next frame
         lastUpdateTime = currentTime
@@ -376,8 +375,8 @@ class GameScene: SKScene {
         updateHealthBar()
         
         // Resource Collection
-        if updateHarvestCircleVisibility() != nil {
-            updateHarvestTime(currentTime: currentTime)
+        if let resource = updateHarvestCircleVisibility() {
+            updateHarvestTime(currentTime: currentTime, resource)
             checkAndCollectResources()
         }
         player.checkAndCollectCoins(resources: &resources)
