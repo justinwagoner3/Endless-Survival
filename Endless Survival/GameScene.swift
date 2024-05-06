@@ -26,6 +26,7 @@ class GameScene: SKScene {
     
     // Base
     public var base: SKSpriteNode!
+    private var baseCircle: SKShapeNode!
 
     // Camera
     private var cameraNode = SKCameraNode()
@@ -80,6 +81,15 @@ class GameScene: SKScene {
         harvestCircle.zPosition = 1
         harvestCircle.isHidden = true
         cameraNode.addChild(harvestCircle)
+
+        // Create base circle as child of camera
+        baseCircle = SKShapeNode(circleOfRadius: 50)
+        baseCircle.position = CGPoint(x: -850, y: -150)
+        baseCircle.fillColor = .gray
+        baseCircle.alpha = 0.5
+        baseCircle.zPosition = 1
+        baseCircle.isHidden = true
+        cameraNode.addChild(baseCircle)
 
         // Create health bar nodes
         let healthBarSize = CGSize(width: 400, height: 20) // Adjust size as needed
@@ -139,11 +149,16 @@ class GameScene: SKScene {
         joystick.handleTouch(touch)
 
         // Check if touching the harvest button
-        let touchLocationInHarvestCircle = touch.location(in: cameraNode) // Convert touch location to harvest circle's coordinate system
-        
+        let touchLocation = touch.location(in: cameraNode) // Convert touch location to harvest circle's coordinate system
+
         // Check if the touch occurred inside the harvest circle
-        if harvestCircle.contains(touchLocationInHarvestCircle) {
+        if harvestCircle.contains(touchLocation) {
             player.isHarvesting = true
+        }
+        
+        // Check if touch occured inside base circle
+        if baseCircle.contains(touchLocation){
+            // maybe here?
         }
     }
 
@@ -201,7 +216,18 @@ class GameScene: SKScene {
         harvestCircle.isHidden = true
         return nil
     }
-        
+    
+    // Update this method to show/hide the harvest circle based on the player's proximity to resources
+    private func updateBaseCircleVisibility(){
+        if player.frame.intersects(base.frame) {
+            // Show or hide the harvest circle accordingly
+            baseCircle.isHidden = false
+        }
+        else{
+            baseCircle.isHidden = true
+        }
+    }
+
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
         // logging
@@ -253,5 +279,8 @@ class GameScene: SKScene {
             resourceCounter.updateStoneCount(player.stoneCount)
             resourceCounter.updateOreCount(player.oreCount)
         }
+        
+        // Base
+        updateBaseCircleVisibility()
     }
 }
