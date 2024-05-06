@@ -49,6 +49,8 @@ class GameScene: SKScene {
 
     
     override func sceneDidLoad() {
+        super.sceneDidLoad()
+
         worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
 
         // Create the background (solid green)
@@ -130,9 +132,17 @@ class GameScene: SKScene {
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         base.zPosition = 2;
         addChild(base)
+        
+        // Restore game state if available
+        restoreGameState()
+
     }
 
-    
+    override func willMove(from view: SKView) {
+        super.willMove(from: view)
+        saveGameState()
+    }
+
     func touchDown(atPoint pos : CGPoint) {
     }
     
@@ -308,4 +318,46 @@ class GameScene: SKScene {
         // Base
         updateBaseCircleVisibility()
     }
+    
+    // Method to save the game state
+    func saveGameState() {
+        let gameState = GameState(playerHealth: player.currentHealth,
+                                  woodCount: player.woodCount,
+                                  stoneCount: player.stoneCount,
+                                  oreCount: player.oreCount)
+        // Serialize and save the gameState (e.g., using UserDefaults)
+        // Example:
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(gameState) {
+            UserDefaults.standard.set(encoded, forKey: "gameState")
+        }
+    }
+
+    // Method to restore the game state
+    func restoreGameState() {
+        // Retrieve the saved gameState (e.g., from UserDefaults)
+        // Example:
+        if let savedData = UserDefaults.standard.data(forKey: "gameState"),
+           let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
+            // Update the scene based on the restored gameState
+            player.currentHealth = gameState.playerHealth
+            player.woodCount = gameState.woodCount
+            player.stoneCount = gameState.stoneCount
+            player.oreCount = gameState.oreCount
+            // Update other scene elements as needed
+            updateHealthBar()
+            resourceCounter.updateWoodCount(player.woodCount)
+            resourceCounter.updateStoneCount(player.stoneCount)
+            resourceCounter.updateOreCount(player.oreCount)
+        }
+    }
 }
+
+struct GameState: Codable {
+    var playerHealth: CGFloat
+    var woodCount: Int
+    var stoneCount: Int
+    var oreCount: Int
+    // Add more properties as needed
+}
+
