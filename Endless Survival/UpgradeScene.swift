@@ -21,27 +21,32 @@ class UpgradeScene: SKScene {
         
         // Check if the touch occurred on the return button
         if let node = self.atPoint(touchLocation) as? SKLabelNode, node.name == "returnButton" {
-            print("switching to game scene")
-
-            // Get the screen size
-            let screenSize = UIScreen.main.bounds.size
-            
-            // Determine the aspect ratio
-            let aspectRatio = screenSize.width / screenSize.height
-            
-            // Define the base size for your scene (you can adjust this as needed)
-            let baseWidth: CGFloat = 2048.0
-            //let baseHeight: CGFloat = 1536.0
-            
-            // Calculate the scaled size based on the aspect ratio
-            let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
-            
-            // Load the SKScene with the calculated size
-            let scene = GameScene(size: sceneSize)
-            scene.scaleMode = .aspectFill
-            
-            // Present the scene
-            self.view?.presentScene(scene)
+            switchToGameScene()
         }
+    }
+    
+    private func switchToGameScene(){
+        print("switching to game scene")
+
+        // Get the screen size
+        let screenSize = UIScreen.main.bounds.size
+        
+        // Determine the aspect ratio
+        let aspectRatio = screenSize.width / screenSize.height
+        
+        // Define the base size for your scene (you can adjust this as needed)
+        let baseWidth: CGFloat = 2048.0
+        //let baseHeight: CGFloat = 1536.0
+        
+        // Calculate the scaled size based on the aspect ratio
+        let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
+        
+        // Load the SKScene with the calculated size
+        let scene = GameScene(size: sceneSize)
+        scene.scaleMode = .aspectFill
+        
+        // Present the scene
+        self.view?.presentScene(scene)
+
     }
 }

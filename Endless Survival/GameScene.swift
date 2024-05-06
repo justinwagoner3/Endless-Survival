@@ -158,27 +158,7 @@ class GameScene: SKScene {
         
         // Check if touch occured inside base circle
         if baseCircle.contains(touchLocation){
-            print("switching to upgrade scene")
-            // Present the upgrade screen when the base circle is touched
-            // Get the screen size
-            let screenSize = UIScreen.main.bounds.size
-            
-            // Determine the aspect ratio
-            let aspectRatio = screenSize.width / screenSize.height
-            
-            // Define the base size for your scene (you can adjust this as needed)
-            let baseWidth: CGFloat = 2048.0
-            //let baseHeight: CGFloat = 1536.0
-            
-            // Calculate the scaled size based on the aspect ratio
-            let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
-            
-            // Load the SKScene with the calculated size
-            let scene = UpgradeScene(size: sceneSize)
-            scene.scaleMode = .aspectFill
-            
-            // Present the scene
-            self.view?.presentScene(scene)
+            switchToUpgradeScene()
         }
     }
 
@@ -198,6 +178,31 @@ class GameScene: SKScene {
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    }
+    
+    private func switchToUpgradeScene(){
+        print("switching to upgrade scene")
+        // Present the upgrade screen when the base circle is touched
+        // Get the screen size
+        let screenSize = UIScreen.main.bounds.size
+        
+        // Determine the aspect ratio
+        let aspectRatio = screenSize.width / screenSize.height
+        
+        // Define the base size for your scene (you can adjust this as needed)
+        let baseWidth: CGFloat = 2048.0
+        //let baseHeight: CGFloat = 1536.0
+        
+        // Calculate the scaled size based on the aspect ratio
+        let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
+        
+        // Load the SKScene with the calculated size
+        let scene = UpgradeScene(size: sceneSize)
+        scene.scaleMode = .aspectFill
+        
+        // Present the scene
+        self.view?.presentScene(scene)
+
     }
         
     // Method to spawn multiple enemies
