@@ -30,7 +30,8 @@ class GameViewController: UIViewController {
             let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
             
             // Load the SKScene with the calculated size
-            let scene = GameScene(size: sceneSize)
+            //let scene = GameScene(size: sceneSize)
+            let scene = MainMenuScene(size: sceneSize)
             scene.scaleMode = .aspectFill
             
             // Present the scene

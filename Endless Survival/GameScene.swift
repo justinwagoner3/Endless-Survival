@@ -47,10 +47,21 @@ class GameScene: SKScene {
     private var resourceCounter: ResourceCounter!
     private var harvestCircle: SKShapeNode!
 
+    public func startNewGame(completion: @escaping () -> Void) {
+        print("startNewGame")
+        // Clear saved game state
+        clearSavedGameState {
+            print("done clearing game state")
+        }
+        completion()
+    }
     
-    override func sceneDidLoad() {
-        super.sceneDidLoad()
+    func loadGame() {
+    }
 
+    override func sceneDidLoad() {
+        //super.sceneDidLoad()
+                
         worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
 
         // Create the background (solid green)
@@ -133,8 +144,13 @@ class GameScene: SKScene {
         base.zPosition = 2;
         addChild(base)
         
+        //mp("initial wood count: ",player.woodCount)
+        
         // Restore game state if available
-        restoreGameState()
+        // if MainMenuScene calls switchToGameScene(newGame: true), then do not call restoreGameState
+        // but if MainMenuScene calls switchToGameScene(newGame: false), then do call restoreGameState
+        //restoreGameState()
+        //mp("after wood count: ",player.woodCount)
 
     }
 
@@ -334,7 +350,7 @@ class GameScene: SKScene {
     }
 
     // Method to restore the game state
-    func restoreGameState() {
+    public func restoreGameState() {
         // Retrieve the saved gameState (e.g., from UserDefaults)
         // Example:
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
@@ -351,6 +367,13 @@ class GameScene: SKScene {
             resourceCounter.updateOreCount(player.oreCount)
         }
     }
+    
+    func clearSavedGameState(completion: @escaping () -> Void) {
+        UserDefaults.standard.removeObject(forKey: "gameState")
+        // Call the completion handler once the clearing is finished
+        completion()
+    }
+
 }
 
 struct GameState: Codable {

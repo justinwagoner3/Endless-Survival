@@ -43,6 +43,7 @@ class UpgradeScene: SKScene {
         
         // Load the SKScene with the calculated size
         let scene = GameScene(size: sceneSize)
+        scene.restoreGameState()
         scene.scaleMode = .aspectFill
         
         // Present the scene
