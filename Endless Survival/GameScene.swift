@@ -152,12 +152,12 @@ class GameScene: SKScene {
         let touchLocation = touch.location(in: cameraNode) // Convert touch location to harvest circle's coordinate system
 
         // Check if the touch occurred inside the harvest circle
-        if harvestCircle.contains(touchLocation) {
+        if (harvestCircle.contains(touchLocation) && !harvestCircle.isHidden) {
             player.isHarvesting = true
         }
         
         // Check if touch occured inside base circle
-        if baseCircle.contains(touchLocation){
+        if (baseCircle.contains(touchLocation) && !baseCircle.isHidden){
             switchToUpgradeScene()
         }
     }
