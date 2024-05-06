@@ -267,13 +267,10 @@ class GameScene: SKScene {
             switch resource {
             case is Wood:
                 player.woodCount += 1
-                resourceCounter.updateWoodCount(player.woodCount)
             case is Stone:
                 player.stoneCount += 1
-                resourceCounter.updateStoneCount(player.stoneCount)
             case is Ore:
                 player.oreCount += 1
-                resourceCounter.updateOreCount(player.oreCount)
             default:
                 break
             }
@@ -351,9 +348,13 @@ class GameScene: SKScene {
         if let resource = updateHarvestCircleVisibility() {
             player.updateHarvestTime(currentTime: currentTime, resource)
             checkAndCollectResources(resource)
+            resourceCounter.updateWoodCount(player.woodCount)
+            resourceCounter.updateStoneCount(player.stoneCount)
+            resourceCounter.updateOreCount(player.oreCount)
         }
         player.checkAndCollectCoins(resources: &resources)
         resourceCounter.updateCoinCount(player.coinCount)
+
 
     }
 }
