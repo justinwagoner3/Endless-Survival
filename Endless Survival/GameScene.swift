@@ -52,7 +52,6 @@ class GameScene: SKScene {
     // Resources
     var resources: [Resource] = []
     private var resourceCounter: ResourceCounter!
-    private let resourceCollectionHarvestTime: TimeInterval = 1.0 // Adjust as needed
     private var lastResourceCollectionTime: TimeInterval = 0
     private var totalHarvestButtonHoldTime: TimeInterval = 0
     
