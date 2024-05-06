@@ -3,7 +3,7 @@ import GameplayKit
 
 class Player : SKSpriteNode {
     
-    weak var delegate: PlayerDelegate?
+    //weak var delegate: PlayerDelegate?
 
     var totalHealth: CGFloat = 100.0
     var currentHealth: CGFloat = 100.0
@@ -90,12 +90,12 @@ class Player : SKSpriteNode {
         
         // Check if the enemy's hitpoints have reached zero
         if closestEnemy.hitpoints <= 0 {
-            if let delegate = delegate {
-                delegate.playerDidKillEnemy(at: position)
-            }
+            //if let delegate = delegate {
+            //    delegate.playerDidKillEnemy(at: position)
+            //}
+            coinCount += closestEnemy.coinValue
             // If hitpoints are zero or less, remove the enemy from the scene and enemies array
             closestEnemy.removeFromParent()
-            //spawnCoins(at: closestEnemy.position)
             if let index = enemies.firstIndex(of: closestEnemy) {
                 enemies.remove(at: index)
             }
@@ -205,32 +205,9 @@ class Player : SKSpriteNode {
             // Exit the loop after collecting one resource
             return
         }
-    }
-
-    // Method to check for player-coin contact and collect coins
-    func checkAndCollectCoins(resources: inout [Resource]) {
-        // Iterate through resources and check for player-resource contact
-        for resource in resources {
-            // Check if the player's bounding box intersects with the resource's bounding box
-            if frame.intersects(resource.frame) {
-                // make sure it's coin
-                if resource is Coin {
-                    coinCount += 1
-                    // Update resource count
-                    resource.resourceCount -= 1
-                    if(resource.resourceCount <= 0){
-                        resource.removeFromParent()
-                        if let index = resources.firstIndex(of: resource) {
-                            resources.remove(at: index)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
+    }    
 }
 
-protocol PlayerDelegate: AnyObject {
-    func playerDidKillEnemy(at position: CGPoint)
-}
+//protocol PlayerDelegate: AnyObject {
+//    func playerDidKillEnemy(at position: CGPoint)
+//}

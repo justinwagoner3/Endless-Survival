@@ -10,6 +10,7 @@ class Enemy: SKSpriteNode {
     var hitpoints: Int
     var bounds: CGSize
 
+    var coinValue: Int = 1
     private var damage: CGFloat = 10.0
     private let attackRadius: CGFloat = 50.0
     private let attackCooldown: TimeInterval = 2

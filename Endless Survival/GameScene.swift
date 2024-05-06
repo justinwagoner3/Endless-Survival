@@ -66,7 +66,7 @@ class GameScene: SKScene {
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.position = background.position
         player.zPosition = 3;
-        player.delegate = self
+        //player.delegate = self
         self.addChild(player)
 
         // Set up the camera
@@ -130,9 +130,6 @@ class GameScene: SKScene {
         spawnEnemies(count: 10)
         
         // Spawn resources
-        let coin = Coin(bounds: worldSize, resourceCount: 1, collectionHarvestTime: 0.1)
-        addChild(coin)
-        resources.append(coin)
         let wood = Wood(bounds:worldSize,resourceCount:10, collectionHarvestTime: 1.0)
         addChild(wood)
         resources.append(wood)
@@ -258,16 +255,6 @@ class GameScene: SKScene {
         return nil
     }
         
-    // Method to spawn coins when a zombie dies
-    func spawnCoins(at position: CGPoint) {
-        let coin = Coin(bounds: worldSize, resourceCount: 1, collectionHarvestTime: 0.1) // Create a new coin instance
-        coin.position = position // Position the coin at the location where the zombie died
-        addChild(coin) // Add the coin to the scene
-        
-        // Add the coin to the resources array
-        resources.append(coin)
-    }
-
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
         // logging
@@ -319,9 +306,5 @@ class GameScene: SKScene {
             resourceCounter.updateStoneCount(player.stoneCount)
             resourceCounter.updateOreCount(player.oreCount)
         }
-        player.checkAndCollectCoins(resources: &resources)
-        resourceCounter.updateCoinCount(player.coinCount)
-
-
     }
 }

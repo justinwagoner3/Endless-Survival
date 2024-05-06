@@ -34,18 +34,6 @@ class Resource: SKSpriteNode {
     }
 }
 
-class Coin: Resource {
-    init(bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
-        super.init(color: .yellow, bounds: bounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
-        // Additional coin-specific customization can go here
-        self.size = CGSize(width: 25, height: 25) // Set the size of the coin
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 class Wood: Resource {
 
     init(bounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
