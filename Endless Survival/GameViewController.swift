@@ -24,17 +24,10 @@ class GameViewController: UIViewController {
             
             // Define the base size for your scene (you can adjust this as needed)
             let baseWidth: CGFloat = 2048.0
-            let baseHeight: CGFloat = 1536.0
+            //let baseHeight: CGFloat = 1536.0
             
             // Calculate the scaled size based on the aspect ratio
-            var sceneSize: CGSize
-            if aspectRatio > 1.0 {
-                // Landscape orientation
-                sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
-            } else {
-                // Portrait orientation
-                sceneSize = CGSize(width: baseHeight * aspectRatio, height: baseHeight)
-            }
+            let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
             
             // Load the SKScene with the calculated size
             let scene = GameScene(size: sceneSize)
