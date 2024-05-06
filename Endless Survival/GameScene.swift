@@ -250,19 +250,19 @@ class GameScene: SKScene {
     }
         
     // Update this method to show/hide the harvest circle based on the player's proximity to resources
-    private func updateHarvestCircleVisibility() {
+    private func updateHarvestCircleVisibility() -> Resource? {
         // Check if there are any resources nearby
-        var resourcesNearby = false
         for resource in resources {
             if player.frame.intersects(resource.frame) {
-                resourcesNearby = true
-                break
+                // Show or hide the harvest circle accordingly
+                harvestCircle.isHidden = false
+                return resource
             }
         }
-        // Show or hide the harvest circle accordingly
-        harvestCircle.isHidden = !resourcesNearby
+        harvestCircle.isHidden = true
+        return nil
     }
-    
+
     // Method to check for player-resource contact and collect resources
     private func checkAndCollectResources() {
         // Iterate through resources and check for player-resource contact
@@ -305,8 +305,8 @@ class GameScene: SKScene {
     }
     
     private func updateHarvestTime(currentTime: TimeInterval){
+        // Don't update time if not harvesting
         guard player.isHarvesting else {
-            // Don't update time if not harvesting
             lastUpdateTime = currentTime
             return
         }
@@ -377,9 +377,10 @@ class GameScene: SKScene {
         updateHealthBar()
         
         // Resource Collection
-        updateHarvestCircleVisibility()
-        updateHarvestTime(currentTime: currentTime)
-        checkAndCollectResources()
+        if updateHarvestCircleVisibility() != nil {
+            updateHarvestTime(currentTime: currentTime)
+            checkAndCollectResources()
+        }
         player.checkAndCollectCoins(resources: &resources)
         resourceCounter.updateCoinCount(player.coinCount)
 
