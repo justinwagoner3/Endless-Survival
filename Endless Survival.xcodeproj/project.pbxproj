@@ -26,6 +26,7 @@
 		BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88D2BE828C900D4E1EB /* Player.swift */; };
 		BBA5F8902BE845E000D4E1EB /* PlayerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */; };
 		BBA5F8922BE861D700D4E1EB /* Joystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8912BE861D700D4E1EB /* Joystick.swift */; };
+		BBA5F8942BE866CC00D4E1EB /* UpgradeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		BBA5F88D2BE828C900D4E1EB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerExt.swift; sourceTree = "<group>"; };
 		BBA5F8912BE861D700D4E1EB /* Joystick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Joystick.swift; sourceTree = "<group>"; };
+		BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
 				BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */,
 				BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */,
+				BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */,
 				BBA5F88D2BE828C900D4E1EB /* Player.swift */,
 				BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */,
 				BBA5F8832BE8252900D4E1EB /* Enemy.swift */,
@@ -299,6 +302,7 @@
 				BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */,
 				BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */,
 				BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */,
+				BBA5F8942BE866CC00D4E1EB /* UpgradeScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -158,7 +158,11 @@ class GameScene: SKScene {
         
         // Check if touch occured inside base circle
         if baseCircle.contains(touchLocation){
-            // maybe here?
+            print("switching to upgrade scene")
+            // Present the upgrade screen when the base circle is touched
+            let upgradeScene = UpgradeScene(size: self.size) // Initialize the upgrade scene with the same size as the current scene
+            upgradeScene.scaleMode = self.scaleMode // Set the scale mode
+            self.view?.presentScene(upgradeScene) // Present the upgrade scene
         }
     }
 
