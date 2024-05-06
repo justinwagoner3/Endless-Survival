@@ -11,7 +11,8 @@ class Player : SKSpriteNode {
     var woodCount: Int = 0
     var stoneCount: Int = 0
     var oreCount: Int = 0
-    var movementSpeed: CGFloat = 2 
+    var lastUpdateHarvestTime : TimeInterval = 0
+    var movementSpeed: CGFloat = 2
     var isHarvesting = false
     let attackCooldown: TimeInterval = 2.0
     var lastAttackTime: TimeInterval? // Stores the time of the last attack
@@ -155,7 +156,25 @@ class Player : SKSpriteNode {
         lastInjuryTime = CACurrentMediaTime()
     }
 
-    
+    func updateHarvestTime(currentTime: TimeInterval, _ resource: Resource){
+        // Don't update time if not harvesting
+        guard isHarvesting else {
+            lastUpdateHarvestTime = currentTime
+            return
+        }
+        
+        // Calculate the time since the last frame
+        let deltaTime = currentTime - lastUpdateHarvestTime
+        mp("deltaTime",deltaTime)
+        
+        // Increment the total hold time by the time since the last frame
+        resource.totalHarvestButtonHoldTime += deltaTime
+        mp("totalHarvestButtonHoldTime",resource.totalHarvestButtonHoldTime)
+        
+        // Update the last update time for the next frame
+        lastUpdateHarvestTime = currentTime
+    }
+
     // Method to check for player-coin contact and collect coins
     func checkAndCollectCoins(resources: inout [Resource]) {
         // Iterate through resources and check for player-resource contact

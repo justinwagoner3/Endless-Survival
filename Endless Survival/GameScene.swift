@@ -17,9 +17,7 @@ class GameScene: SKScene {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
-    
-    private var lastUpdateTime : TimeInterval = 0
-    
+        
     // Joystick
     private var joystickOuterCircle: SKShapeNode!
     private var joystickInnerCircle: SKShapeNode!
@@ -262,65 +260,40 @@ class GameScene: SKScene {
     }
 
     // Method to check for player-resource contact and collect resources
-    private func checkAndCollectResources() {
-        // Iterate through resources and check for player-resource contact
-        for resource in resources {
-            // Check if the total hold time exceeds the required harvest time
-            if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
-                // Check if the player's bounding box intersects with the resource's bounding box
-                if player.frame.intersects(resource.frame) {
-                    // Perform resource collection logic based on the resource type
-                    switch resource {
-                    case is Wood:
-                        player.woodCount += 1
-                        resourceCounter.updateWoodCount(player.woodCount)
-                    case is Stone:
-                        player.stoneCount += 1
-                        resourceCounter.updateStoneCount(player.stoneCount)
-                    case is Ore:
-                        player.oreCount += 1
-                        resourceCounter.updateOreCount(player.oreCount)
-                    default:
-                        break
-                    }
-                    // Update resource count
-                    resource.resourceCount -= 1
-                    if(resource.resourceCount <= 0){
-                        resource.removeFromParent()
-                        if let index = resources.firstIndex(of: resource) {
-                            resources.remove(at: index)
-                        }
-                    }
-                    
-                    // Reset the total hold time
-                    resource.totalHarvestButtonHoldTime = 0
-                                        
-                    // Exit the loop after collecting one resource
-                    return
+    private func checkAndCollectResources(_ resource: Resource) {
+        // Check if the total hold time exceeds the required harvest time
+        if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
+            // Perform resource collection logic based on the resource type
+            switch resource {
+            case is Wood:
+                player.woodCount += 1
+                resourceCounter.updateWoodCount(player.woodCount)
+            case is Stone:
+                player.stoneCount += 1
+                resourceCounter.updateStoneCount(player.stoneCount)
+            case is Ore:
+                player.oreCount += 1
+                resourceCounter.updateOreCount(player.oreCount)
+            default:
+                break
+            }
+            // Update resource count
+            resource.resourceCount -= 1
+            if(resource.resourceCount <= 0){
+                resource.removeFromParent()
+                if let index = resources.firstIndex(of: resource) {
+                    resources.remove(at: index)
                 }
             }
-        }
-    }
-    
-    private func updateHarvestTime(currentTime: TimeInterval, _ resource: Resource){
-        // Don't update time if not harvesting
-        guard player.isHarvesting else {
-            lastUpdateTime = currentTime
+            
+            // Reset the total hold time
+            resource.totalHarvestButtonHoldTime = 0
+                                
+            // Exit the loop after collecting one resource
             return
         }
-        
-        // Calculate the time since the last frame
-        let deltaTime = currentTime - lastUpdateTime
-        mp("deltaTime",deltaTime)
-        
-        // Increment the total hold time by the time since the last frame
-        resource.totalHarvestButtonHoldTime += deltaTime
-        mp("totalHarvestButtonHoldTime",resource.totalHarvestButtonHoldTime)
-        
-        // Update the last update time for the next frame
-        lastUpdateTime = currentTime
     }
-    
+        
     // Method to spawn coins when a zombie dies
     func spawnCoins(at position: CGPoint) {
         let coin = Coin(bounds: worldSize, resourceCount: 1, collectionHarvestTime: 0.1) // Create a new coin instance
@@ -376,8 +349,8 @@ class GameScene: SKScene {
         
         // Resource Collection
         if let resource = updateHarvestCircleVisibility() {
-            updateHarvestTime(currentTime: currentTime, resource)
-            checkAndCollectResources()
+            player.updateHarvestTime(currentTime: currentTime, resource)
+            checkAndCollectResources(resource)
         }
         player.checkAndCollectCoins(resources: &resources)
         resourceCounter.updateCoinCount(player.coinCount)
