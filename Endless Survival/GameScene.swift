@@ -60,22 +60,19 @@ class GameScene: SKScene {
         background.size = worldSize
         background.position = CGPoint(x: worldSize.width/2, y: worldSize.height/2)
         background.zPosition = 0
-        self.addChild(background)
+        addChild(background)
 
         // Create player
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.position = background.position
         player.zPosition = 3;
         //player.delegate = self
-        self.addChild(player)
+        addChild(player)
 
         // Set up the camera
         self.camera = cameraNode;
         cameraNode.position = player.position
         addChild(cameraNode)
-
-        // Calculate the position of the outer circle in screen coordinates
-        let joystickOuterCircleScreenPosition = CGPoint(x: worldSize.width * 0.1 * scaleFactor, y: worldSize.height * 0.2 * scaleFactor)
 
         // Convert screen coordinates to world coordinates
         //let joystickOuterCircleRelativeToCameraPosition = self.convert(joystickOuterCircleScreenPosition, to: cameraNode)
@@ -125,7 +122,6 @@ class GameScene: SKScene {
         resourceCounter.position = CGPoint(x: -400, y: 400)
         cameraNode.addChild(resourceCounter)
 
-
         // Spawn enemies
         spawnEnemies(count: 10)
         
@@ -144,16 +140,7 @@ class GameScene: SKScene {
         base = SKSpriteNode(color: .white, size: CGSize(width: 100, height: 100))
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         base.zPosition = 2;
-        self.addChild(base)
-
-        // logging initial state
-        mp("worldSize",worldSize)
-        mp("player.position",player.position)
-        mp("cameraNode.position",cameraNode.position)
-        mp("joystickOuterCircleScreenPosition",joystickOuterCircleScreenPosition)
-        mp("joystickOuterCircleRelativeToCameraPosition",joystickOuterCircleRelativeToCameraPosition)
-        mp("joystickOuterCircle.position",joystickOuterCircle.position)
-
+        addChild(base)
     }
 
     
@@ -209,7 +196,6 @@ class GameScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isJoystickActive = false
-        // Reset inner circle position to outer circle's center
         joystickInnerCircle.position = CGPoint.zero
         player.isHarvesting = false
     }
