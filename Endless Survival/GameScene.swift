@@ -160,9 +160,32 @@ class GameScene: SKScene {
         if baseCircle.contains(touchLocation){
             print("switching to upgrade scene")
             // Present the upgrade screen when the base circle is touched
-            let upgradeScene = UpgradeScene(size: self.size) // Initialize the upgrade scene with the same size as the current scene
-            upgradeScene.scaleMode = self.scaleMode // Set the scale mode
-            self.view?.presentScene(upgradeScene) // Present the upgrade scene
+            // Get the screen size
+            let screenSize = UIScreen.main.bounds.size
+            
+            // Determine the aspect ratio
+            let aspectRatio = screenSize.width / screenSize.height
+            
+            // Define the base size for your scene (you can adjust this as needed)
+            let baseWidth: CGFloat = 2048.0
+            let baseHeight: CGFloat = 1536.0
+            
+            // Calculate the scaled size based on the aspect ratio
+            var sceneSize: CGSize
+            if aspectRatio > 1.0 {
+                // Landscape orientation
+                sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
+            } else {
+                // Portrait orientation
+                sceneSize = CGSize(width: baseHeight * aspectRatio, height: baseHeight)
+            }
+            
+            // Load the SKScene with the calculated size
+            let scene = UpgradeScene(size: sceneSize)
+            scene.scaleMode = .aspectFill
+            
+            // Present the scene
+            self.view?.presentScene(scene)
         }
     }
 
