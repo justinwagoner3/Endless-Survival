@@ -337,10 +337,19 @@ class GameScene: SKScene {
     
     // Method to save the game state
     func saveGameState() {
-        let gameState = GameState(playerHealth: player.currentHealth,
+        let gameState = GameState(totalHealth: player.totalHealth,
+                                  currentHealth: player.currentHealth,
+                                  coinCount: player.coinCount,
                                   woodCount: player.woodCount,
                                   stoneCount: player.stoneCount,
-                                  oreCount: player.oreCount)
+                                  oreCount: player.oreCount,
+                                  lastUpdateHarvestTime: player.lastUpdateHarvestTime,
+                                  movementSpeed: player.movementSpeed,
+                                  isHarvesting: player.isHarvesting,
+                                  attackCooldown: player.attackCooldown,
+                                  lastAttackTime: player.lastAttackTime ?? 0,
+                                  lastHealTime: player.lastHealTime,
+                                  lastInjuryTime: player.lastInjuryTime ?? 0)
         // Serialize and save the gameState (e.g., using UserDefaults)
         // Example:
         let encoder = JSONEncoder()
@@ -356,10 +365,19 @@ class GameScene: SKScene {
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
             // Update the scene based on the restored gameState
-            player.currentHealth = gameState.playerHealth
+            player.totalHealth = gameState.totalHealth
+            player.currentHealth = gameState.currentHealth
+            player.coinCount = gameState.coinCount
             player.woodCount = gameState.woodCount
             player.stoneCount = gameState.stoneCount
             player.oreCount = gameState.oreCount
+            player.lastUpdateHarvestTime = gameState.lastUpdateHarvestTime
+            player.movementSpeed = gameState.movementSpeed
+            player.isHarvesting = gameState.isHarvesting
+            player.attackCooldown = gameState.attackCooldown
+            player.lastAttackTime = gameState.lastAttackTime
+            player.lastHealTime = gameState.lastHealTime
+            player.lastInjuryTime = gameState.lastInjuryTime
             // Update other scene elements as needed
             updateHealthBar()
             resourceCounter.updateWoodCount(player.woodCount)
@@ -377,10 +395,18 @@ class GameScene: SKScene {
 }
 
 struct GameState: Codable {
-    var playerHealth: CGFloat
+    var totalHealth: CGFloat
+    var currentHealth: CGFloat
+    var coinCount: Int
     var woodCount: Int
     var stoneCount: Int
     var oreCount: Int
-    // Add more properties as needed
+    var lastUpdateHarvestTime: TimeInterval
+    var movementSpeed: CGFloat
+    var isHarvesting: Bool
+    var attackCooldown: TimeInterval
+    var lastAttackTime: TimeInterval
+    var lastHealTime: TimeInterval
+    var lastInjuryTime: TimeInterval
 }
 

@@ -14,7 +14,7 @@ class Player : SKSpriteNode {
     var lastUpdateHarvestTime : TimeInterval = 0
     var movementSpeed: CGFloat = 2
     var isHarvesting = false
-    let attackCooldown: TimeInterval = 2.0
+    var attackCooldown: TimeInterval = 2.0
     var lastAttackTime: TimeInterval? // Stores the time of the last attack
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
