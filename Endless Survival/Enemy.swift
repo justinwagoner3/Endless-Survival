@@ -1,6 +1,6 @@
 import SpriteKit
 
-class Enemy: SKSpriteNode {
+class Enemy: SKSpriteNode, Codable {
     
     // Reference to the GameScene instance
     weak var gameScene: GameScene?
@@ -8,7 +8,7 @@ class Enemy: SKSpriteNode {
     // Enemy attributes
     var movementSpeed: CGFloat
     var hitpoints: Int
-    var bounds: CGSize
+    var spawnBounds: CGSize
 
     var coinValue: Int = 1
     private var damage: CGFloat = 10.0
@@ -17,10 +17,10 @@ class Enemy: SKSpriteNode {
     private var lastAttackTime: TimeInterval = 0
 
     // Initializer with default appearance
-    init(movementSpeed: CGFloat, hitpoints: Int, bounds: CGSize) {
+    init(movementSpeed: CGFloat, hitpoints: Int, spawnBounds: CGSize) {
         self.movementSpeed = movementSpeed
         self.hitpoints = hitpoints
-        self.bounds = bounds
+        self.spawnBounds = spawnBounds
         
         let size = CGSize(width: 25, height: 25)
         let color = UIColor.red
@@ -36,8 +36,8 @@ class Enemy: SKSpriteNode {
     
     // Method to generate random position within worldSize
     private func randomPosition() -> CGPoint {
-        let randomX = CGFloat.random(in: 0...(bounds.width - size.width))
-        let randomY = CGFloat.random(in: 0...(bounds.height - size.height))
+        let randomX = CGFloat.random(in: 0...(spawnBounds.width - size.width))
+        let randomY = CGFloat.random(in: 0...(spawnBounds.height - size.height))
         return CGPoint(x: randomX, y: randomY)
     }
     
@@ -47,7 +47,7 @@ class Enemy: SKSpriteNode {
         let dy = point.y - position.y
         return sqrt(dx * dx + dy * dy)
     }
-    
+        
     // Method to highlight the enemy
     func highlight() {
         // Add code to visually highlight the enemy, e.g., change color or add a glow effect
@@ -87,5 +87,39 @@ class Enemy: SKSpriteNode {
         }
         
         return nil
+    }
+
+    // MARK: - Codable
+    
+    enum CodingKeys: String, CodingKey {
+        case movementSpeed
+        case hitpoints
+        case spawnBounds
+        case curPosition
+        // Add more keys if needed
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(movementSpeed, forKey: .movementSpeed)
+        try container.encode(hitpoints, forKey: .hitpoints)
+        try container.encode(spawnBounds, forKey: .spawnBounds)
+        try container.encode(self.position, forKey: .curPosition)
+        // Encode other properties if needed
+    }
+    
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let movementSpeed = try container.decode(CGFloat.self, forKey: .movementSpeed)
+        let hitpoints = try container.decode(Int.self, forKey: .hitpoints)
+        let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
+        let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
+        // Decode other properties if needed
+        
+        self.init(movementSpeed: movementSpeed, hitpoints: hitpoints, spawnBounds: spawnBounds)
+        
+        self.position = curPosition
+        
+        
     }
 }

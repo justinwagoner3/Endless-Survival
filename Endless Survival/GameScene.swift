@@ -143,15 +143,6 @@ class GameScene: SKScene {
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         base.zPosition = 2;
         addChild(base)
-        
-        //mp("initial wood count: ",player.woodCount)
-        
-        // Restore game state if available
-        // if MainMenuScene calls switchToGameScene(newGame: true), then do not call restoreGameState
-        // but if MainMenuScene calls switchToGameScene(newGame: false), then do call restoreGameState
-        //restoreGameState()
-        //mp("after wood count: ",player.woodCount)
-
     }
 
     override func willMove(from view: SKView) {
@@ -234,7 +225,7 @@ class GameScene: SKScene {
     // Method to spawn multiple enemies
     private func spawnEnemies(count: Int) {
         for _ in 0..<count {
-            let enemy = Enemy(movementSpeed: 1.5, hitpoints: 10, bounds: worldSize)
+            let enemy = Enemy(movementSpeed: 1.5, hitpoints: 10, spawnBounds: worldSize)
             enemy.gameScene = self // Pass reference to GameScene
             addChild(enemy)
             enemies.append(enemy)
@@ -349,7 +340,8 @@ class GameScene: SKScene {
                                   attackCooldown: player.attackCooldown,
                                   lastAttackTime: player.lastAttackTime ?? 0,
                                   lastHealTime: player.lastHealTime,
-                                  lastInjuryTime: player.lastInjuryTime ?? 0)
+                                  lastInjuryTime: player.lastInjuryTime ?? 0,
+                                  enemies: enemies)
         // Serialize and save the gameState (e.g., using UserDefaults)
         // Example:
         let encoder = JSONEncoder()
@@ -364,7 +356,7 @@ class GameScene: SKScene {
         // Example:
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
-            // Update the scene based on the restored gameState
+            // Restore the player
             player.totalHealth = gameState.totalHealth
             player.currentHealth = gameState.currentHealth
             player.coinCount = gameState.coinCount
@@ -378,6 +370,19 @@ class GameScene: SKScene {
             player.lastAttackTime = gameState.lastAttackTime
             player.lastHealTime = gameState.lastHealTime
             player.lastInjuryTime = gameState.lastInjuryTime
+            // Restore resources
+            for enemy in enemies{
+                enemy.removeFromParent()
+            }
+            for enemy in gameState.enemies{
+                addChild(enemy)
+            }
+            enemies = gameState.enemies
+
+            //enemies = gameState.enemies;
+            //enemies = [];
+
+            // Restore enemies
             // Update other scene elements as needed
             updateHealthBar()
             resourceCounter.updateWoodCount(player.woodCount)
@@ -408,5 +413,6 @@ struct GameState: Codable {
     var lastAttackTime: TimeInterval
     var lastHealTime: TimeInterval
     var lastInjuryTime: TimeInterval
+    var enemies: [Enemy]
 }
 
