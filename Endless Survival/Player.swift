@@ -165,11 +165,9 @@ class Player : SKSpriteNode {
         
         // Calculate the time since the last frame
         let deltaTime = currentTime - lastUpdateHarvestTime
-        mp("deltaTime",deltaTime)
         
         // Increment the total hold time by the time since the last frame
         resource.totalHarvestButtonHoldTime += deltaTime
-        mp("totalHarvestButtonHoldTime",resource.totalHarvestButtonHoldTime)
         
         // Update the last update time for the next frame
         lastUpdateHarvestTime = currentTime

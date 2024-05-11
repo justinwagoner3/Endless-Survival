@@ -120,6 +120,5 @@ class Enemy: SKSpriteNode, Codable {
         
         self.position = curPosition
         
-        
     }
 }

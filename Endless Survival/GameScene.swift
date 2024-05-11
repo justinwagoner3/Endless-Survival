@@ -128,13 +128,13 @@ class GameScene: SKScene {
         spawnEnemies(count: 10)
         
         // Spawn resources
-        let wood = Wood(bounds:worldSize,resourceCount:10, collectionHarvestTime: 1.0)
+        let wood = Wood(spawnBounds:worldSize,resourceCount:10, collectionHarvestTime: 1.0)
         addChild(wood)
         resources.append(wood)
-        let stone = Stone(bounds:worldSize,resourceCount:10, collectionHarvestTime: 2.0)
+        let stone = Stone(spawnBounds:worldSize,resourceCount:10, collectionHarvestTime: 2.0)
         addChild(stone)
         resources.append(stone)
-        let ore = Ore(bounds:worldSize,resourceCount:10, collectionHarvestTime: 3.0)
+        let ore = Ore(spawnBounds:worldSize,resourceCount:10, collectionHarvestTime: 3.0)
         addChild(ore)
         resources.append(ore)
         
@@ -341,9 +341,9 @@ class GameScene: SKScene {
                                   lastAttackTime: player.lastAttackTime ?? 0,
                                   lastHealTime: player.lastHealTime,
                                   lastInjuryTime: player.lastInjuryTime ?? 0,
-                                  enemies: enemies)
+                                  enemies: enemies,
+                                  resources: resources)
         // Serialize and save the gameState (e.g., using UserDefaults)
-        // Example:
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(gameState) {
             UserDefaults.standard.set(encoded, forKey: "gameState")
@@ -370,7 +370,8 @@ class GameScene: SKScene {
             player.lastAttackTime = gameState.lastAttackTime
             player.lastHealTime = gameState.lastHealTime
             player.lastInjuryTime = gameState.lastInjuryTime
-            // Restore resources
+            
+            // Restore enemies
             for enemy in enemies{
                 enemy.removeFromParent()
             }
@@ -378,11 +379,17 @@ class GameScene: SKScene {
                 addChild(enemy)
             }
             enemies = gameState.enemies
-
-            //enemies = gameState.enemies;
-            //enemies = [];
-
-            // Restore enemies
+            
+            // Restore resources
+            for resource in resources{
+                resource.removeFromParent()
+            }
+            for resource in gameState.resources{
+                addChild(resource)
+            }
+            resources = gameState.resources
+            
+            
             // Update other scene elements as needed
             updateHealthBar()
             resourceCounter.updateWoodCount(player.woodCount)
@@ -414,5 +421,6 @@ struct GameState: Codable {
     var lastHealTime: TimeInterval
     var lastInjuryTime: TimeInterval
     var enemies: [Enemy]
+    var resources: [Resource]
 }
 
