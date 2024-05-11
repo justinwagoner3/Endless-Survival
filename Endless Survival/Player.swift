@@ -1,7 +1,7 @@
 import SpriteKit
 import GameplayKit
 
-class Player : SKSpriteNode {
+class Player : SKSpriteNode, Codable {
     
     //weak var delegate: PlayerDelegate?
 
@@ -14,11 +14,78 @@ class Player : SKSpriteNode {
     var lastUpdateHarvestTime : TimeInterval = 0
     var movementSpeed: CGFloat = 2
     var isHarvesting = false
-    let attackCooldown: TimeInterval = 2.0
+    var attackCooldown: TimeInterval = 2.0
     var lastAttackTime: TimeInterval? // Stores the time of the last attack
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
     var selectedEnemy: Enemy?
+
+    init(color: UIColor, size: CGSize) {
+        super.init(texture: nil, color: color, size: size)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case totalHealth
+        case currentHealth
+        case coinCount
+        case woodCount
+        case stoneCount
+        case oreCount
+        case lastUpdateHarvestTime
+        case movementSpeed
+        case isHarvesting
+        case attackCooldown
+        case lastAttackTime
+        case lastHealTime
+        case lastInjuryTime
+        case selectedEnemy
+        // Add more properties as needed
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        totalHealth = try container.decode(CGFloat.self, forKey: .totalHealth)
+        currentHealth = try container.decode(CGFloat.self, forKey: .currentHealth)
+        coinCount = try container.decode(Int.self, forKey: .coinCount)
+        woodCount = try container.decode(Int.self, forKey: .woodCount)
+        stoneCount = try container.decode(Int.self, forKey: .stoneCount)
+        oreCount = try container.decode(Int.self, forKey: .oreCount)
+        lastUpdateHarvestTime = try container.decode(TimeInterval.self, forKey: .lastUpdateHarvestTime)
+        movementSpeed = try container.decode(CGFloat.self, forKey: .movementSpeed)
+        isHarvesting = try container.decode(Bool.self, forKey: .isHarvesting)
+        attackCooldown = try container.decode(TimeInterval.self, forKey: .attackCooldown)
+        lastAttackTime = try container.decode(TimeInterval.self, forKey: .lastAttackTime)
+        lastHealTime = try container.decode(TimeInterval.self, forKey: .lastHealTime)
+        lastInjuryTime = try container.decode(TimeInterval.self, forKey: .lastInjuryTime)
+        selectedEnemy = try container.decode(Enemy.self, forKey: .selectedEnemy)
+        // Decode other properties as needed
+
+        // Call superclass initializer
+        super.init(texture: nil, color: .clear, size: .zero)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(totalHealth, forKey: .totalHealth)
+        try container.encode(currentHealth, forKey: .currentHealth)
+        try container.encode(coinCount, forKey: .coinCount)
+        try container.encode(woodCount, forKey: .woodCount)
+        try container.encode(stoneCount, forKey: .stoneCount)
+        try container.encode(oreCount, forKey: .oreCount)
+        try container.encode(lastUpdateHarvestTime, forKey: .lastUpdateHarvestTime)
+        try container.encode(movementSpeed, forKey: .movementSpeed)
+        try container.encode(isHarvesting, forKey: .isHarvesting)
+        try container.encode(attackCooldown, forKey: .attackCooldown)
+        try container.encode(lastAttackTime, forKey: .lastAttackTime)
+        try container.encode(lastHealTime, forKey: .lastHealTime)
+        try container.encode(lastInjuryTime, forKey: .lastInjuryTime)
+        try container.encode(selectedEnemy, forKey: .selectedEnemy)
+        // Encode other properties as needed
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // Movement
     func move(_ joystickInnerCircle: SKShapeNode, _ isJoystickActive: Bool, _ worldSize: CGSize){
