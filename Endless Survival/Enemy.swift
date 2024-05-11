@@ -1,6 +1,6 @@
 import SpriteKit
 
-class Enemy: SKSpriteNode, Codable {
+class Enemy: SKSpriteNode {
     
     // Reference to the GameScene instance
     weak var gameScene: GameScene?
@@ -12,8 +12,8 @@ class Enemy: SKSpriteNode, Codable {
 
     var coinValue: Int = 1
     private var damage: CGFloat = 10.0
-    private var attackRadius: CGFloat = 50.0
-    private var attackCooldown: TimeInterval = 2
+    private let attackRadius: CGFloat = 50.0
+    private let attackCooldown: TimeInterval = 2
     private var lastAttackTime: TimeInterval = 0
 
     // Initializer with default appearance
@@ -34,45 +34,6 @@ class Enemy: SKSpriteNode, Codable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    enum CodingKeys: String, CodingKey {
-        case movementSpeed
-        case hitpoints
-        case coinValue
-        case damage
-        case attackRadius
-        case attackCooldown
-        case lastAttackTime
-        case bounds
-        // Add more properties as needed
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(movementSpeed, forKey: .movementSpeed)
-        try container.encode(hitpoints, forKey: .hitpoints)
-        try container.encode(coinValue, forKey: .coinValue)
-        try container.encode(damage, forKey: .damage)
-        try container.encode(attackRadius, forKey: .attackRadius)
-        try container.encode(attackCooldown, forKey: .attackCooldown)
-        try container.encode(lastAttackTime, forKey: .lastAttackTime)
-        try container.encode(bounds, forKey: .bounds)
-        // Encode other properties as needed
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        movementSpeed = try container.decode(CGFloat.self, forKey: .movementSpeed)
-        hitpoints = try container.decode(Int.self, forKey: .hitpoints)
-        coinValue = try container.decode(Int.self, forKey: .coinValue)
-        damage = try container.decode(CGFloat.self, forKey: .damage)
-        attackRadius = try container.decode(CGFloat.self, forKey: .attackRadius)
-        attackCooldown = try container.decode(TimeInterval.self, forKey: .attackCooldown)
-        lastAttackTime = try container.decode(TimeInterval.self, forKey: .lastAttackTime)
-        bounds = try container.decode(CGSize.self, forKey: .bounds)
-        // Decode other properties as needed
-        super.init(texture: nil, color: .clear, size: .zero)
-    }
-
     // Method to generate random position within worldSize
     private func randomPosition() -> CGPoint {
         let randomX = CGFloat.random(in: 0...(bounds.width - size.width))

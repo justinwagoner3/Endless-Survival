@@ -337,8 +337,12 @@ class GameScene: SKScene {
     
     // Method to save the game state
     func saveGameState() {
-        let gameState = GameState(player: player)
-        // Serialize and save the gameState
+        let gameState = GameState(playerHealth: player.currentHealth,
+                                  woodCount: player.woodCount,
+                                  stoneCount: player.stoneCount,
+                                  oreCount: player.oreCount)
+        // Serialize and save the gameState (e.g., using UserDefaults)
+        // Example:
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(gameState) {
             UserDefaults.standard.set(encoded, forKey: "gameState")
@@ -351,7 +355,11 @@ class GameScene: SKScene {
         // Example:
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
-            player = gameState.player
+            // Update the scene based on the restored gameState
+            player.currentHealth = gameState.playerHealth
+            player.woodCount = gameState.woodCount
+            player.stoneCount = gameState.stoneCount
+            player.oreCount = gameState.oreCount
             // Update other scene elements as needed
             updateHealthBar()
             resourceCounter.updateWoodCount(player.woodCount)
@@ -369,7 +377,10 @@ class GameScene: SKScene {
 }
 
 struct GameState: Codable {
-    var player: Player
+    var playerHealth: CGFloat
+    var woodCount: Int
+    var stoneCount: Int
+    var oreCount: Int
     // Add more properties as needed
 }
 
