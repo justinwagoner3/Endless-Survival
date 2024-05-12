@@ -12,7 +12,7 @@ class Player : SKSpriteNode {
     var stoneCount: Int = 0
     var oreCount: Int = 0
     var lastUpdateHarvestTime : TimeInterval = 0
-    var movementSpeed: CGFloat = 2
+    var movementLevel: CGFloat = 1
     var isHarvesting = false
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
@@ -29,8 +29,8 @@ class Player : SKSpriteNode {
         let angle = atan2(dy, dx)
                 
         // Calculate movement vector
-        let movementX = cos(angle) * movementSpeed
-        let movementY = sin(angle) * movementSpeed
+        let movementX = cos(angle) * movementLevel
+        let movementY = sin(angle) * movementLevel
         
         // Move the player
         if isJoystickActive {

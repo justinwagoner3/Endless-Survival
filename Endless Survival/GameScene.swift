@@ -82,6 +82,7 @@ class GameScene: SKScene {
         player.position = background.position
         player.zPosition = 3
         player.weapon = weapon
+        player.movementLevel = PlayerManager.shared.movementLevel
         //player.delegate = self
         addChild(player)
 
@@ -357,7 +358,7 @@ class GameScene: SKScene {
                                   stoneCount: player.stoneCount,
                                   oreCount: player.oreCount,
                                   lastUpdateHarvestTime: player.lastUpdateHarvestTime,
-                                  movementSpeed: player.movementSpeed,
+                                  movementLevel: player.movementLevel,
                                   isHarvesting: player.isHarvesting,
                                   lastHealTime: player.lastHealTime,
                                   lastInjuryTime: player.lastInjuryTime ?? 0,
@@ -387,7 +388,7 @@ class GameScene: SKScene {
             player.stoneCount = gameState.stoneCount
             player.oreCount = gameState.oreCount
             player.lastUpdateHarvestTime = gameState.lastUpdateHarvestTime
-            player.movementSpeed = gameState.movementSpeed
+            player.movementLevel = PlayerManager.shared.movementLevel
             player.isHarvesting = gameState.isHarvesting
             player.lastHealTime = gameState.lastHealTime
             player.lastInjuryTime = gameState.lastInjuryTime
@@ -443,7 +444,7 @@ struct GameState: Codable {
     var stoneCount: Int
     var oreCount: Int
     var lastUpdateHarvestTime: TimeInterval
-    var movementSpeed: CGFloat
+    var movementLevel: CGFloat
     var isHarvesting: Bool
     var lastHealTime: TimeInterval
     var lastInjuryTime: TimeInterval

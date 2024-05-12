@@ -2,6 +2,8 @@ import SpriteKit
 
 class UpgradeScene: SKScene {
     
+    let increaseMovementButton = SKLabelNode(text: "")
+
     override func didMove(to view: SKView) {
         // Add a background color or image if desired
         self.backgroundColor = .white
@@ -13,6 +15,16 @@ class UpgradeScene: SKScene {
         returnButton.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         returnButton.name = "returnButton" // Set a name for the button node
         self.addChild(returnButton)
+        
+        // Create a label for the button
+        increaseMovementButton.fontSize = 24
+        increaseMovementButton.fontColor = .black
+        increaseMovementButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.2)
+        increaseMovementButton.name = "increaseMovementButton" // Set a name for the button node
+        self.addChild(increaseMovementButton)
+        
+        updateIncreaseMovementButtonText()
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -23,8 +35,23 @@ class UpgradeScene: SKScene {
         if let node = self.atPoint(touchLocation) as? SKLabelNode, node.name == "returnButton" {
             switchToGameScene()
         }
+        
+        // Check if the touch occurred on the increase movement button
+        if let node = self.atPoint(touchLocation) as? SKLabelNode, node.name == "increaseMovementButton" {
+            // Call a method to increase the player's movement level
+            increasePlayerMovementLevel()
+        }
     }
     
+    private func increasePlayerMovementLevel() {
+        PlayerManager.shared.movementLevel += 1.0
+        updateIncreaseMovementButtonText()
+    }
+
+    private func updateIncreaseMovementButtonText() {
+        increaseMovementButton.text = "Increase Movement: \(PlayerManager.shared.movementLevel)"
+    }
+
     private func switchToGameScene(){
         print("switching to game scene")
 
