@@ -81,15 +81,15 @@ class Player : SKSpriteNode {
     }
     
     // Method to attack the highlighted enemy
-    func attackClosestEnemy(_ enemies: inout [Enemy]) -> Bool {
+    func attackClosestEnemy(_ enemies: inout [Enemy], damage: Int) -> Bool {
         // If no enemy is selected, return false
         guard let closestEnemy = selectedEnemy else {
             return false
         }
-        print("attacking")
+        //print("attacking")
         animatePlayerAttack()
 
-        closestEnemy.hitpoints -= Int(weapon.damage)
+        closestEnemy.hitpoints -= Int(damage)
         
         // Check if the enemy's hitpoints have reached zero
         if closestEnemy.hitpoints <= 0 {
@@ -230,7 +230,6 @@ class Player : SKSpriteNode {
         }
     }
     
-    // this should move each drone in the drones array in a circular path around the parent element. maybe define a cirular "path" (make sure it includes these cooridnates, beacuse they are the initial spawn coordinates: -50,50; 50,50; 0,-50) and then move the character along this path? it will be called in the update method
     func updateDronePositions() {
         // Loop through the drones and update their positions
         for drone in drones {

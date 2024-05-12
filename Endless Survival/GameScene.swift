@@ -74,7 +74,7 @@ class GameScene: SKScene {
         addChild(background)
         
         // Create the weapon
-        weapon = SniperRifle()
+        weapon = Pistol()
 
         // Create player
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
@@ -299,18 +299,18 @@ class GameScene: SKScene {
         }
         
         // Highlight + Attack closest enemy with a cooldown
+        // TODO - move most of this logic into player class like i did for Drone class
         player.highlightClosestEnemy(radius: player.weapon.radius, enemies)
         if !player.isHarvesting {
             let timeSinceLastAttack = currentTime - player.weapon.lastAttackTime
             if timeSinceLastAttack >= player.weapon.fireRate {
                 // Only reset the cooldown if the attack was successful
-                if player.attackClosestEnemy(&enemies) {
+                if player.attackClosestEnemy(&enemies, damage: Int(player.weapon.damage)) {
                     player.weapon.lastAttackTime = currentTime
-                    resourceCounter.updateCoinCount(player.coinCount)
                 }
             }
-            
         }
+        
 
         // Get attacked + heal
         for enemy in enemies {
@@ -337,6 +337,14 @@ class GameScene: SKScene {
         
         // Move drones around player
         player.updateDronePositions()
+        
+        // AssaultDrones attack
+        for drone in player.drones {
+            if let assaultDrone = drone as? AssaultDrone {
+                assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCointCount: &player.coinCount)
+            }
+        }
+        resourceCounter.updateCoinCount(player.coinCount)
     }
     
     // Method to save the game state

@@ -73,5 +73,40 @@ class AssaultDrone: Drone {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Method to attack enemies
+    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerPosition: CGPoint, playerCointCount: inout Int) {
+        // Check if enough time has passed since the last attack
+        if currentTime - lastAttackTime >= fireRate {
+            // Find the closest enemy within the radius
+            var closestEnemy: Enemy? = nil
+            for enemy in enemies {
+                let distanceFromPlayer = enemy.distance(to: playerPosition)
+                if distanceFromPlayer <= radius {
+                    print("found closest enemy")
+                    closestEnemy = enemy
+                }
+            }
+            
+            // If an enemy is found within range, attack it
+            if let closestEnemy = closestEnemy {
+                // Perform attack logic
+                closestEnemy.hitpoints -= Int(damage)
+                
+                // Check if the enemy's hitpoints have reached zero
+                if closestEnemy.hitpoints <= 0 {
+                    playerCointCount += closestEnemy.coinValue
+                    // Handle enemy defeat
+                    closestEnemy.removeFromParent()
+                    if let index = enemies.firstIndex(of: closestEnemy) {
+                        enemies.remove(at: index)
+                    }
+                }
+                
+                // Update last attack time for fire rate cooldown
+                lastAttackTime = currentTime
+            }
+        }
+    }
+
     
 }

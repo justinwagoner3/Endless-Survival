@@ -20,6 +20,10 @@ extension Player {
         let removeAction = SKAction.removeFromParent()
         let sequence = SKAction.sequence([fadeOutAction, removeAction])
         whiteBorder.run(sequence)
+        
+        // Perform the animation only on the player itself, excluding children
+        for child in children {
+            child.removeAllActions()
+        }
     }
-
 }
