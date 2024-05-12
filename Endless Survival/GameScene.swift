@@ -24,6 +24,9 @@ class GameScene: SKScene {
     // Player
     public var player: Player!
     
+    // Weapon
+    public var weapon: Weapon!
+    
     // Base
     public var base: SKSpriteNode!
     private var baseCircle: SKShapeNode!
@@ -70,11 +73,15 @@ class GameScene: SKScene {
         background.position = CGPoint(x: worldSize.width/2, y: worldSize.height/2)
         background.zPosition = 0
         addChild(background)
+        
+        // Create the weapon
+        weapon = SniperRifle()
 
         // Create player
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.position = background.position
-        player.zPosition = 3;
+        player.zPosition = 3
+        player.weapon = weapon
         //player.delegate = self
         addChild(player)
 
@@ -287,18 +294,19 @@ class GameScene: SKScene {
         }
         
         // Highlight + Attack closest enemy with a cooldown
-        player.highlightClosestEnemy(radius: 200, enemies)
+        player.highlightClosestEnemy(radius: player.weapon.radius, enemies)
         if !player.isHarvesting {
-            if let lastAttackTime = player.lastAttackTime {
+            if let lastAttackTime = player.weapon.lastAttackTime {
                 let timeSinceLastAttack = currentTime - lastAttackTime
-                if timeSinceLastAttack >= player.attackCooldown {
+                if timeSinceLastAttack >= player.weapon.fireRate {
                     // Only reset the cooldown if the attack was successful
                     if player.attackClosestEnemy(&enemies) {
-                        player.lastAttackTime = currentTime
+                        player.weapon.lastAttackTime = currentTime
+                        resourceCounter.updateCoinCount(player.coinCount)
                     }
                 }
             } else {
-                player.lastAttackTime = currentTime
+                player.weapon.lastAttackTime = currentTime
             }
         }
 
@@ -351,10 +359,9 @@ class GameScene: SKScene {
                                   lastUpdateHarvestTime: player.lastUpdateHarvestTime,
                                   movementSpeed: player.movementSpeed,
                                   isHarvesting: player.isHarvesting,
-                                  attackCooldown: player.attackCooldown,
-                                  lastAttackTime: player.lastAttackTime ?? 0,
                                   lastHealTime: player.lastHealTime,
                                   lastInjuryTime: player.lastInjuryTime ?? 0,
+                                  weapon: weapon,
                                   enemies: enemies,
                                   wood: wood,
                                   stone: stone,
@@ -382,10 +389,9 @@ class GameScene: SKScene {
             player.lastUpdateHarvestTime = gameState.lastUpdateHarvestTime
             player.movementSpeed = gameState.movementSpeed
             player.isHarvesting = gameState.isHarvesting
-            player.attackCooldown = gameState.attackCooldown
-            player.lastAttackTime = gameState.lastAttackTime
             player.lastHealTime = gameState.lastHealTime
             player.lastInjuryTime = gameState.lastInjuryTime
+            player.weapon = gameState.weapon
             
             // Restore enemies
             for enemy in enemies{
@@ -439,10 +445,9 @@ struct GameState: Codable {
     var lastUpdateHarvestTime: TimeInterval
     var movementSpeed: CGFloat
     var isHarvesting: Bool
-    var attackCooldown: TimeInterval
-    var lastAttackTime: TimeInterval
     var lastHealTime: TimeInterval
     var lastInjuryTime: TimeInterval
+    var weapon: Weapon
     var enemies: [Enemy]
     var wood: [Wood]
     var stone: [Stone]

@@ -50,20 +50,17 @@ class Enemy: SKSpriteNode, Codable {
         
     // Method to highlight the enemy
     func highlight() {
-        // Add code to visually highlight the enemy, e.g., change color or add a glow effect
         self.colorBlendFactor = 0.5
         self.color = UIColor.white
     }
     
     // Method to remove highlighting from the enemy
     func unhighlight() {
-        // Add code to remove the visual highlighting effect applied to the enemy
         self.colorBlendFactor = 0.0
         self.color = UIColor.red
     }
     
-    // Additional methods/functions for enemy behavior
-    // For example, you can add a method to handle enemy movement
+    // Move Enemy
     func moveTowards(_ targetPosition: CGPoint) {
         // Add movement logic here
     }
@@ -76,11 +73,9 @@ class Enemy: SKSpriteNode, Codable {
         // Check if player is within attack range and if enough time has passed since last attack
         if distanceToPlayer <= attackRadius && currentTime - lastAttackTime >= attackCooldown {
             // Initiate attack
-            // You can implement attack animation or logic here
             print("Enemy is attacking!")
             animateEnemyAttack()
 
-            // Update last attack time
             lastAttackTime = currentTime
             
             return damage
@@ -88,15 +83,12 @@ class Enemy: SKSpriteNode, Codable {
         
         return nil
     }
-
-    // MARK: - Codable
     
     enum CodingKeys: String, CodingKey {
         case movementSpeed
         case hitpoints
         case spawnBounds
         case curPosition
-        // Add more keys if needed
     }
     
     func encode(to encoder: Encoder) throws {
@@ -105,7 +97,6 @@ class Enemy: SKSpriteNode, Codable {
         try container.encode(hitpoints, forKey: .hitpoints)
         try container.encode(spawnBounds, forKey: .spawnBounds)
         try container.encode(self.position, forKey: .curPosition)
-        // Encode other properties if needed
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -114,11 +105,9 @@ class Enemy: SKSpriteNode, Codable {
         let hitpoints = try container.decode(Int.self, forKey: .hitpoints)
         let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
         let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
-        // Decode other properties if needed
         
         self.init(movementSpeed: movementSpeed, hitpoints: hitpoints, spawnBounds: spawnBounds)
         
         self.position = curPosition
-        
     }
 }

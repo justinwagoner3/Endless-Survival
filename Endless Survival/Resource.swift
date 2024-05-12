@@ -110,7 +110,6 @@ class Ore: Resource {
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
         self.color = .black
-        // Initialize Ore-specific properties if any
     }
 
     init(spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {

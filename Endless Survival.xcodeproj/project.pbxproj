@@ -28,6 +28,7 @@
 		BBA5F8922BE861D700D4E1EB /* Joystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8912BE861D700D4E1EB /* Joystick.swift */; };
 		BBA5F8942BE866CC00D4E1EB /* UpgradeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */; };
 		BBA5F8962BE88D7D00D4E1EB /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8952BE88D7D00D4E1EB /* MainMenuScene.swift */; };
+		BBA5F89A2BF051ED00D4E1EB /* Weapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8992BF051ED00D4E1EB /* Weapon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		BBA5F8912BE861D700D4E1EB /* Joystick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Joystick.swift; sourceTree = "<group>"; };
 		BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeScene.swift; sourceTree = "<group>"; };
 		BBA5F8952BE88D7D00D4E1EB /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
+		BBA5F8992BF051ED00D4E1EB /* Weapon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weapon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */,
 				BBA5F8872BE825F600D4E1EB /* Resource.swift */,
 				BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */,
+				BBA5F8992BF051ED00D4E1EB /* Weapon.swift */,
 				BBA5F8912BE861D700D4E1EB /* Joystick.swift */,
 				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
 				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
@@ -297,6 +300,7 @@
 				BBA5F8842BE8252900D4E1EB /* Enemy.swift in Sources */,
 				BBA5F8962BE88D7D00D4E1EB /* MainMenuScene.swift in Sources */,
 				BB0EE5E92BAF4E9D0035F36B /* GameScene.swift in Sources */,
+				BBA5F89A2BF051ED00D4E1EB /* Weapon.swift in Sources */,
 				BB0EE5EB2BAF4E9D0035F36B /* GameViewController.swift in Sources */,
 				BBA5F8882BE825F600D4E1EB /* Resource.swift in Sources */,
 				BBA5F8902BE845E000D4E1EB /* PlayerExt.swift in Sources */,

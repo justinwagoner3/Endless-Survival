@@ -14,11 +14,10 @@ class Player : SKSpriteNode {
     var lastUpdateHarvestTime : TimeInterval = 0
     var movementSpeed: CGFloat = 2
     var isHarvesting = false
-    var attackCooldown: TimeInterval = 2.0
-    var lastAttackTime: TimeInterval? // Stores the time of the last attack
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
     var selectedEnemy: Enemy?
+    var weapon: Weapon!
 
     // Movement
     func move(_ joystickInnerCircle: SKShapeNode, _ isJoystickActive: Bool, _ worldSize: CGSize){
@@ -49,9 +48,8 @@ class Player : SKSpriteNode {
     
     // Method to highlight the closest enemy within a radius
     func highlightClosestEnemy(radius: CGFloat, _ enemies: [Enemy]) {
-        // Reset previously selected enemy
+        // Unhighlight old selected enemy, if there is one
         if let selectedEnemy = selectedEnemy {
-            // Unhighlight the previously selected enemy
             selectedEnemy.unhighlight()
         }
         
@@ -77,16 +75,14 @@ class Player : SKSpriteNode {
     
     // Method to attack the highlighted enemy
     func attackClosestEnemy(_ enemies: inout [Enemy]) -> Bool {
+        // If no enemy is selected, return false
         guard let closestEnemy = selectedEnemy else {
-            // If no enemy is selected, return false
             return false
         }
         print("attacking")
-        // Animate the attack
         animatePlayerAttack()
 
-        // Decrease the enemy's hitpoints
-        closestEnemy.hitpoints -= 1
+        closestEnemy.hitpoints -= Int(weapon.damage)
         
         // Check if the enemy's hitpoints have reached zero
         if closestEnemy.hitpoints <= 0 {
@@ -94,15 +90,13 @@ class Player : SKSpriteNode {
             //    delegate.playerDidKillEnemy(at: position)
             //}
             coinCount += closestEnemy.coinValue
-            // If hitpoints are zero or less, remove the enemy from the scene and enemies array
             closestEnemy.removeFromParent()
             if let index = enemies.firstIndex(of: closestEnemy) {
                 enemies.remove(at: index)
             }
-            selectedEnemy = nil // Reset player.selectedEnemy as it's no longer valid
+            selectedEnemy = nil
         }
         
-        // Return true indicating a successful attack
         return true
     }
 
