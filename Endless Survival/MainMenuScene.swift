@@ -63,6 +63,9 @@ class MainMenuScene: SKScene {
         if !newGame{
             scene.restoreGameState()
         }
+        else{
+            scene.startNewGame()
+        }
 
         // Present the scene
         self.view?.presentScene(scene)

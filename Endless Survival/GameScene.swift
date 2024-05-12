@@ -50,13 +50,12 @@ class GameScene: SKScene {
     private var resourceCounter: ResourceCounter!
     private var harvestCircle: SKShapeNode!
 
-    public func startNewGame(completion: @escaping () -> Void) {
+    public func startNewGame() {
         print("startNewGame")
         // Clear saved game state
-        clearSavedGameState {
-            print("done clearing game state")
-        }
-        completion()
+        clearSavedGameState()
+        
+        print("done clearing game state")
     }
     
     func loadGame() {
@@ -381,6 +380,7 @@ class GameScene: SKScene {
         
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
+            print("found saved data")
             // Restore the player
             player.totalHealth = gameState.totalHealth
             player.currentHealth = gameState.currentHealth
@@ -430,14 +430,16 @@ class GameScene: SKScene {
             resourceCounter.updateCoinCount(player.coinCount)
 
         }
+        else{
+            print("something wrong with saved data. might not exist if player hit New Game, then never saved before trying to select Load")
+        }
     }
 
     
-    func clearSavedGameState(completion: @escaping () -> Void) {
+    func clearSavedGameState() {
+        print("clearSavedGameState")
         UserDefaults.standard.removeObject(forKey: "gameState")
         UserDefaults.standard.removeObject(forKey: "movementLevel")
-        // Call the completion handler once the clearing is finished
-        completion()
     }
 
 }
