@@ -50,6 +50,10 @@ class GameScene: SKScene {
     private var resourceCounter: ResourceCounter!
     private var harvestCircle: SKShapeNode!
 
+    // Workers
+    var workers: [Worker] = []
+    
+    // Save/Load Game
     public func startNewGame() {
         print("startNewGame")
         // Clear saved game state
@@ -81,7 +85,7 @@ class GameScene: SKScene {
         player.position = background.position
         player.zPosition = 3
         player.weapon = weapon
-        player.movementLevel = PlayerManager.shared.movementLevel
+        player.movementLevel = LevelManager.shared.movementLevel
         //player.delegate = self
         addChild(player)
         
@@ -155,6 +159,13 @@ class GameScene: SKScene {
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         base.zPosition = 2;
         addChild(base)
+        
+        // Add worker
+        let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
+        harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
+        harvester.zPosition = 3;
+        addChild(harvester)
+        workers.append(harvester)
     }
 
     override func willMove(from view: SKView) {
@@ -344,10 +355,21 @@ class GameScene: SKScene {
                 assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCointCount: &player.coinCount)
             }
         }
+        
+        // Worker action
+        for worker in workers {
+            if let harvester = worker as? Harvester {
+                print("should move")
+                harvester.moveToResource(resources: resources)
+            }
+        }
+        
+        // UI Update
         resourceCounter.updateCoinCount(player.coinCount)
     }
     
     // Method to save the game state
+    // TODO - not currently saving anything about drones
     func saveGameState() {
         print("saveGameState")
         var wood: [Wood] = []
@@ -385,14 +407,14 @@ class GameScene: SKScene {
         if let encoded = try? encoder.encode(gameState) {
             UserDefaults.standard.set(encoded, forKey: "gameState")
         }
-        UserDefaults.standard.set(PlayerManager.shared.movementLevel, forKey: "movementLevel")
+        UserDefaults.standard.set(LevelManager.shared.movementLevel, forKey: "movementLevel")
 
     }
 
     // Method to restore the game state
     public func restoreGameState() {
         print("restoreGameState")
-        PlayerManager.shared.movementLevel = UserDefaults.standard.object(forKey: "movementLevel") as? CGFloat ?? 1
+        LevelManager.shared.movementLevel = UserDefaults.standard.object(forKey: "movementLevel") as? CGFloat ?? 1
         
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
@@ -405,7 +427,7 @@ class GameScene: SKScene {
             player.stoneCount = gameState.stoneCount
             player.oreCount = gameState.oreCount
             player.lastUpdateHarvestTime = gameState.lastUpdateHarvestTime
-            player.movementLevel = PlayerManager.shared.movementLevel
+            player.movementLevel = LevelManager.shared.movementLevel
             player.isHarvesting = gameState.isHarvesting
             player.lastHealTime = gameState.lastHealTime
             player.lastInjuryTime = gameState.lastInjuryTime

@@ -1,7 +1,7 @@
 import SpriteKit
 
-class PlayerManager {
-    static let shared = PlayerManager() // Singleton instance
+class LevelManager {
+    static let shared = LevelManager() // Singleton instance
     
     var movementLevel: CGFloat = 1.0 // Default movement level
     

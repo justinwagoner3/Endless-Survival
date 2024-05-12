@@ -82,7 +82,6 @@ class AssaultDrone: Drone {
             for enemy in enemies {
                 let distanceFromPlayer = enemy.distance(to: playerPosition)
                 if distanceFromPlayer <= radius {
-                    print("found closest enemy")
                     closestEnemy = enemy
                 }
             }
