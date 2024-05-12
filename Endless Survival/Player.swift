@@ -20,17 +20,24 @@ class Player : SKSpriteNode {
     var weapon: Weapon!
 
     // Movement
-    func move(_ joystickInnerCircle: SKShapeNode, _ isJoystickActive: Bool, _ worldSize: CGSize){
-        // Calculate movement vector
-        let dx = joystickInnerCircle.position.x
-        let dy = joystickInnerCircle.position.y
+    func move(_ joystick: Joystick, _ isJoystickActive: Bool, _ worldSize: CGSize){
+        // Calculate distance between inner joystick and center of outer circle
+        let dx = joystick.innerCircle.position.x
+        let dy = joystick.innerCircle.position.y
+        let distance = sqrt(dx * dx + dy * dy)
         
         // Calculate movement direction
         let angle = atan2(dy, dx)
+        
+        // Calculate movement multiplier based on joystick position
+        var joystickRatio: CGFloat = 0.0
+        if distance > 0 {
+            joystickRatio = min(distance / joystick.radius, 1.0)
+        }
                 
         // Calculate movement vector
-        let movementX = cos(angle) * movementLevel
-        let movementY = sin(angle) * movementLevel
+        let movementX = cos(angle) * movementLevel * joystickRatio
+        let movementY = sin(angle) * movementLevel * joystickRatio
         
         // Move the player
         if isJoystickActive {
@@ -41,11 +48,10 @@ class Player : SKSpriteNode {
             let clampedPlayerX = max(min(potentialPlayerX, worldSize.width - size.width / 2), size.width / 2)
             let clampedPlayerY = max(min(potentialPlayerY, worldSize.height - size.height / 2), size.height / 2)
             
-            
             position = CGPoint(x: clampedPlayerX, y: clampedPlayerY)
         }
     }
-    
+
     // Method to highlight the closest enemy within a radius
     func highlightClosestEnemy(radius: CGFloat, _ enemies: [Enemy]) {
         // Unhighlight old selected enemy, if there is one

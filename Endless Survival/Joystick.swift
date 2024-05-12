@@ -3,7 +3,7 @@ import SpriteKit
 class Joystick {
     var outerCircle: SKShapeNode
     var innerCircle: SKShapeNode
-    private var radius: CGFloat
+    var radius: CGFloat
     var isActive = false
     
     var position: CGPoint {

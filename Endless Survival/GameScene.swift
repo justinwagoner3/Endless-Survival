@@ -91,7 +91,7 @@ class GameScene: SKScene {
         addChild(cameraNode)
 
         // Joystick
-        joystick = Joystick(radius: 75.0, position: CGPoint(x: -819.2000122070312, y: -283.40283203125), parent: cameraNode)
+        joystick = Joystick(radius: 100.0, position: CGPoint(x: -819.2000122070312, y: -283.40283203125), parent: cameraNode)
 
         // Create harvest circle as child of camera
         harvestCircle = SKShapeNode(circleOfRadius: 50)
@@ -282,7 +282,7 @@ class GameScene: SKScene {
         // logging
         let oldPlayerPosition = player.position
         
-        player.move(joystick.innerCircle, joystick.isActive, worldSize)
+        player.move(joystick, joystick.isActive, worldSize)
         
         // Update the camera position to follow the player
         cameraNode.position = player.position
