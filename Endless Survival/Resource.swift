@@ -66,12 +66,7 @@ class Wood: Resource {
 
     override func encode(to encoder: Encoder) throws {
         print("Wood encode")
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(spawnBounds, forKey: .spawnBounds)
-        try container.encode(resourceCount, forKey: .resourceCount)
-        try container.encode(collectionHarvestTime, forKey: .collectionHarvestTime)
-        try container.encode(totalHarvestButtonHoldTime, forKey: .totalHarvestButtonHoldTime)
-        try container.encode(self.position, forKey: .curPosition)
+        try super.encode(to: encoder)
 
     }
 
@@ -104,13 +99,7 @@ class Stone: Resource {
     
     override func encode(to encoder: Encoder) throws {
         print("Stone encode")
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(spawnBounds, forKey: .spawnBounds)
-        try container.encode(resourceCount, forKey: .resourceCount)
-        try container.encode(collectionHarvestTime, forKey: .collectionHarvestTime)
-        try container.encode(totalHarvestButtonHoldTime, forKey: .totalHarvestButtonHoldTime)
-        try container.encode(self.position, forKey: .curPosition)
-
+        try super.encode(to: encoder)
     }
 
     required convenience init(from decoder: Decoder) throws {
@@ -141,12 +130,7 @@ class Ore: Resource {
     
     override func encode(to encoder: Encoder) throws {
         print("Ore encode")
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(spawnBounds, forKey: .spawnBounds)
-        try container.encode(resourceCount, forKey: .resourceCount)
-        try container.encode(collectionHarvestTime, forKey: .collectionHarvestTime)
-        try container.encode(totalHarvestButtonHoldTime, forKey: .totalHarvestButtonHoldTime)
-        try container.encode(self.position, forKey: .curPosition)
+        try super.encode(to: encoder)
 
     }
 
