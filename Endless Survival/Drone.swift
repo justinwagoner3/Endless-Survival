@@ -1,6 +1,6 @@
 import SpriteKit
 
-class Drone: Codable {
+class Drone: SKSpriteNode, Codable {
     var radius: CGFloat
     var fireRate: TimeInterval
     var damage: CGFloat
@@ -32,6 +32,13 @@ class Drone: Codable {
         self.fireRate = fireRate
         self.damage = damage
         self.lastAttackTime = lastAttackTime
+        
+        let size = CGSize(width: 25, height: 25)
+        let color = UIColor.blue
+        super.init(texture: nil, color: color, size: size)
+        
+        self.zPosition = 3
+
     }
     
     init(radius: CGFloat, fireRate: TimeInterval, damage: CGFloat) {
@@ -39,6 +46,17 @@ class Drone: Codable {
         self.fireRate = fireRate
         self.damage = damage
         self.lastAttackTime = 0
+        
+        let size = CGSize(width: 25, height: 25)
+        let color = UIColor.blue
+        super.init(texture: nil, color: color, size: size)
+        
+        self.zPosition = 3
+
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -49,5 +67,9 @@ class AssaultDrone: Drone {
     
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

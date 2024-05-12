@@ -27,6 +27,12 @@ class GameScene: SKScene {
     // Weapon
     public var weapon: Weapon!
     
+    // Drone
+    public var drone1: Drone?
+    public var drone2: Drone?
+    public var drone3: Drone?
+
+    
     // Base
     public var base: SKSpriteNode!
     private var baseCircle: SKShapeNode!
@@ -84,7 +90,12 @@ class GameScene: SKScene {
         player.movementLevel = PlayerManager.shared.movementLevel
         //player.delegate = self
         addChild(player)
-
+        
+        // Create drones
+        drone1 = AssaultDrone()
+        drone1!.position = CGPoint(x: -50, y: 50)
+        player.addChild(drone1!)
+        
         // Set up the camera
         self.camera = cameraNode;
         cameraNode.position = player.position
