@@ -372,10 +372,14 @@ class GameScene: SKScene {
         if let encoded = try? encoder.encode(gameState) {
             UserDefaults.standard.set(encoded, forKey: "gameState")
         }
+        UserDefaults.standard.set(PlayerManager.shared.movementLevel, forKey: "movementLevel")
+
     }
 
     // Method to restore the game state
     public func restoreGameState() {
+        PlayerManager.shared.movementLevel = UserDefaults.standard.object(forKey: "movementLevel") as? CGFloat ?? 1
+        
         // Retrieve the saved gameState (e.g., from UserDefaults)
         // Example:
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
@@ -428,8 +432,10 @@ class GameScene: SKScene {
         }
     }
     
+    
     func clearSavedGameState(completion: @escaping () -> Void) {
         UserDefaults.standard.removeObject(forKey: "gameState")
+        UserDefaults.standard.removeObject(forKey: "movementLevel")
         // Call the completion handler once the clearing is finished
         completion()
     }

@@ -45,6 +45,7 @@ class UpgradeScene: SKScene {
     
     private func increasePlayerMovementLevel() {
         PlayerManager.shared.movementLevel += 1.0
+        UserDefaults.standard.set(PlayerManager.shared.movementLevel, forKey: "movementLevel")
         updateIncreaseMovementButtonText()
     }
 
