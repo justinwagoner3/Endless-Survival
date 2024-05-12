@@ -5,7 +5,6 @@ class Resource: SKSpriteNode, Codable {
     var resourceCount: Int
     var collectionHarvestTime: TimeInterval
     var totalHarvestButtonHoldTime: TimeInterval = 0
-    var colorData: Data // Store color data instead of UIColor directly
 
 
     enum CodingKeys: String, CodingKey {
@@ -14,38 +13,34 @@ class Resource: SKSpriteNode, Codable {
         case collectionHarvestTime
         case totalHarvestButtonHoldTime
         case curPosition
-        case colorData // Add color data key
-
     }
     
     func encode(to encoder: Encoder) throws {
+        print("Resource encode")
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(spawnBounds, forKey: .spawnBounds)
         try container.encode(resourceCount, forKey: .resourceCount)
         try container.encode(collectionHarvestTime, forKey: .collectionHarvestTime)
         try container.encode(totalHarvestButtonHoldTime, forKey: .totalHarvestButtonHoldTime)
         try container.encode(self.position, forKey: .curPosition)
-        try container.encode(colorData, forKey: .colorData) // Encode color data
 
     }
 
     required convenience init(from decoder: Decoder) throws {
+        print("Resource decode")
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
         let resourceCount = try container.decode(Int.self, forKey: .resourceCount)
         let collectionHarvestTime = try container.decode(TimeInterval.self, forKey: .collectionHarvestTime)
         let totalHarvestButtonHoldTime = try container.decode(TimeInterval.self, forKey: .totalHarvestButtonHoldTime)
         let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
-        let colorData = try container.decode(Data.self, forKey: .colorData) // Decode color data
-        let color = try NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) ?? .clear // Convert color data back to UIColor
 
-        self.init(color: color, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
+        self.init(color: .clear, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         self.totalHarvestButtonHoldTime = totalHarvestButtonHoldTime
         self.position = curPosition
     }
 
     init(color: UIColor, spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
-        self.colorData = try! NSKeyedArchiver.archivedData(withRootObject: color, requiringSecureCoding: false) // Convert color to data
         self.spawnBounds = spawnBounds
         self.resourceCount = resourceCount
         self.collectionHarvestTime = collectionHarvestTime
@@ -69,6 +64,31 @@ class Resource: SKSpriteNode, Codable {
 
 class Wood: Resource {
 
+    override func encode(to encoder: Encoder) throws {
+        print("Wood encode")
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(spawnBounds, forKey: .spawnBounds)
+        try container.encode(resourceCount, forKey: .resourceCount)
+        try container.encode(collectionHarvestTime, forKey: .collectionHarvestTime)
+        try container.encode(totalHarvestButtonHoldTime, forKey: .totalHarvestButtonHoldTime)
+        try container.encode(self.position, forKey: .curPosition)
+
+    }
+
+    required convenience init(from decoder: Decoder) throws {
+        print("Wood decode")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
+        let resourceCount = try container.decode(Int.self, forKey: .resourceCount)
+        let collectionHarvestTime = try container.decode(TimeInterval.self, forKey: .collectionHarvestTime)
+        let totalHarvestButtonHoldTime = try container.decode(TimeInterval.self, forKey: .totalHarvestButtonHoldTime)
+        let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
+
+        self.init(spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
+        self.totalHarvestButtonHoldTime = totalHarvestButtonHoldTime
+        self.position = curPosition
+    }
+
     init(spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
         super.init(color: .brown, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         // Additional wood-specific customization can go here
@@ -78,12 +98,35 @@ class Wood: Resource {
         fatalError("init(coder:) has not been implemented")
     }
     
-    required convenience init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
 }
 
 class Stone: Resource {
+    
+    override func encode(to encoder: Encoder) throws {
+        print("Stone encode")
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(spawnBounds, forKey: .spawnBounds)
+        try container.encode(resourceCount, forKey: .resourceCount)
+        try container.encode(collectionHarvestTime, forKey: .collectionHarvestTime)
+        try container.encode(totalHarvestButtonHoldTime, forKey: .totalHarvestButtonHoldTime)
+        try container.encode(self.position, forKey: .curPosition)
+
+    }
+
+    required convenience init(from decoder: Decoder) throws {
+        print("Stone decode")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
+        let resourceCount = try container.decode(Int.self, forKey: .resourceCount)
+        let collectionHarvestTime = try container.decode(TimeInterval.self, forKey: .collectionHarvestTime)
+        let totalHarvestButtonHoldTime = try container.decode(TimeInterval.self, forKey: .totalHarvestButtonHoldTime)
+        let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
+
+        self.init(spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
+        self.totalHarvestButtonHoldTime = totalHarvestButtonHoldTime
+        self.position = curPosition
+    }
+
     init(spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
         super.init(color: .gray, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         // Additional stone-specific customization can go here
@@ -92,13 +135,35 @@ class Stone: Resource {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    required convenience init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
 }
 
 class Ore: Resource {
+    
+    override func encode(to encoder: Encoder) throws {
+        print("Ore encode")
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(spawnBounds, forKey: .spawnBounds)
+        try container.encode(resourceCount, forKey: .resourceCount)
+        try container.encode(collectionHarvestTime, forKey: .collectionHarvestTime)
+        try container.encode(totalHarvestButtonHoldTime, forKey: .totalHarvestButtonHoldTime)
+        try container.encode(self.position, forKey: .curPosition)
+
+    }
+
+    required convenience init(from decoder: Decoder) throws {
+        print("Ore decode")
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
+        let resourceCount = try container.decode(Int.self, forKey: .resourceCount)
+        let collectionHarvestTime = try container.decode(TimeInterval.self, forKey: .collectionHarvestTime)
+        let totalHarvestButtonHoldTime = try container.decode(TimeInterval.self, forKey: .totalHarvestButtonHoldTime)
+        let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
+
+        self.init(spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
+        self.totalHarvestButtonHoldTime = totalHarvestButtonHoldTime
+        self.position = curPosition
+    }
+
     init(spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
         super.init(color: .black, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
         // Additional ore-specific customization can go here
@@ -106,9 +171,5 @@ class Ore: Resource {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    required convenience init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
     }
 }

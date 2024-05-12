@@ -328,6 +328,20 @@ class GameScene: SKScene {
     
     // Method to save the game state
     func saveGameState() {
+        var wood: [Wood] = []
+        var stone: [Stone] = []
+        var ore: [Ore] = []
+        for resource in resources{
+            if resource is Wood{
+                wood.append(resource as! Wood)
+            }
+            if resource is Stone{
+                stone.append(resource as! Stone)
+            }
+            if resource is Ore{
+                ore.append(resource as! Ore)
+            }
+        }
         let gameState = GameState(totalHealth: player.totalHealth,
                                   currentHealth: player.currentHealth,
                                   coinCount: player.coinCount,
@@ -342,7 +356,9 @@ class GameScene: SKScene {
                                   lastHealTime: player.lastHealTime,
                                   lastInjuryTime: player.lastInjuryTime ?? 0,
                                   enemies: enemies,
-                                  resources: resources)
+                                  wood: wood,
+                                  stone: stone,
+                                  ore: ore)
         // Serialize and save the gameState (e.g., using UserDefaults)
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(gameState) {
@@ -384,11 +400,18 @@ class GameScene: SKScene {
             for resource in resources{
                 resource.removeFromParent()
             }
-            for resource in gameState.resources{
-                addChild(resource)
+            for wood in gameState.wood{
+                addChild(wood)
+                resources.append(wood)
             }
-            resources = gameState.resources
-            
+            for stone in gameState.stone{
+                addChild(stone)
+                resources.append(stone)
+            }
+            for ore in gameState.ore{
+                addChild(ore)
+                resources.append(ore)
+            }
             
             // Update other scene elements as needed
             updateHealthBar()
@@ -421,6 +444,8 @@ struct GameState: Codable {
     var lastHealTime: TimeInterval
     var lastInjuryTime: TimeInterval
     var enemies: [Enemy]
-    var resources: [Resource]
+    var wood: [Wood]
+    var stone: [Stone]
+    var ore: [Ore]
 }
 
