@@ -334,6 +334,7 @@ class GameScene: SKScene {
     
     // Method to save the game state
     func saveGameState() {
+        print("saveGameState")
         var wood: [Wood] = []
         var stone: [Stone] = []
         var ore: [Ore] = []
@@ -375,6 +376,7 @@ class GameScene: SKScene {
 
     // Method to restore the game state
     public func restoreGameState() {
+        print("restoreGameState")
         PlayerManager.shared.movementLevel = UserDefaults.standard.object(forKey: "movementLevel") as? CGFloat ?? 1
         
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
@@ -406,6 +408,7 @@ class GameScene: SKScene {
             for resource in resources{
                 resource.removeFromParent()
             }
+            resources = []
             for wood in gameState.wood{
                 addChild(wood)
                 resources.append(wood)
@@ -424,7 +427,8 @@ class GameScene: SKScene {
             resourceCounter.updateWoodCount(player.woodCount)
             resourceCounter.updateStoneCount(player.stoneCount)
             resourceCounter.updateOreCount(player.oreCount)
-            
+            resourceCounter.updateCoinCount(player.coinCount)
+
         }
     }
 
