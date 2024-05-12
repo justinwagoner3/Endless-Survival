@@ -4,7 +4,7 @@ class Weapon: Codable {
     var radius: CGFloat
     var fireRate: TimeInterval
     var damage: CGFloat
-    var lastAttackTime: TimeInterval? // Stores the time of the last attack
+    var lastAttackTime: TimeInterval
 
     enum CodingKeys: String, CodingKey {
         case radius
@@ -26,7 +26,7 @@ class Weapon: Codable {
         let radius = try container.decode(CGFloat.self, forKey: .radius)
         let fireRate = try container.decode(TimeInterval.self, forKey: .fireRate)
         let damage = try container.decode(CGFloat.self, forKey: .damage)
-        let lastAttackTime = try container.decode(CGFloat.self, forKey: .lastAttackTime)
+        let lastAttackTime = try container.decode(TimeInterval.self, forKey: .lastAttackTime)
 
         self.radius = radius
         self.fireRate = fireRate
@@ -38,6 +38,7 @@ class Weapon: Codable {
         self.radius = radius
         self.fireRate = fireRate
         self.damage = damage
+        self.lastAttackTime = 0
     }
 }
 

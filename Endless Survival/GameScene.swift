@@ -297,18 +297,15 @@ class GameScene: SKScene {
         // Highlight + Attack closest enemy with a cooldown
         player.highlightClosestEnemy(radius: player.weapon.radius, enemies)
         if !player.isHarvesting {
-            if let lastAttackTime = player.weapon.lastAttackTime {
-                let timeSinceLastAttack = currentTime - lastAttackTime
-                if timeSinceLastAttack >= player.weapon.fireRate {
-                    // Only reset the cooldown if the attack was successful
-                    if player.attackClosestEnemy(&enemies) {
-                        player.weapon.lastAttackTime = currentTime
-                        resourceCounter.updateCoinCount(player.coinCount)
-                    }
+            let timeSinceLastAttack = currentTime - player.weapon.lastAttackTime
+            if timeSinceLastAttack >= player.weapon.fireRate {
+                // Only reset the cooldown if the attack was successful
+                if player.attackClosestEnemy(&enemies) {
+                    player.weapon.lastAttackTime = currentTime
+                    resourceCounter.updateCoinCount(player.coinCount)
                 }
-            } else {
-                player.weapon.lastAttackTime = currentTime
             }
+            
         }
 
         // Get attacked + heal
@@ -380,8 +377,6 @@ class GameScene: SKScene {
     public func restoreGameState() {
         PlayerManager.shared.movementLevel = UserDefaults.standard.object(forKey: "movementLevel") as? CGFloat ?? 1
         
-        // Retrieve the saved gameState (e.g., from UserDefaults)
-        // Example:
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
             // Restore the player
@@ -429,9 +424,10 @@ class GameScene: SKScene {
             resourceCounter.updateWoodCount(player.woodCount)
             resourceCounter.updateStoneCount(player.stoneCount)
             resourceCounter.updateOreCount(player.oreCount)
+            
         }
     }
-    
+
     
     func clearSavedGameState(completion: @escaping () -> Void) {
         UserDefaults.standard.removeObject(forKey: "gameState")
