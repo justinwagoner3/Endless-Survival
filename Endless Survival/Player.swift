@@ -18,6 +18,7 @@ class Player : SKSpriteNode {
     var lastInjuryTime: TimeInterval?
     var selectedEnemy: Enemy?
     var weapon: Weapon!
+    var drones: [Drone] = []
 
     // Movement
     func move(_ joystick: Joystick, _ isJoystickActive: Bool, _ worldSize: CGSize){
@@ -197,13 +198,61 @@ class Player : SKSpriteNode {
                 }
             }
             
-            // Reset the total hold time
             resource.totalHarvestButtonHoldTime = 0
                                 
-            // Exit the loop after collecting one resource
             return
         }
     }    
+    
+    func addDrone(_ drone: Drone) {
+        // Check if the player can have more drones
+        guard drones.count < 3 else {
+            print("Maximum number of drones reached.")
+            return
+        }
+        drones.append(drone)
+        // Set initial positions for the drones
+        setInitialDronePositions()
+        addChild(drone) 
+    }
+    
+    private func setInitialDronePositions() {
+        // Define positions relative to the player for the drones
+        let dronePositions: [(CGFloat, CGFloat)] = [(-50, 50), (50, 50), (0, -50)]
+        // Loop through the drones and set their positions
+        for (index, drone) in drones.enumerated() {
+            guard index < dronePositions.count else {
+                break // Exit loop if there are more drones than positions
+            }
+            let position = dronePositions[index]
+            drone.position = CGPoint(x: position.0, y: position.1)
+            print(drone.position)
+        }
+    }
+    
+    // this should move each drone in the drones array in a circular path around the parent element. maybe define a cirular "path" (make sure it includes these cooridnates, beacuse they are the initial spawn coordinates: -50,50; 50,50; 0,-50) and then move the character along this path? it will be called in the update method
+    func updateDronePositions() {
+        // Loop through the drones and update their positions
+        for drone in drones {
+            // Define circular path parameters
+            let radius: CGFloat = 50 // adjust the radius as needed
+            let angularSpeed: CGFloat = 0.03 // adjust the speed as needed
+            let center = CGPoint(x: 0, y: 0) // center of the circular path, relative to the player
+            
+            // Calculate current angle of the drone relative to the center
+            let currentAngle = atan2(drone.position.y - center.y, drone.position.x - center.x)
+            
+            // Calculate new angle by adding angular speed
+            let newAngle = currentAngle + angularSpeed
+            
+            // Calculate new position using polar coordinates relative to the center
+            let newX = center.x + radius * cos(newAngle)
+            let newY = center.y + radius * sin(newAngle)
+            
+            // Update drone position relative to the player
+            drone.position = CGPoint(x: newX, y: newY)
+        }
+    }
 }
 
 //protocol PlayerDelegate: AnyObject {
