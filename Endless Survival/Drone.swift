@@ -89,6 +89,7 @@ class AssaultDrone: Drone {
             
             // If an enemy is found within range, attack it
             if let closestEnemy = closestEnemy {
+                animateDroneAttack()
                 // Perform attack logic
                 closestEnemy.hitpoints -= Int(damage)
                 
