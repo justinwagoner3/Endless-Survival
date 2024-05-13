@@ -302,21 +302,14 @@ class GameScene: SKScene {
 
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        // logging
-        let oldPlayerPosition = player.position
         
         player.move(joystick, joystick.isActive, worldSize)
         
         // Update the camera position to follow the player
         cameraNode.position = player.position
 
-        // don't log when standing still
-        if(oldPlayerPosition != player.position){
-            //mp("player.position",player.position)
-            //mp("cameraNode.position",cameraNode.position)
-        }
         
-        // Highlight + Attack closest enemy with a cooldown
+        // Highlight + Attack closest enemy
         // TODO - move most of this logic into player class like i did for Drone class
         player.highlightClosestEnemy(radius: player.weapon.radius, enemies)
         player.attackClosestEnemy(&enemies, currentTime)
@@ -358,7 +351,6 @@ class GameScene: SKScene {
             if let harvester = worker as? Harvester {
                 // Not on resource and has bag space: move to resource
                 if(!harvester.isOnResource && harvester.bagSpace != 0){
-                    //print("Not on resource and has bag space: should move to resource")
                     harvester.moveToResource(resources: resources)
                 }
                 // On base: deposit
@@ -367,17 +359,18 @@ class GameScene: SKScene {
                 }
                 // Bag is full: return back to base
                 else if(harvester.bagSpace == 0){
-                    //print("Bag is full: return back to base")
                     harvester.moveToBase(base: base, player: &player)
                     harvester.isOnResource = false
                 }
                 // On resource with space in bag: harvest
                 else if(harvester.isOnResource && harvester.bagSpace != 0) {
-                    //print("On resource with space in bag: harvest")
                     if var resource = harvester.curResource{
                         harvester.updateHarvestTime(currentTime: currentTime, &resource)
                         harvester.checkAndCollectResources(&resource, &resources)
                     }
+                }
+                else{
+                    print("worker doesn't know what to do")
                 }
             }
             if let shooter = worker as? Shooter {
