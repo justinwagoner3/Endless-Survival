@@ -170,12 +170,12 @@ class Shooter: Worker{
                 let distanceFromPlayer = enemy.distance(to: self.position)
                 if distanceFromPlayer <= weapon.radius {
                     closestEnemy = enemy
-                    print("check")
                 }
             }
             
             // If an enemy is found within range, attack it
             if let closestEnemy = closestEnemy {
+                animateShooterAttack()
                 // Perform attack logic
                 closestEnemy.hitpoints -= Int(weapon.damage)
                 
