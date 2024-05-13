@@ -84,6 +84,7 @@
 		BBD640F62BF17B4A00EA27E0 /* Worker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Worker.swift; sourceTree = "<group>"; };
 		BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 		BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerExt.swift; sourceTree = "<group>"; };
+		BBD640FD2BF1A5F200EA27E0 /* zPositions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = zPositions.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +159,7 @@
 				BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */,
 				BB0EE5EC2BAF4E9D0035F36B /* Main.storyboard */,
 				BB0EE5F12BAF4E9E0035F36B /* LaunchScreen.storyboard */,
+				BBD640FD2BF1A5F200EA27E0 /* zPositions.md */,
 			);
 			path = "Endless Survival";
 			sourceTree = "<group>";
