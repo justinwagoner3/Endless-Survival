@@ -135,6 +135,7 @@
 		BB0EE5E12BAF4E9D0035F36B /* Endless Survival */ = {
 			isa = PBXGroup;
 			children = (
+				BBD640FD2BF1A5F200EA27E0 /* zPositions.md */,
 				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
 				BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */,
 				BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */,
@@ -159,7 +160,6 @@
 				BB0EE5EF2BAF4E9E0035F36B /* Assets.xcassets */,
 				BB0EE5EC2BAF4E9D0035F36B /* Main.storyboard */,
 				BB0EE5F12BAF4E9E0035F36B /* LaunchScreen.storyboard */,
-				BBD640FD2BF1A5F200EA27E0 /* zPositions.md */,
 			);
 			path = "Endless Survival";
 			sourceTree = "<group>";

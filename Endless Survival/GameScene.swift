@@ -330,16 +330,17 @@ class GameScene: SKScene {
         }
         
 
-        // Get attacked + heal
+        // Get attacked
         for enemy in enemies {
             if let damage = enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime){
                 player.decreaseHealth(amount: damage)
             }
         }
+        
+        // Passive Healing
         if player.shouldHeal(currentTime, joystick.isActive) {
             player.increaseHealth(amount: 1,currentTime: currentTime)
         }
-        updateHealthBar()
         
         // Resource Collection
         if var resource = updateHarvestCircleVisibility() {
@@ -347,7 +348,7 @@ class GameScene: SKScene {
             player.checkAndCollectResources(&resource, &resources)
         }
         
-        // Base
+        // Base Circle
         updateBaseCircleVisibility()
         
         // Move drones around player
@@ -398,6 +399,7 @@ class GameScene: SKScene {
         resourceCounter.updateWoodCount(player.woodCount)
         resourceCounter.updateStoneCount(player.stoneCount)
         resourceCounter.updateOreCount(player.oreCount)
+        updateHealthBar()
 
     }
     
