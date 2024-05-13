@@ -81,30 +81,36 @@ class Player : SKSpriteNode {
     }
     
     // Method to attack the highlighted enemy
-    func attackClosestEnemy(_ enemies: inout [Enemy], damage: Int) -> Bool {
+    func attackClosestEnemy(_ enemies: inout [Enemy], _ currentTime: TimeInterval) {
         // If no enemy is selected, return false
         guard let closestEnemy = selectedEnemy else {
-            return false
+            return
         }
-        //print("attacking")
-        animatePlayerAttack()
-
-        closestEnemy.hitpoints -= Int(damage)
         
-        // Check if the enemy's hitpoints have reached zero
-        if closestEnemy.hitpoints <= 0 {
-            //if let delegate = delegate {
-            //    delegate.playerDidKillEnemy(at: position)
-            //}
-            coinCount += closestEnemy.coinValue
-            closestEnemy.removeFromParent()
-            if let index = enemies.firstIndex(of: closestEnemy) {
-                enemies.remove(at: index)
+        if !isHarvesting {
+            let timeSinceLastAttack = currentTime - weapon.lastAttackTime
+            if timeSinceLastAttack >= weapon.fireRate {
+                weapon.lastAttackTime = currentTime
+                
+                //print("attacking")
+                animatePlayerAttack()
+                
+                closestEnemy.hitpoints -= Int(weapon.damage)
+                
+                // Check if the enemy's hitpoints have reached zero
+                if closestEnemy.hitpoints <= 0 {
+                    //if let delegate = delegate {
+                    //    delegate.playerDidKillEnemy(at: position)
+                    //}
+                    coinCount += closestEnemy.coinValue
+                    closestEnemy.removeFromParent()
+                    if let index = enemies.firstIndex(of: closestEnemy) {
+                        enemies.remove(at: index)
+                    }
+                    selectedEnemy = nil
+                }
             }
-            selectedEnemy = nil
-        }
-        
-        return true
+        }        
     }
 
     // Method to check if the player should receive passive healing

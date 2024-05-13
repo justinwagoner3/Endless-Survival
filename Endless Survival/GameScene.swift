@@ -90,9 +90,9 @@ class GameScene: SKScene {
         addChild(player)
         
         // Create drones
-        player.addDrone(AssaultDrone())
-        player.addDrone(AssaultDrone())
-        player.addDrone(AssaultDrone())
+        //player.addDrone(AssaultDrone())
+        //player.addDrone(AssaultDrone())
+        //player.addDrone(AssaultDrone())
 
         // Set up the camera
         self.camera = cameraNode;
@@ -164,14 +164,14 @@ class GameScene: SKScene {
         let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
         harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         harvester.zPosition = 3;
-        addChild(harvester)
-        workers.append(harvester)
+        //addChild(harvester)
+        //workers.append(harvester)
         
         let shooter = Shooter(color: .purple, size: CGSize(width: 25, height: 25))
         shooter.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         shooter.zPosition = 3;
-        addChild(shooter)
-        workers.append(shooter)
+        //addChild(shooter)
+        //workers.append(shooter)
 
     }
 
@@ -319,15 +319,7 @@ class GameScene: SKScene {
         // Highlight + Attack closest enemy with a cooldown
         // TODO - move most of this logic into player class like i did for Drone class
         player.highlightClosestEnemy(radius: player.weapon.radius, enemies)
-        if !player.isHarvesting {
-            let timeSinceLastAttack = currentTime - player.weapon.lastAttackTime
-            if timeSinceLastAttack >= player.weapon.fireRate {
-                // Only reset the cooldown if the attack was successful
-                if player.attackClosestEnemy(&enemies, damage: Int(player.weapon.damage)) {
-                    player.weapon.lastAttackTime = currentTime
-                }
-            }
-        }
+        player.attackClosestEnemy(&enemies, currentTime)
         
 
         // Get attacked
