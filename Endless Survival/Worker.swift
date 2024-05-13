@@ -119,11 +119,7 @@ class Harvester: Worker {
                 isOnResource = false
             }
             
-            resource.totalHarvestButtonHoldTime = 0
-            
-            mp("woodCount ",woodCount)
-            mp("stoneCount ",stoneCount)
-            mp("oreCount ",oreCount)
+            resource.totalHarvestButtonHoldTime = 0            
         }
     }
 }
@@ -131,10 +127,77 @@ class Harvester: Worker {
 class Shooter: Worker{
     var attackLevel: Int = 1
     var weapon: Weapon = Pistol()
-}
+    var lastAttackTime: TimeInterval = 0
+    
+    // Method to make the shooter walk towards the closest enemy
+    func walkTowardsEnemy(enemies: [Enemy]) {
+        // Find the closest enemy
+        var closestDistance: CGFloat = .infinity
+        var closestEnemy: Enemy?
+        for enemy in enemies {
+            let distance = self.position.distance(to: enemy.position)
+            if distance < closestDistance {
+                closestDistance = distance
+                closestEnemy = enemy
+            }
+        }
 
-    extension CGPoint {
-        func distance(to point: CGPoint) -> CGFloat {
-            return hypot(point.x - self.x, point.y - self.y)
+        guard let enemyToMoveTo = closestEnemy else {
+            print("No enemies found.")
+            return
+        }
+
+        // Calculate the distance between the shooter and the enemy
+        let distance = sqrt(pow(enemyToMoveTo.position.x - self.position.x, 2) + pow(enemyToMoveTo.position.y - self.position.y, 2))
+
+        // Calculate the duration based on the distance and the shooter's movement level
+        let duration = distance / (CGFloat(movementLevel) * movementSpeed)
+
+        // Create the move action
+        let moveAction = SKAction.move(to: enemyToMoveTo.position, duration: TimeInterval(duration))
+
+        // Run the move action
+        run(moveAction)
+    }
+
+    // Method to make the shooter attack the enemy
+    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerCointCount: inout Int) {
+        // Check if enough time has passed since the last attack
+        if currentTime - lastAttackTime >= weapon.fireRate {
+            // Find the closest enemy within the radius
+            var closestEnemy: Enemy? = nil
+            for enemy in enemies {
+                let distanceFromPlayer = enemy.distance(to: self.position)
+                if distanceFromPlayer <= weapon.radius {
+                    closestEnemy = enemy
+                    print("check")
+                }
+            }
+            
+            // If an enemy is found within range, attack it
+            if let closestEnemy = closestEnemy {
+                // Perform attack logic
+                closestEnemy.hitpoints -= Int(weapon.damage)
+                
+                // Check if the enemy's hitpoints have reached zero
+                if closestEnemy.hitpoints <= 0 {
+                    playerCointCount += closestEnemy.coinValue
+                    // Handle enemy defeat
+                    closestEnemy.removeFromParent()
+                    if let index = enemies.firstIndex(of: closestEnemy) {
+                        enemies.remove(at: index)
+                    }
+                }
+                
+                // Update last attack time for fire rate cooldown
+                lastAttackTime = currentTime
+            }
         }
     }
+}
+
+extension CGPoint {
+    func distance(to point: CGPoint) -> CGFloat {
+        return hypot(point.x - self.x, point.y - self.y)
+    }
+}

@@ -160,12 +160,19 @@ class GameScene: SKScene {
         base.zPosition = 2;
         addChild(base)
         
-        // Add worker
+        // Add workers
         let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
         harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         harvester.zPosition = 3;
         addChild(harvester)
         workers.append(harvester)
+        
+        let shooter = Shooter(color: .purple, size: CGSize(width: 25, height: 25))
+        shooter.position = CGPoint(x: background.position.x - 200, y: background.position.y)
+        shooter.zPosition = 3;
+        addChild(shooter)
+        workers.append(shooter)
+
     }
 
     override func willMove(from view: SKView) {
@@ -379,6 +386,10 @@ class GameScene: SKScene {
                         harvester.checkAndCollectResources(&resource, &resources)
                     }
                 }
+            }
+            if let shooter = worker as? Shooter {
+                shooter.walkTowardsEnemy(enemies: enemies)
+                shooter.attack(&enemies, currentTime: currentTime, playerCointCount: &player.coinCount)
             }
         }
         
