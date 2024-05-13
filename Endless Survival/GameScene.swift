@@ -155,9 +155,8 @@ class GameScene: SKScene {
         resources.append(ore)
         
         // Create a base
-        base = SKSpriteNode(color: .white, size: CGSize(width: 100, height: 100))
+        base = Base()
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
-        base.zPosition = 2;
         addChild(base)
         
         // Add workers

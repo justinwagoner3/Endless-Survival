@@ -34,6 +34,7 @@
 		BBD640F72BF17B4A00EA27E0 /* Worker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640F62BF17B4A00EA27E0 /* Worker.swift */; };
 		BBD640F92BF17C9B00EA27E0 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */; };
 		BBD640FB2BF19C9800EA27E0 /* WorkerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */; };
+		BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FE2BF1AE0A00EA27E0 /* Base.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 		BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerExt.swift; sourceTree = "<group>"; };
 		BBD640FD2BF1A5F200EA27E0 /* zPositions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = zPositions.md; sourceTree = "<group>"; };
+		BBD640FE2BF1AE0A00EA27E0 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 				BBD640F42BF177E200EA27E0 /* DroneExt.swift */,
 				BBD640F62BF17B4A00EA27E0 /* Worker.swift */,
 				BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */,
+				BBD640FE2BF1AE0A00EA27E0 /* Base.swift */,
 				BBA5F8912BE861D700D4E1EB /* Joystick.swift */,
 				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
 				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
@@ -326,6 +329,7 @@
 				BBA5F8922BE861D700D4E1EB /* Joystick.swift in Sources */,
 				BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */,
 				BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */,
+				BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */,
 				BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */,
 				BBD640F52BF177E200EA27E0 /* DroneExt.swift in Sources */,
 				BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */,
