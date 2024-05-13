@@ -157,7 +157,7 @@ class Player : SKSpriteNode {
         lastInjuryTime = CACurrentMediaTime()
     }
 
-    func updateHarvestTime(currentTime: TimeInterval, _ resource: Resource){
+    func updateHarvestTime(currentTime: TimeInterval, _ resource: inout Resource){
         // Don't update time if not harvesting
         guard isHarvesting else {
             lastUpdateHarvestTime = currentTime
@@ -175,7 +175,7 @@ class Player : SKSpriteNode {
     }
 
     // Method to check for player-resource contact and collect resources
-    func checkAndCollectResources(_ resource: Resource, _ resources: inout [Resource]) {
+    func checkAndCollectResources(_ resource: inout Resource, _ resources: inout [Resource]) {
         // Check if the total hold time exceeds the required harvest time
         if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
             // Perform resource collection logic based on the resource type
