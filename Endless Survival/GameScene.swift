@@ -141,7 +141,7 @@ class GameScene: SKScene {
         cameraNode.addChild(resourceCounter)
 
         // Spawn enemies
-        spawnEnemies(count: 10)
+        spawnEnemies(count: 20)
         
         // Spawn resources
         let wood = Wood(spawnBounds:worldSize,resourceCount:10, collectionHarvestTime: 1.0)
@@ -163,12 +163,15 @@ class GameScene: SKScene {
         let woodComponent = WoodComponent()
         let stoneComponent = StoneComponent()
         let oreComponent = OreComponent()
+        let sentryComponent = SentryComponent()
         base.addComponent(woodComponent)
         base.addComponent(stoneComponent)
         base.addComponent(oreComponent)
+        base.addComponent(sentryComponent)
         addChild(woodComponent)
         addChild(stoneComponent)
         addChild(oreComponent)
+        addChild(sentryComponent)
 
 
         // Add workers
@@ -392,6 +395,9 @@ class GameScene: SKScene {
         for baseComponent in base.components {
             if let resourceComponent = baseComponent as? ResourceComponent {
                 resourceComponent.autoCollectResources(&player, currentTime)
+            }
+            if let attackComponent = baseComponent as? AttackComponent {
+                attackComponent.attack(&enemies, currentTime: currentTime, playerCointCount: &player.coinCount)
             }
         }
         

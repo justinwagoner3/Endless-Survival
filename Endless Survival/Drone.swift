@@ -79,10 +79,12 @@ class AssaultDrone: Drone {
         if currentTime - lastAttackTime >= fireRate {
             // Find the closest enemy within the radius
             var closestEnemy: Enemy? = nil
+            var closestDistance: CGFloat = CGFloat.infinity
             for enemy in enemies {
                 let distanceFromPlayer = enemy.distance(to: playerPosition)
-                if distanceFromPlayer <= radius {
+                if distanceFromPlayer <= radius && distanceFromPlayer < closestDistance {
                     closestEnemy = enemy
+                    closestDistance = distanceFromPlayer
                 }
             }
             

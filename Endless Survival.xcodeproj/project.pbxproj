@@ -36,6 +36,7 @@
 		BBD640FB2BF19C9800EA27E0 /* WorkerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */; };
 		BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FE2BF1AE0A00EA27E0 /* Base.swift */; };
 		BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641002BF6F26500EA27E0 /* BaseComponent.swift */; };
+		BBD641032BF6FEC500EA27E0 /* BaseComponentExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		BBD640FD2BF1A5F200EA27E0 /* zPositions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = zPositions.md; sourceTree = "<group>"; };
 		BBD640FE2BF1AE0A00EA27E0 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		BBD641002BF6F26500EA27E0 /* BaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponent.swift; sourceTree = "<group>"; };
+		BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponentExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */,
 				BBD640FE2BF1AE0A00EA27E0 /* Base.swift */,
 				BBD641002BF6F26500EA27E0 /* BaseComponent.swift */,
+				BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */,
 				BBA5F8912BE861D700D4E1EB /* Joystick.swift */,
 				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
 				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
@@ -320,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBD641032BF6FEC500EA27E0 /* BaseComponentExt.swift in Sources */,
 				BBA5F8842BE8252900D4E1EB /* Enemy.swift in Sources */,
 				BBD640F72BF17B4A00EA27E0 /* Worker.swift in Sources */,
 				BBA5F8962BE88D7D00D4E1EB /* MainMenuScene.swift in Sources */,
