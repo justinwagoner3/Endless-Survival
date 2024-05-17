@@ -28,7 +28,7 @@ class GameScene: SKScene {
     public var weapon: Weapon!
     
     // Base
-    public var base: SKSpriteNode!
+    public var base: Base!
     private var baseCircle: SKShapeNode!
 
     // Camera
@@ -119,7 +119,7 @@ class GameScene: SKScene {
         baseCircle.zPosition = 1
         baseCircle.isHidden = true
         cameraNode.addChild(baseCircle)
-
+        
         // Create health bar nodes
         let healthBarSize = CGSize(width: 400, height: 20) // Adjust size as needed
         healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
@@ -159,6 +159,18 @@ class GameScene: SKScene {
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         addChild(base)
         
+        // Add components to the base
+        let woodComponent = WoodComponent()
+        let stoneComponent = StoneComponent()
+        let oreComponent = OreComponent()
+        base.addComponent(woodComponent)
+        base.addComponent(stoneComponent)
+        base.addComponent(oreComponent)
+        addChild(woodComponent)
+        addChild(stoneComponent)
+        addChild(oreComponent)
+
+
         // Add workers
         let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
         harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
@@ -307,13 +319,11 @@ class GameScene: SKScene {
         // Update the camera position to follow the player
         cameraNode.position = player.position
 
-        
         // Highlight + Attack closest enemy
         // TODO - move most of this logic into player class like i did for Drone class
         player.highlightClosestEnemy(radius: player.weapon.radius, enemies)
         player.attackClosestEnemy(&enemies, currentTime)
         
-
         // Get attacked
         for enemy in enemies {
             if let damage = enemy.checkAndAttackPlayer(playerPosition: player.position, currentTime: currentTime){
@@ -345,7 +355,7 @@ class GameScene: SKScene {
             }
         }
         
-        // Worker action
+        // Worker actions
         for worker in workers {
             if let harvester = worker as? Harvester {
                 // Not on resource and has bag space: move to resource
@@ -375,6 +385,13 @@ class GameScene: SKScene {
             if let shooter = worker as? Shooter {
                 shooter.walkTowardsEnemy(enemies: enemies)
                 shooter.attack(&enemies, currentTime: currentTime, playerCointCount: &player.coinCount)
+            }
+        }
+        
+        // Base actions
+        for baseComponent in base.components {
+            if let resourceComponent = baseComponent as? ResourceComponent {
+                resourceComponent.autoCollectResources(&player, currentTime)
             }
         }
         

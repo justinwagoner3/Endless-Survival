@@ -10,6 +10,7 @@ joystickOuterCircle
 base
 resource
 joystickInnerCircle
+BaseComponent
 
 # 3
 harvester

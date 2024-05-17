@@ -35,6 +35,7 @@
 		BBD640F92BF17C9B00EA27E0 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */; };
 		BBD640FB2BF19C9800EA27E0 /* WorkerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */; };
 		BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FE2BF1AE0A00EA27E0 /* Base.swift */; };
+		BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641002BF6F26500EA27E0 /* BaseComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerExt.swift; sourceTree = "<group>"; };
 		BBD640FD2BF1A5F200EA27E0 /* zPositions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = zPositions.md; sourceTree = "<group>"; };
 		BBD640FE2BF1AE0A00EA27E0 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
+		BBD641002BF6F26500EA27E0 /* BaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				BBD640F62BF17B4A00EA27E0 /* Worker.swift */,
 				BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */,
 				BBD640FE2BF1AE0A00EA27E0 /* Base.swift */,
+				BBD641002BF6F26500EA27E0 /* BaseComponent.swift */,
 				BBA5F8912BE861D700D4E1EB /* Joystick.swift */,
 				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
 				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
@@ -335,6 +338,7 @@
 				BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */,
 				BBD640FB2BF19C9800EA27E0 /* WorkerExt.swift in Sources */,
 				BBA5F8A02BF14FCA00D4E1EB /* Drone.swift in Sources */,
+				BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */,
 				BBD640F92BF17C9B00EA27E0 /* LevelManager.swift in Sources */,
 				BBA5F8942BE866CC00D4E1EB /* UpgradeScene.swift in Sources */,
 			);
