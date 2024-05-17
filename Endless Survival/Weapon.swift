@@ -5,12 +5,14 @@ class Weapon: Codable {
     var fireRate: TimeInterval
     var damage: CGFloat
     var lastAttackTime: TimeInterval
+    var isAOE: Bool
 
     enum CodingKeys: String, CodingKey {
         case radius
         case fireRate
         case damage
         case lastAttackTime
+        case isAOE
     }
     
     func encode(to encoder: Encoder) throws {
@@ -19,6 +21,7 @@ class Weapon: Codable {
         try container.encode(fireRate, forKey: .fireRate)
         try container.encode(damage, forKey: .damage)
         try container.encode(lastAttackTime, forKey: .lastAttackTime)
+        try container.encode(isAOE, forKey: .isAOE)
     }
     
     required init(from decoder: Decoder) throws {
@@ -27,24 +30,27 @@ class Weapon: Codable {
         let fireRate = try container.decode(TimeInterval.self, forKey: .fireRate)
         let damage = try container.decode(CGFloat.self, forKey: .damage)
         let lastAttackTime = try container.decode(TimeInterval.self, forKey: .lastAttackTime)
+        let isAOE = try container.decode(Bool.self, forKey: .isAOE)
 
         self.radius = radius
         self.fireRate = fireRate
         self.damage = damage
         self.lastAttackTime = lastAttackTime
+        self.isAOE = isAOE
     }
     
-    init(radius: CGFloat, fireRate: TimeInterval, damage: CGFloat) {
+    init(radius: CGFloat, fireRate: TimeInterval, damage: CGFloat, isAOE: Bool) {
         self.radius = radius
         self.fireRate = fireRate
         self.damage = damage
+        self.isAOE = isAOE
         self.lastAttackTime = 0
     }
 }
 
 class Pistol: Weapon {
     init() {
-        super.init(radius: 100, fireRate: 2, damage: 2)
+        super.init(radius: 100, fireRate: 2, damage: 2, isAOE: false)
     }
     
     required init(from decoder: Decoder) throws {
@@ -54,7 +60,7 @@ class Pistol: Weapon {
 
 class AssaultRifle: Weapon {
     init() {
-        super.init(radius: 150, fireRate: 1, damage: 1)
+        super.init(radius: 150, fireRate: 1, damage: 1, isAOE: false)
     }
     
     required init(from decoder: Decoder) throws {
@@ -64,7 +70,18 @@ class AssaultRifle: Weapon {
 
 class SniperRifle: Weapon {
     init() {
-        super.init(radius: 500, fireRate: 3, damage: 10)
+        super.init(radius: 500, fireRate: 3, damage: 10, isAOE: false)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+}
+
+class Rocket: Weapon {
+    var aoeRadius: CGFloat = 100
+    init() {
+        super.init(radius: 500, fireRate: 3, damage: 10, isAOE: true)
     }
     
     required init(from decoder: Decoder) throws {
