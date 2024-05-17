@@ -83,6 +83,11 @@ class Enemy: SKSpriteNode, Codable {
         return nil
     }
     
+    func decreaseHealth(_ damage: Int){
+        hitpoints -= damage
+        animateEnemyGotAttacked()
+    }
+    
     enum CodingKeys: String, CodingKey {
         case movementSpeed
         case hitpoints
