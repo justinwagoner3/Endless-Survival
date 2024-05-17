@@ -78,7 +78,7 @@ class GameScene: SKScene {
         addChild(background)
         
         // Create the weapon
-        weapon = Pistol()
+        weapon = Rocket()
 
         // Create player
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
@@ -163,17 +163,17 @@ class GameScene: SKScene {
         let woodComponent = WoodComponent()
         let stoneComponent = StoneComponent()
         let oreComponent = OreComponent()
-        let sentryComponent = SentryComponent()
+        //let sentryComponent = SentryComponent()
         //let rocketComponent = RocketComponent()
         base.addComponent(woodComponent)
         base.addComponent(stoneComponent)
         base.addComponent(oreComponent)
-        base.addComponent(sentryComponent)
+        //base.addComponent(sentryComponent)
         //base.addComponent(rocketComponent)
         addChild(woodComponent)
         addChild(stoneComponent)
         addChild(oreComponent)
-        addChild(sentryComponent)
+        //addChild(sentryComponent)
         //addChild(rocketComponent)
 
 
@@ -400,7 +400,7 @@ class GameScene: SKScene {
                 resourceComponent.autoCollectResources(&player, currentTime)
             }
             if let attackComponent = baseComponent as? AttackComponent {
-                attackComponent.attack(&enemies, currentTime: currentTime, playerCointCount: &player.coinCount)
+                attackComponent.attack(&enemies, currentTime: currentTime, playerCoinCount: &player.coinCount)
             }
         }
         

@@ -94,20 +94,37 @@ class Player : SKSpriteNode {
                 
                 //print("attacking")
                 animatePlayerAttack()
+                var enemiesToAttack: [Enemy] = []
                 
-                closestEnemy.hitpoints -= Int(weapon.damage)
-                
-                // Check if the enemy's hitpoints have reached zero
-                if closestEnemy.hitpoints <= 0 {
-                    //if let delegate = delegate {
-                    //    delegate.playerDidKillEnemy(at: position)
-                    //}
-                    coinCount += closestEnemy.coinValue
-                    closestEnemy.removeFromParent()
-                    if let index = enemies.firstIndex(of: closestEnemy) {
-                        enemies.remove(at: index)
+                // Add enemies to attack if isAOE
+                if weapon.isAOE, let rocket = weapon as? Rocket {
+                    for enemy in enemies {
+                        let distanceFromTargetEnemy = closestEnemy.distance(to: enemy.position)
+                        if distanceFromTargetEnemy <= rocket.aoeRadius {
+                            enemiesToAttack.append(enemy)
+                        }
                     }
-                    selectedEnemy = nil
+                }
+                else{
+                    enemiesToAttack.append(closestEnemy)
+                }
+                // Perform attack logic
+                for enemy in enemiesToAttack{
+                    // TODO - update this in all attack methods
+                    enemy.decreaseHealth(Int(weapon.damage))
+                    
+                    // Check if the enemy's hitpoints have reached zero
+                    // TODO - move this into decreaseHealth and update all attack methods
+                    if enemy.hitpoints <= 0 {
+                        coinCount += enemy.coinValue
+                        // Handle enemy defeat
+                        enemy.removeFromParent()
+                        if let index = enemies.firstIndex(of: enemy) {
+                            enemies.remove(at: index)
+                        }
+                        // won't be able to move this into decrease health though
+                        selectedEnemy = nil
+                    }
                 }
             }
         }        
