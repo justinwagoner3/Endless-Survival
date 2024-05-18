@@ -1,7 +1,7 @@
 import SpriteKit
 
-class UpgradeScene: SKScene {
-    
+class UpgradeScene: SKScene, BaseInteractionDelegate {
+            
     let increaseMovementButton = SKLabelNode(text: "")
 
     override func didMove(to view: SKView) {
@@ -52,6 +52,12 @@ class UpgradeScene: SKScene {
     private func updateIncreaseMovementButtonText() {
         increaseMovementButton.text = "Increase Movement: \(LevelManager.shared.movementLevel)"
     }
+    
+    func addComponentToBase(_ component: BaseComponent) {
+        if let gameScene = self.view?.scene as? BaseInteractionDelegate {
+            gameScene.addComponentToBase(component)
+        }
+    }
 
     private func switchToGameScene(){
         print("switching to game scene")
@@ -70,12 +76,13 @@ class UpgradeScene: SKScene {
         let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
         
         // Load the SKScene with the calculated size
-        let scene = GameScene(size: sceneSize)
-        scene.restoreGameState()
-        scene.scaleMode = .aspectFill
+        let gameScene = GameScene(size: sceneSize)
+        gameScene.restoreGameState()
+        gameScene.baseInteractionDelegate = self
+        gameScene.scaleMode = .aspectFill
         
         // Present the scene
-        self.view?.presentScene(scene)
+        self.view?.presentScene(gameScene)
 
     }
 }

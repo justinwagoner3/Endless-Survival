@@ -15,6 +15,8 @@ func mp<T>(_ name: String, _ value: T) {
 
 class GameScene: SKScene {
     
+    weak var baseInteractionDelegate: BaseInteractionDelegate?
+    
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
         
@@ -546,4 +548,3 @@ struct GameState: Codable {
     var stone: [Stone]
     var ore: [Ore]
 }
-

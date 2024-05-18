@@ -66,3 +66,7 @@ class Base: SKSpriteNode, Codable {
         self.positionComponents()
     }
 }
+
+protocol BaseInteractionDelegate: AnyObject {
+    func addComponentToBase(_ component: BaseComponent)
+}
