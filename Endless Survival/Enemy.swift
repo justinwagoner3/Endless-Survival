@@ -9,7 +9,6 @@ class Enemy: SKSpriteNode, Codable {
     var movementSpeed: CGFloat
     var hitpoints: Int
     var spawnBounds: CGSize
-    var scaleFactor: CGFloat
 
     var coinValue: Int = 1
     private var damage: CGFloat = 10.0
@@ -18,16 +17,15 @@ class Enemy: SKSpriteNode, Codable {
     private var lastAttackTime: TimeInterval = 0
 
     // Initializer with default appearance
-    init(movementSpeed: CGFloat, hitpoints: Int, spawnBounds: CGSize, scaleFactor: CGFloat) {
+    init(movementSpeed: CGFloat, hitpoints: Int, spawnBounds: CGSize) {
         self.movementSpeed = movementSpeed
         self.hitpoints = hitpoints
         self.spawnBounds = spawnBounds
-        self.scaleFactor = scaleFactor
-
-        let size = CGSize(width: 100 * scaleFactor, height: 100 * scaleFactor)
+        
+        let size = CGSize(width: 25, height: 25)
         let color = UIColor.red
         super.init(texture: nil, color: color, size: size)
-
+        
         self.zPosition = 3
         self.position = randomPosition()
     }
@@ -95,7 +93,6 @@ class Enemy: SKSpriteNode, Codable {
         case hitpoints
         case spawnBounds
         case curPosition
-        case scaleFactor
     }
     
     func encode(to encoder: Encoder) throws {
@@ -104,7 +101,6 @@ class Enemy: SKSpriteNode, Codable {
         try container.encode(hitpoints, forKey: .hitpoints)
         try container.encode(spawnBounds, forKey: .spawnBounds)
         try container.encode(self.position, forKey: .curPosition)
-        try container.encode(scaleFactor, forKey: .scaleFactor)
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -113,9 +109,8 @@ class Enemy: SKSpriteNode, Codable {
         let hitpoints = try container.decode(Int.self, forKey: .hitpoints)
         let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
         let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
-        let scaleFactor = try container.decode(CGFloat.self, forKey: .scaleFactor)
-
-        self.init(movementSpeed: movementSpeed, hitpoints: hitpoints, spawnBounds: spawnBounds, scaleFactor: scaleFactor)
+        
+        self.init(movementSpeed: movementSpeed, hitpoints: hitpoints, spawnBounds: spawnBounds)
         
         self.position = curPosition
     }
