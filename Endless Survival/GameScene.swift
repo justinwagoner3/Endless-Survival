@@ -76,7 +76,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
-        let scaleFactor = min(view.bounds.width / worldSize.width, view.bounds.height / worldSize.height)
+        scaleFactor = min(view.bounds.width / worldSize.width, view.bounds.height / worldSize.height)
         // Create the background
         let background = SKSpriteNode(color: SKColor.green, size: worldSize)
         background.position = CGPoint(x: worldSize.width / 2, y: worldSize.height / 2)
@@ -92,7 +92,7 @@ class GameScene: SKScene {
         addChild(player)
         player.position = background.position
         player.zPosition = 3
-
+        
         // Set up the camera
         self.camera = cameraNode
         cameraNode.position = player.position
@@ -276,7 +276,7 @@ class GameScene: SKScene {
     // Method to spawn multiple enemies
     private func spawnEnemies(count: Int) {
         for _ in 0..<count {
-            let enemy = Enemy(movementSpeed: 1.5, hitpoints: 10, spawnBounds: worldSize)
+            let enemy = Enemy(movementSpeed: 1.5, hitpoints: 10, spawnBounds: worldSize, scaleFactor: scaleFactor)
             enemy.gameScene = self // Pass reference to GameScene
             addChild(enemy)
             enemies.append(enemy)
