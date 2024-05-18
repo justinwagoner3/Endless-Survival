@@ -1,8 +1,8 @@
 import SpriteKit
 
 class BaseComponent: SKSpriteNode{
-    init(color: UIColor) {
-        super.init(texture: nil, color: color, size: CGSize(width: 75, height: 75))
+    init(color: UIColor, scaleFactor: CGFloat) {
+        super.init(texture: nil, color: color, size: CGSize(width: 150 * scaleFactor, height: 150 * scaleFactor))
 
         self.zPosition = 2
     }
@@ -18,8 +18,8 @@ class ResourceComponent: BaseComponent{
     private let collectInterval: TimeInterval = 10.0
     private var lastCheckTime: TimeInterval = 0
 
-    override init(color: UIColor) {
-        super.init(color: color)
+    override init(color: UIColor, scaleFactor: CGFloat) {
+        super.init(color: color, scaleFactor: scaleFactor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,8 +53,8 @@ class ResourceComponent: BaseComponent{
 }
 
 class WoodComponent: ResourceComponent{
-    init() {
-        super.init(color: .brown)
+    init(scaleFactor: CGFloat) {
+        super.init(color: .brown, scaleFactor: scaleFactor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -63,8 +63,8 @@ class WoodComponent: ResourceComponent{
 }
 
 class StoneComponent: ResourceComponent{
-    init() {
-        super.init(color: .gray)
+    init(scaleFactor: CGFloat) {
+        super.init(color: .gray, scaleFactor: scaleFactor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -73,8 +73,8 @@ class StoneComponent: ResourceComponent{
 }
 
 class OreComponent: ResourceComponent{
-    init() {
-        super.init(color: .black)
+    init(scaleFactor: CGFloat) {
+        super.init(color: .black, scaleFactor: scaleFactor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -89,9 +89,9 @@ class AttackComponent: BaseComponent{
     var damage: CGFloat = 2
     var isAOE: Bool = false
 
-    init(color: UIColor, isAOE: Bool) {
+    init(color: UIColor, isAOE: Bool, scaleFactor: CGFloat) {
         self.isAOE = isAOE
-        super.init(color: color)
+        super.init(color: color, scaleFactor: scaleFactor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -154,8 +154,8 @@ class AttackComponent: BaseComponent{
 }
 
 class SentryComponent: AttackComponent{
-    init() {
-        super.init(color: .purple, isAOE: false)
+    init(scaleFactor: CGFloat) {
+        super.init(color: .purple, isAOE: false, scaleFactor: scaleFactor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -166,8 +166,8 @@ class SentryComponent: AttackComponent{
 class RocketComponent: AttackComponent{
     var aoeRadius: CGFloat = 100
     
-    init() {
-        super.init(color: .orange, isAOE: true)
+    init(scaleFactor: CGFloat) {
+        super.init(color: .orange, isAOE: true, scaleFactor: scaleFactor)
     }
     
     required init?(coder aDecoder: NSCoder) {
