@@ -8,7 +8,7 @@ class Base: SKSpriteNode {
     init() {
         super.init(texture: nil, color: .white, size: CGSize(width: 75, height: 75))
         self.zPosition = 2
-        self.createFence()
+        self.createBarrier()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -40,13 +40,13 @@ class Base: SKSpriteNode {
         self.positionComponents()
     }
 
-    func createFence() {
+    func createBarrier() {
         let fenceSize = CGSize(width: self.size.width + 160, height: self.size.height + 160)
         let fenceRect = CGRect(origin: CGPoint(x: -fenceSize.width / 2, y: -fenceSize.height / 2), size: fenceSize)
         barrier = SKShapeNode(rect: fenceRect)
         barrier?.strokeColor = .black
         barrier?.lineWidth = 2.0
-        barrier?.zPosition = self.zPosition - 1
+        barrier?.zPosition = self.zPosition
 
         if let fence = barrier {
             self.addChild(fence)

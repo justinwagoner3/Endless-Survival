@@ -36,7 +36,7 @@ class GameScene: SKScene {
 
     // World
     private var worldSize = CGSize(width: 0, height: 0)
-    private var scaleFactor: CGFloat = 1
+    private var scaleFactor: CGFloat = 10
     
     // Enemies
     private var enemies: [Enemy] = []
@@ -158,7 +158,7 @@ class GameScene: SKScene {
         base = Base()
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         addChild(base)
-        base.createFence()
+        base.createBarrier()
         
         // Add components to the base
         let woodComponent = WoodComponent()

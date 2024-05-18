@@ -8,6 +8,7 @@ joystickOuterCircle
 
 # 2
 base
+barrier
 resource
 joystickInnerCircle
 BaseComponent
