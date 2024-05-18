@@ -1,14 +1,16 @@
 import SpriteKit
 
-class Base: SKSpriteNode{
+class Base: SKSpriteNode {
     var components: [BaseComponent] = []
+    var barrier: SKShapeNode?
+    var barrierHealth: Int = 100
 
-    init(){
+    init() {
         super.init(texture: nil, color: .white, size: CGSize(width: 75, height: 75))
-        self.zPosition = 2;
-
+        self.zPosition = 2
+        self.createFence()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -36,5 +38,18 @@ class Base: SKSpriteNode{
     func addComponent(_ component: BaseComponent) {
         components.append(component)
         self.positionComponents()
+    }
+
+    func createFence() {
+        let fenceSize = CGSize(width: self.size.width + 160, height: self.size.height + 160)
+        let fenceRect = CGRect(origin: CGPoint(x: -fenceSize.width / 2, y: -fenceSize.height / 2), size: fenceSize)
+        barrier = SKShapeNode(rect: fenceRect)
+        barrier?.strokeColor = .black
+        barrier?.lineWidth = 2.0
+        barrier?.zPosition = self.zPosition - 1
+
+        if let fence = barrier {
+            self.addChild(fence)
+        }
     }
 }
