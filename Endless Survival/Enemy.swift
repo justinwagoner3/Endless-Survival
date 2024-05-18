@@ -72,7 +72,7 @@ class Enemy: SKSpriteNode, Codable {
         
         // Check if player is within attack range and if enough time has passed since last attack
         if distanceToPlayer <= attackRadius && currentTime - lastAttackTime >= attackCooldown {
-            print("Enemy is attacking!")
+            //print("Enemy is attacking!")
             animateEnemyAttack()
 
             lastAttackTime = currentTime

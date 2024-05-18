@@ -5,6 +5,9 @@ class UpgradeScene: SKScene, BaseInteractionDelegate {
     let increaseMovementButton = SKLabelNode(text: "")
     let addComponentButton = SKLabelNode(text: "")
     
+    var baseInteractionDelegate: BaseInteractionDelegate?
+
+    
     override func didMove(to view: SKView) {
         // Add a background color or image if desired
         self.backgroundColor = .white
@@ -41,6 +44,7 @@ class UpgradeScene: SKScene, BaseInteractionDelegate {
         
         // Check if the touch occurred on the return button
         if let node = self.atPoint(touchLocation) as? SKLabelNode, node.name == "returnButton" {
+            print("Return Game button pressed")
             switchToGameScene()
         }
         
@@ -69,7 +73,9 @@ class UpgradeScene: SKScene, BaseInteractionDelegate {
     }
     
     func addComponentToBase(_ component: BaseComponent) {
-        if let gameScene = self.view?.scene as? BaseInteractionDelegate {
+        print("addComponentToBase")
+        if let gameScene = self.baseInteractionDelegate {
+            print("found gameScene")
             gameScene.addComponentToBase(component)
         }
     }
@@ -92,7 +98,6 @@ class UpgradeScene: SKScene, BaseInteractionDelegate {
         // Load the SKScene with the calculated size
         let gameScene = GameScene(size: sceneSize)
         gameScene.restoreGameState()
-        gameScene.baseInteractionDelegate = self
         gameScene.scaleMode = .aspectFill
         
         // Present the scene

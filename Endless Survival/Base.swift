@@ -9,9 +9,13 @@ class Base: SKSpriteNode, Codable {
     var barrier: BaseBarrier!
 
     enum CodingKeys: String, CodingKey {
-        case components
+        case attackComponents
+        case woodComponents
+        case stoneComponents
+        case oreComponents
         case barrier
         case baseLevel
+        case curPosition
     }
 
     init() {
@@ -23,17 +27,56 @@ class Base: SKSpriteNode, Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(components, forKey: .components)
+        var woodComponents: [WoodComponent] = []
+        var stoneComponents: [StoneComponent] = []
+        var oreComponents: [OreComponent] = []
+        // TODO implement specific logic for attack components like the resource ones
+        var attackComponents: [AttackComponent] = []
+        for component in components {
+            if let woodComponent = component as? WoodComponent {
+                woodComponents.append(woodComponent)
+            }
+            if let stoneComponent = component as? StoneComponent {
+                stoneComponents.append(stoneComponent)
+            }
+            if let oreComponent = component as? OreComponent {
+                oreComponents.append(oreComponent)
+            }
+            if let attackComponent = component as? AttackComponent {
+                attackComponents.append(attackComponent)
+            }
+        }
+        try container.encode(woodComponents, forKey: .woodComponents)
+        try container.encode(stoneComponents, forKey: .stoneComponents)
+        try container.encode(oreComponents, forKey: .oreComponents)
+        try container.encode(attackComponents, forKey: .attackComponents)
         try container.encode(barrier, forKey: .barrier)
         try container.encode(baseLevel, forKey: .baseLevel)
+        try container.encode(self.position, forKey: .curPosition)
     }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        components = try container.decode([BaseComponent].self, forKey: .components)
+        let woodComponents = try container.decode([WoodComponent].self, forKey: .woodComponents)
+        let stoneComponents = try container.decode([StoneComponent].self, forKey: .stoneComponents)
+        let oreComponents = try container.decode([OreComponent].self, forKey: .oreComponents)
+        let attackComponents = try container.decode([AttackComponent].self, forKey: .attackComponents)
+        let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
+        // components need to be children of Base so they are removed when base is removed
+        components += woodComponents
+        components += stoneComponents
+        components += oreComponents
+        components += attackComponents
         barrier = try container.decode(BaseBarrier.self, forKey: .barrier)
         baseLevel = try container.decode(Int.self, forKey: .baseLevel)
         super.init(texture: nil, color: .white, size: CGSize(width: 75, height: 75))
+        self.zPosition = 2
+        self.addChild(barrier)
+        self.position = curPosition
+        for component in components {
+            mp("self.position when being added", component.position)
+            self.addChild(component)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,22 +84,25 @@ class Base: SKSpriteNode, Codable {
     }
     
 
+    // TODO - this gets called when adding a component from upgrade
+    // because decode reorders the components array, the positions get changed
+    // don't need to worry about it eventually positions will get set in upgrade scene
     func positionComponents() {
         let offsets = [
             CGPoint(x: -baseLevel2ComponentSize, y: baseLevel2ComponentSize),   // Position 1
             CGPoint(x: -baseLevel2ComponentSize, y: 0),    // Position 2
             CGPoint(x: -baseLevel2ComponentSize, y: -baseLevel2ComponentSize),  // Position 3
             CGPoint(x: 0, y: -baseLevel2ComponentSize),    // Position 4
-            CGPoint(x: baseLevel2ComponentSize, y: baseLevel2ComponentSize),    // Position 5
+            CGPoint(x: baseLevel2ComponentSize, y: -baseLevel2ComponentSize),    // Position 5
             CGPoint(x: baseLevel2ComponentSize, y: 0),     // Position 6
-            CGPoint(x: baseLevel2ComponentSize, y: -baseLevel2ComponentSize),   // Position 7
+            CGPoint(x: baseLevel2ComponentSize, y: baseLevel2ComponentSize),   // Position 7
             CGPoint(x: 0, y: baseLevel2ComponentSize)      // Position 8
         ]
 
         for (index, component) in components.enumerated() {
             if index < offsets.count {
                 let offset = offsets[index]
-                component.position = CGPoint(x: self.position.x + offset.x, y: self.position.y + offset.y)
+                component.position = CGPoint(x: offset.x, y: offset.y)
             }
         }
     }
@@ -64,9 +110,6 @@ class Base: SKSpriteNode, Codable {
     func addComponent(_ component: BaseComponent) {
         components.append(component)
         self.positionComponents()
+        self.addChild(component)
     }
-}
-
-protocol BaseInteractionDelegate: AnyObject {
-    func addComponentToBase(_ component: BaseComponent)
 }

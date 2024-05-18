@@ -20,9 +20,10 @@ class BaseComponent: SKSpriteNode, Codable{
 }
 
 class ResourceComponent: BaseComponent{
-    var resourceLevel: Int
-    private var accumulatedTime: TimeInterval = 0
     private let collectInterval: TimeInterval = 10.0
+
+    var resourceLevel: Int
+    private var remainingTime: TimeInterval = 10.0
     private var lastCheckTime: TimeInterval = 0
 
     init(color: UIColor, resourceLevel: Int = 1) {
@@ -32,19 +33,29 @@ class ResourceComponent: BaseComponent{
     
     enum CodingKeys: String, CodingKey {
         case resourceLevel
+        case remainingTime
+        case curPosition
     }
     
     override func encode(to encoder: Encoder) throws {
+        mp("self.position at encode",self.position)
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(resourceLevel, forKey: .resourceLevel)
+        try container.encode(remainingTime, forKey: .remainingTime)
+        try container.encode(self.position, forKey: .curPosition)
     }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let resourceLevel = try container.decode(Int.self, forKey: .resourceLevel)
+        let remainingTime = try container.decode(TimeInterval.self, forKey: .remainingTime)
+        let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
 
         self.resourceLevel = resourceLevel
-        super.init(color: .clear)
+        self.remainingTime = remainingTime
+        super.init(color: .cyan)
+        self.position = curPosition
+        mp("self.position at decode",self.position)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -56,12 +67,12 @@ class ResourceComponent: BaseComponent{
         let deltaTime = currentTime - lastCheckTime
         
         // Increment the total hold time by the time since the last frame
-        accumulatedTime += deltaTime
+        remainingTime -= deltaTime
         
         // Update the last update time for the next frame
         lastCheckTime = currentTime
 
-        if(accumulatedTime >= collectInterval){
+        if(remainingTime <= 0){
             switch self {
             case is WoodComponent:
                 player.woodCount += resourceLevel
@@ -72,7 +83,7 @@ class ResourceComponent: BaseComponent{
             default:
                 break
             }
-            accumulatedTime = 0
+            remainingTime = collectInterval
         }
     }
 }

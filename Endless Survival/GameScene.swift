@@ -14,9 +14,7 @@ func mp<T>(_ name: String, _ value: T) {
 }
 
 class GameScene: SKScene {
-    
-    weak var baseInteractionDelegate: BaseInteractionDelegate?
-    
+        
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
         
@@ -82,7 +80,7 @@ class GameScene: SKScene {
         addChild(background)
 
 
-        // Set player initial position and other properties
+        // Create Player + Weapon
         weapon = Rocket()
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.weapon = weapon
@@ -90,6 +88,35 @@ class GameScene: SKScene {
         addChild(player)
         player.position = background.position
         player.zPosition = 3
+
+        // Create a base
+        base = Base()
+        base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
+        mp("base.position",base.position)
+        addChild(base)
+        
+        // Add components to the base
+        let woodComponent = WoodComponent()
+        let stoneComponent = StoneComponent()
+        let oreComponent = OreComponent()
+        base.addComponent(woodComponent)
+        base.addComponent(stoneComponent)
+        base.addComponent(oreComponent)
+
+        // Spawn resources
+        let wood = Wood(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 1.0)
+        addChild(wood)
+        resources.append(wood)
+        let stone = Stone(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 2.0)
+        addChild(stone)
+        resources.append(stone)
+        let ore = Ore(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 3.0)
+        addChild(ore)
+        resources.append(ore)
+
+        // Spawn enemies
+        spawnEnemies(count: 10)
+
 
     }
 
@@ -163,37 +190,7 @@ class GameScene: SKScene {
             resourceCounter.position = CGPoint(x: -400, y: 400)
             cameraNode.addChild(resourceCounter)
         }
-
-        // Spawn enemies
-        spawnEnemies(count: 100)
-        
-        // Spawn resources
-        let wood = Wood(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 1.0)
-        addChild(wood)
-        resources.append(wood)
-        let stone = Stone(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 2.0)
-        addChild(stone)
-        resources.append(stone)
-        let ore = Ore(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 3.0)
-        addChild(ore)
-        resources.append(ore)
-        
-        // Create a base
-        base = Base()
-        base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
-        addChild(base)
-        
-        // Add components to the base
-        let woodComponent = WoodComponent()
-        let stoneComponent = StoneComponent()
-        let oreComponent = OreComponent()
-        base.addComponent(woodComponent)
-        base.addComponent(stoneComponent)
-        base.addComponent(oreComponent)
-        addChild(woodComponent)
-        addChild(stoneComponent)
-        addChild(oreComponent)
-
+                        
         // Example Worker setup (if needed)
         let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
         harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
@@ -202,6 +199,9 @@ class GameScene: SKScene {
         let shooter = Shooter(color: .purple, size: CGSize(width: 25, height: 25))
         shooter.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         shooter.zPosition = 3
+
+
+        player.position = base.position
     }
 
     override func willMove(from view: SKView) {
@@ -274,6 +274,7 @@ class GameScene: SKScene {
         
         // Load the SKScene with the calculated size
         let scene = UpgradeScene(size: sceneSize)
+        scene.baseInteractionDelegate = self
         scene.scaleMode = .aspectFill
         
         // Present the scene
@@ -447,7 +448,6 @@ class GameScene: SKScene {
                 ore.append(resource as! Ore)
             }
         }
-        mp("player.totalHealth",player.totalHealth)
         let gameState = GameState(totalHealth: player.totalHealth,
                                   currentHealth: player.currentHealth,
                                   coinCount: player.coinCount,
@@ -463,7 +463,8 @@ class GameScene: SKScene {
                                   enemies: enemies,
                                   wood: wood,
                                   stone: stone,
-                                  ore: ore)
+                                  ore: ore,
+                                  base: base)
         // Serialize and save the gameState (e.g., using UserDefaults)
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(gameState) {
@@ -481,7 +482,6 @@ class GameScene: SKScene {
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
             print("found saved data")
-            mp("gameState.totalHealth",gameState.totalHealth)
             // Restore the player
             player.totalHealth = gameState.totalHealth
             player.currentHealth = gameState.currentHealth
@@ -506,9 +506,11 @@ class GameScene: SKScene {
             enemies = gameState.enemies
             
             // Restore resources
+            
             for resource in resources{
                 resource.removeFromParent()
             }
+            
             resources = []
             for wood in gameState.wood{
                 addChild(wood)
@@ -522,6 +524,12 @@ class GameScene: SKScene {
                 addChild(ore)
                 resources.append(ore)
             }
+            
+            // Restore base
+            base.removeFromParent()
+            base = gameState.base
+            
+            addChild(base)
             
             // Update other scene elements as needed
             updateHealthBar()
@@ -562,4 +570,9 @@ struct GameState: Codable {
     var wood: [Wood]
     var stone: [Stone]
     var ore: [Ore]
+    var base: Base
+}
+
+protocol BaseInteractionDelegate: AnyObject {
+    func addComponentToBase(_ component: BaseComponent)
 }

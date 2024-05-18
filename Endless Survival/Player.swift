@@ -3,8 +3,6 @@ import GameplayKit
 
 class Player : SKSpriteNode {
     
-    //weak var delegate: PlayerDelegate?
-
     var totalHealth: CGFloat = 100.0
     var currentHealth: CGFloat = 100.0
     var coinCount: Int = 0
@@ -276,7 +274,3 @@ class Player : SKSpriteNode {
         }
     }
 }
-
-//protocol PlayerDelegate: AnyObject {
-//    func playerDidKillEnemy(at position: CGPoint)
-//}
