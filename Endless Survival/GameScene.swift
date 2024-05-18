@@ -20,6 +20,9 @@ class GameScene: SKScene {
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
         
+    // Background
+    private var background: SKSpriteNode!
+    
     // Joystick
     private var joystick: Joystick!
 
@@ -44,12 +47,12 @@ class GameScene: SKScene {
     private var enemies: [Enemy] = []
 
     // Health
-    private var healthBarGray: SKSpriteNode!
-    private var healthBarRed: SKSpriteNode!
+    private var healthBarGray: SKSpriteNode?
+    private var healthBarRed: SKSpriteNode?
     
     // Resources
     var resources: [Resource] = []
-    private var resourceCounter: ResourceCounter!
+    private var resourceCounter: ResourceCounter?
     private var harvestCircle: SKShapeNode!
 
     // Workers
@@ -71,14 +74,9 @@ class GameScene: SKScene {
         super.sceneDidLoad()
         // Set up world size
         worldSize = CGSize(width: 2048 * worldSizeScaleFactor, height: 1536 * worldSizeScaleFactor)
-
-    }
-
-    override func didMove(to view: SKView) {
-        super.didMove(to: view)
         
         // Create the background
-        let background = SKSpriteNode(color: SKColor.green, size: worldSize)
+        background = SKSpriteNode(color: SKColor.green, size: worldSize)
         background.position = CGPoint(x: worldSize.width / 2, y: worldSize.height / 2)
         background.zPosition = 0
         addChild(background)
@@ -93,6 +91,11 @@ class GameScene: SKScene {
         player.position = background.position
         player.zPosition = 3
 
+    }
+
+    override func didMove(to view: SKView) {
+        super.didMove(to: view)
+        
         // Set up the camera
         self.camera = cameraNode
         cameraNode.position = player.position
@@ -131,14 +134,18 @@ class GameScene: SKScene {
 
             // Create health bar nodes
             healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
-            healthBarGray.zPosition = 10
-            healthBarGray.position = CGPoint(x: healthBarXPosition, y: healthBarYPosition)
-            uiContainer.addChild(healthBarGray)
+            if let healthBarGray = healthBarGray{
+                healthBarGray.zPosition = 10
+                healthBarGray.position = CGPoint(x: healthBarXPosition, y: healthBarYPosition)
+                uiContainer.addChild(healthBarGray)
+                healthBarRed = SKSpriteNode(color: .red, size: healthBarSize)
+                if let healthBarRed = healthBarRed{
+                    healthBarRed.zPosition = 11
+                    healthBarRed.position = healthBarGray.position
+                    uiContainer.addChild(healthBarRed)
+                }
+            }
             
-            healthBarRed = SKSpriteNode(color: .red, size: healthBarSize)
-            healthBarRed.zPosition = 11
-            healthBarRed.position = healthBarGray.position
-            uiContainer.addChild(healthBarRed)
             
             let joystickRadius: CGFloat = min(view.bounds.width, view.bounds.height) * 0.3 // Adjust the multiplier as needed
             let joystickPosition = CGPoint(x: -size.width / 2 + safeAreaInsets.left + joystickRadius * 1.2,
@@ -151,9 +158,11 @@ class GameScene: SKScene {
         
         // Create resource counter node
         resourceCounter = ResourceCounter()
-        resourceCounter.zPosition = 10
-        resourceCounter.position = CGPoint(x: -400, y: 400)
-        cameraNode.addChild(resourceCounter)
+        if let resourceCounter = resourceCounter{
+            resourceCounter.zPosition = 10
+            resourceCounter.position = CGPoint(x: -400, y: 400)
+            cameraNode.addChild(resourceCounter)
+        }
 
         // Spawn enemies
         spawnEnemies(count: 100)
@@ -285,14 +294,18 @@ class GameScene: SKScene {
     // Update the size of the red health bar based on current health percentage
     private func updateHealthBar() {
         let healthPercentage = player.currentHealth / player.totalHealth
-        let newWidth = healthBarGray.size.width * healthPercentage
-        healthBarRed.size.width = max(newWidth, 0) // Ensure width is non-negative
-        
-        // Set the anchor point of the health bar to the right
-        healthBarRed.anchorPoint = CGPoint(x: 1.0, y: 0.5)
-        
-        // Adjust the position of the health bar to align with the right edge of the gray bar
-        healthBarRed.position.x = healthBarGray.position.x + healthBarGray.size.width / 2
+        if let healthBarGray = healthBarGray{
+            if let healthBarRed = healthBarRed{
+                let newWidth = healthBarGray.size.width * healthPercentage
+                healthBarRed.size.width = max(newWidth, 0) // Ensure width is non-negative
+                
+                // Set the anchor point of the health bar to the right
+                healthBarRed.anchorPoint = CGPoint(x: 1.0, y: 0.5)
+                
+                // Adjust the position of the health bar to align with the right edge of the gray bar
+                healthBarRed.position.x = healthBarGray.position.x + healthBarGray.size.width / 2
+            }
+        }
     }
         
     // Update this method to show/hide the harvest circle based on the player's proximity to resources
@@ -408,10 +421,10 @@ class GameScene: SKScene {
         }
         
         // UI Update
-        resourceCounter.updateCoinCount(player.coinCount)
-        resourceCounter.updateWoodCount(player.woodCount)
-        resourceCounter.updateStoneCount(player.stoneCount)
-        resourceCounter.updateOreCount(player.oreCount)
+        resourceCounter?.updateCoinCount(player.coinCount)
+        resourceCounter?.updateWoodCount(player.woodCount)
+        resourceCounter?.updateStoneCount(player.stoneCount)
+        resourceCounter?.updateOreCount(player.oreCount)
         updateHealthBar()
 
     }
@@ -434,6 +447,7 @@ class GameScene: SKScene {
                 ore.append(resource as! Ore)
             }
         }
+        mp("player.totalHealth",player.totalHealth)
         let gameState = GameState(totalHealth: player.totalHealth,
                                   currentHealth: player.currentHealth,
                                   coinCount: player.coinCount,
@@ -467,6 +481,7 @@ class GameScene: SKScene {
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
             print("found saved data")
+            mp("gameState.totalHealth",gameState.totalHealth)
             // Restore the player
             player.totalHealth = gameState.totalHealth
             player.currentHealth = gameState.currentHealth
@@ -510,10 +525,10 @@ class GameScene: SKScene {
             
             // Update other scene elements as needed
             updateHealthBar()
-            resourceCounter.updateWoodCount(player.woodCount)
-            resourceCounter.updateStoneCount(player.stoneCount)
-            resourceCounter.updateOreCount(player.oreCount)
-            resourceCounter.updateCoinCount(player.coinCount)
+            resourceCounter?.updateWoodCount(player.woodCount)
+            resourceCounter?.updateStoneCount(player.stoneCount)
+            resourceCounter?.updateOreCount(player.oreCount)
+            resourceCounter?.updateCoinCount(player.coinCount)
 
         }
         else{
