@@ -42,16 +42,17 @@ class Base: SKSpriteNode {
         self.positionComponents()
     }
 
+    // TODO this will break once i try to add more components in the next ring
     func createBarrier() {
-        let fenceSize = CGSize(width: self.size.width + 160, height: self.size.height + 160)
-        let fenceRect = CGRect(origin: CGPoint(x: -fenceSize.width / 2, y: -fenceSize.height / 2), size: fenceSize)
-        barrier = SKShapeNode(rect: fenceRect)
+        let barrierSize = CGSize(width: (self.size.width + 500) * scaleFactor, height: (self.size.height + 500) * scaleFactor)
+        let barrierRect = CGRect(origin: CGPoint(x: -barrierSize.width / 2, y: -barrierSize.height / 2), size: barrierSize)
+        barrier = SKShapeNode(rect: barrierRect)
         barrier?.strokeColor = .black
         barrier?.lineWidth = 2.0
         barrier?.zPosition = self.zPosition
 
-        if let fence = barrier {
-            self.addChild(fence)
+        if let barrier = barrier {
+            self.addChild(barrier)
         }
     }
 }
