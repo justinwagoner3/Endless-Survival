@@ -17,7 +17,11 @@ class GameScene: SKScene {
         
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
-        
+    
+    // Pause Button
+    var isGamePaused: Bool = false
+    private var pauseButton: SKSpriteNode!
+
     // Background
     private var background: SKSpriteNode!
     
@@ -56,6 +60,12 @@ class GameScene: SKScene {
     // Workers
     var workers: [Worker] = []
     
+    // Pause
+    func togglePause() {
+        isGamePaused.toggle()
+        self.isPaused = isGamePaused
+    }
+
     // Save/Load Game
     public func startNewGame() {
         print("startNewGame")
@@ -178,6 +188,15 @@ class GameScene: SKScene {
             let joystickPosition = CGPoint(x: -size.width / 2 + safeAreaInsets.left + joystickRadius * 1.2,
                                            y: -size.height / 2 + safeAreaInsets.bottom + joystickRadius * 1.2)
             joystick = Joystick(radius: joystickRadius, position: joystickPosition, parent: cameraNode)
+            
+            // Create pause button
+            let pauseButtonSize = CGSize(width: 50, height: 50)
+            pauseButton = SKSpriteNode(color: .yellow, size: pauseButtonSize)
+            pauseButton.zPosition = 10
+            let pauseButtonXPosition = size.width / 2 - safeAreaInsets.right - pauseButtonSize.width / 2 - 20
+            let pauseButtonYPosition = size.height / 2 - safeAreaInsets.top - pauseButtonSize.height / 2 - 20
+            pauseButton.position = CGPoint(x: pauseButtonXPosition, y: pauseButtonYPosition)
+            uiContainer.addChild(pauseButton)
 
         }
 
@@ -236,6 +255,11 @@ class GameScene: SKScene {
         if (baseCircle.contains(touchLocation) && !baseCircle.isHidden){
             switchToUpgradeScene()
         }
+        
+        if pauseButton.contains(touchLocation) {
+            togglePause()
+        }
+
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -336,7 +360,7 @@ class GameScene: SKScene {
 
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        
+        guard !isGamePaused else { return }
         player.move(joystick, joystick.isActive, worldSize)
         
         // Update the camera position to follow the player
