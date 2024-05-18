@@ -81,7 +81,7 @@ class SniperRifle: Weapon {
 class Rocket: Weapon {
     var aoeRadius: CGFloat = 100
     init() {
-        super.init(radius: 500, fireRate: 3, damage: 5, isAOE: true)
+        super.init(radius: 500, fireRate: 3, damage: 0, isAOE: true)
     }
     
     required init(from decoder: Decoder) throws {

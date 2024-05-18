@@ -35,7 +35,7 @@ class GameScene: SKScene {
     private var cameraNode = SKCameraNode()
 
     // World
-    private var worldSize = CGSize(width: 0, height: 0)
+    private var worldSize = CGSize(width: 2048, height: 1536)
     private var scaleFactor: CGFloat = 1
     
     // Enemies
@@ -68,28 +68,28 @@ class GameScene: SKScene {
     override func sceneDidLoad() {
         super.sceneDidLoad()
 
-        // This can stay in sceneDidLoad
-        weapon = Rocket()
-        player = Player(color: .blue, size: CGSize(width: 25, height: 25))
-        player.weapon = weapon
-        player.movementLevel = LevelManager.shared.movementLevel
-        addChild(player)
     }
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
         // Set up world size
-        worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
+        let worldSize = CGSize(width: 2048, height: 1536)
+        let scaleFactor = min(view.bounds.width / worldSize.width, view.bounds.height / worldSize.height)
 
-        // Create the background (solid green)
+        // Create the background
         let background = SKSpriteNode(color: SKColor.green, size: worldSize)
-        background.size = worldSize
         background.position = CGPoint(x: worldSize.width / 2, y: worldSize.height / 2)
         background.zPosition = 0
         addChild(background)
-        
+
+
         // Set player initial position and other properties
+        weapon = Rocket()
+        player = Player(color: .blue, size: CGSize(width: 25 * scaleFactor, height: 25 * scaleFactor))
+        player.weapon = weapon
+        player.movementLevel = LevelManager.shared.movementLevel
+        addChild(player)
         player.position = background.position
         player.zPosition = 3
 
@@ -99,9 +99,6 @@ class GameScene: SKScene {
         addChild(cameraNode)
         let uiContainer = SKNode()
         cameraNode.addChild(uiContainer)
-
-        // Joystick
-        joystick = Joystick(radius: 100.0, position: CGPoint(x: -819.2000122070312, y: -283.40283203125), parent: cameraNode)
 
         // Create harvest circle as child of camera
         harvestCircle = SKShapeNode(circleOfRadius: 50)
@@ -121,17 +118,18 @@ class GameScene: SKScene {
         baseCircle.isHidden = true
         cameraNode.addChild(baseCircle)
         
-        // Create health bar nodes
+        // UI Elements
         if let window = view.window {
             let safeAreaInsets = window.safeAreaInsets
             let adjustedWidth = size.width - safeAreaInsets.left - safeAreaInsets.right
-            let adjustedHeight = size.height - safeAreaInsets.top - safeAreaInsets.bottom
+            //let adjustedHeight = size.height - safeAreaInsets.top - safeAreaInsets.bottom
             
             // Calculate health bar size and position
             let healthBarSize = CGSize(width: adjustedWidth / 2, height: 20)
             let healthBarYPosition = size.height / 2 - safeAreaInsets.top - 20
             let healthBarXPosition = -size.width / 2 + safeAreaInsets.left + 20 + healthBarSize.width / 2
 
+            // Create health bar nodes
             healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
             healthBarGray.zPosition = 10
             healthBarGray.position = CGPoint(x: healthBarXPosition, y: healthBarYPosition)
@@ -141,6 +139,12 @@ class GameScene: SKScene {
             healthBarRed.zPosition = 11
             healthBarRed.position = healthBarGray.position
             uiContainer.addChild(healthBarRed)
+            
+            let joystickRadius: CGFloat = min(view.bounds.width, view.bounds.height) * 0.3 // Adjust the multiplier as needed
+            let joystickPosition = CGPoint(x: -size.width / 2 + safeAreaInsets.left + joystickRadius * 1.2,
+                                           y: -size.height / 2 + safeAreaInsets.bottom + joystickRadius * 1.2)
+            joystick = Joystick(radius: joystickRadius, position: joystickPosition, parent: cameraNode)
+
         }
 
         updateHealthBar()
@@ -152,7 +156,7 @@ class GameScene: SKScene {
         cameraNode.addChild(resourceCounter)
 
         // Spawn enemies
-        spawnEnemies(count: 50)
+        spawnEnemies(count: 100)
         
         // Spawn resources
         let wood = Wood(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 1.0)
