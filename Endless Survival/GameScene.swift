@@ -86,7 +86,8 @@ class GameScene: SKScene {
 
         // Set player initial position and other properties
         weapon = Rocket()
-        player = Player(color: .blue, size: CGSize(width: 100 * scaleFactor, height: 100 * scaleFactor))
+        //player = Player(color: .blue, size: CGSize(width: 25 * scaleFactor, height: 25 * scaleFactor))
+        player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.weapon = weapon
         player.movementLevel = LevelManager.shared.movementLevel
         addChild(player)
@@ -170,15 +171,15 @@ class GameScene: SKScene {
         resources.append(ore)
         
         // Create a base
-        base = Base(scaleFactor)
+        base = Base()
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         addChild(base)
         base.createBarrier()
         
         // Add components to the base
-        let woodComponent = WoodComponent(scaleFactor: scaleFactor)
-        let stoneComponent = StoneComponent(scaleFactor: scaleFactor)
-        let oreComponent = OreComponent(scaleFactor: scaleFactor)
+        let woodComponent = WoodComponent()
+        let stoneComponent = StoneComponent()
+        let oreComponent = OreComponent()
         base.addComponent(woodComponent)
         base.addComponent(stoneComponent)
         base.addComponent(oreComponent)

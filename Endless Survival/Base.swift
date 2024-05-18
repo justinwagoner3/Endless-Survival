@@ -4,11 +4,9 @@ class Base: SKSpriteNode {
     var components: [BaseComponent] = []
     var barrier: SKShapeNode?
     var barrierHealth: Int = 100
-    var scaleFactor: CGFloat
 
-    init(_ scaleFactor: CGFloat) {
-        self.scaleFactor = scaleFactor
-        super.init(texture: nil, color: .white, size: CGSize(width: 150 * scaleFactor, height: 150 * scaleFactor))
+    init() {
+        super.init(texture: nil, color: .white, size: CGSize(width: 75, height: 75))
         self.zPosition = 2
         self.createBarrier()
     }
@@ -19,14 +17,14 @@ class Base: SKSpriteNode {
     
     func positionComponents() {
         let offsets = [
-            CGPoint(x: -150 * scaleFactor, y: 150 * scaleFactor),   // Position 1
-            CGPoint(x: -150 * scaleFactor, y: 0),    // Position 2
-            CGPoint(x: -150 * scaleFactor, y: -150 * scaleFactor),  // Position 3
-            CGPoint(x: 0, y: -50 * scaleFactor),    // Position 4
-            CGPoint(x: 150 * scaleFactor, y: 150 * scaleFactor),    // Position 5
-            CGPoint(x: 150 * scaleFactor, y: 0),     // Position 6
-            CGPoint(x: 150 * scaleFactor, y: -150 * scaleFactor),   // Position 7
-            CGPoint(x: 0, y: 50 * scaleFactor)      // Position 8
+            CGPoint(x: -75, y: 75),   // Position 1
+            CGPoint(x: -75, y: 0),    // Position 2
+            CGPoint(x: -75, y: -75),  // Position 3
+            CGPoint(x: 0, y: -75),    // Position 4
+            CGPoint(x: 75, y: 75),    // Position 5
+            CGPoint(x: 75, y: 0),     // Position 6
+            CGPoint(x: 75, y: -75),   // Position 7
+            CGPoint(x: 0, y: 75)      // Position 8
         ]
 
         for (index, component) in components.enumerated() {
