@@ -1,10 +1,17 @@
 import SpriteKit
 
-class BaseComponent: SKSpriteNode{
+class BaseComponent: SKSpriteNode, Codable{
     init(color: UIColor) {
         super.init(texture: nil, color: color, size: CGSize(width: 75, height: 75))
-
         self.zPosition = 2
+    }
+
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+
+    func encode(to encoder: Encoder) throws {
+        fatalError("encode(to:) has not been implemented")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -13,19 +20,37 @@ class BaseComponent: SKSpriteNode{
 }
 
 class ResourceComponent: BaseComponent{
-    var resourceLevel: Int = 1
+    var resourceLevel: Int
     private var accumulatedTime: TimeInterval = 0
     private let collectInterval: TimeInterval = 10.0
     private var lastCheckTime: TimeInterval = 0
 
-    override init(color: UIColor) {
+    init(color: UIColor, resourceLevel: Int = 1) {
+        self.resourceLevel = resourceLevel
         super.init(color: color)
     }
     
+    enum CodingKeys: String, CodingKey {
+        case resourceLevel
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(resourceLevel, forKey: .resourceLevel)
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let resourceLevel = try container.decode(Int.self, forKey: .resourceLevel)
+
+        self.resourceLevel = resourceLevel
+        super.init(color: .clear)
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func autoCollectResources(_ player: inout Player, _ currentTime: TimeInterval) {
         // Calculate the time since the last frame
         let deltaTime = currentTime - lastCheckTime
@@ -53,32 +78,62 @@ class ResourceComponent: BaseComponent{
 }
 
 class WoodComponent: ResourceComponent{
-    init() {
+    init(resourceLevel: Int = 1) {
         super.init(color: .brown)
+        self.resourceLevel = resourceLevel
     }
     
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        self.color = .brown
     }
 }
 
 class StoneComponent: ResourceComponent{
-    init() {
+    init(resourceLevel: Int = 1) {
         super.init(color: .gray)
+        self.resourceLevel = resourceLevel
     }
     
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        self.color = .gray
     }
 }
 
 class OreComponent: ResourceComponent{
-    init() {
+    init(resourceLevel: Int = 1) {
         super.init(color: .black)
+        self.resourceLevel = resourceLevel
     }
     
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        self.color = .black
     }
 }
 
@@ -96,6 +151,10 @@ class AttackComponent: BaseComponent{
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
     
     func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerCoinCount: inout Int) {
@@ -161,6 +220,10 @@ class SentryComponent: AttackComponent{
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
 }
 
 class RocketComponent: AttackComponent{
@@ -173,5 +236,9 @@ class RocketComponent: AttackComponent{
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
 }

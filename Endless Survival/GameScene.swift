@@ -171,7 +171,6 @@ class GameScene: SKScene {
         base = Base()
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         addChild(base)
-        base.createBarrier()
         
         // Add components to the base
         let woodComponent = WoodComponent()

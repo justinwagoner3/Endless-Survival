@@ -37,6 +37,7 @@
 		BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FE2BF1AE0A00EA27E0 /* Base.swift */; };
 		BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641002BF6F26500EA27E0 /* BaseComponent.swift */; };
 		BBD641032BF6FEC500EA27E0 /* BaseComponentExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */; };
+		BBD641052BF9095800EA27E0 /* BaseBarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641042BF9095800EA27E0 /* BaseBarrier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		BBD640FE2BF1AE0A00EA27E0 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		BBD641002BF6F26500EA27E0 /* BaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponent.swift; sourceTree = "<group>"; };
 		BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponentExt.swift; sourceTree = "<group>"; };
+		BBD641042BF9095800EA27E0 /* BaseBarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBarrier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				BBD640FE2BF1AE0A00EA27E0 /* Base.swift */,
 				BBD641002BF6F26500EA27E0 /* BaseComponent.swift */,
 				BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */,
+				BBD641042BF9095800EA27E0 /* BaseBarrier.swift */,
 				BBA5F8912BE861D700D4E1EB /* Joystick.swift */,
 				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
 				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
@@ -327,6 +330,7 @@
 				BBA5F8842BE8252900D4E1EB /* Enemy.swift in Sources */,
 				BBD640F72BF17B4A00EA27E0 /* Worker.swift in Sources */,
 				BBA5F8962BE88D7D00D4E1EB /* MainMenuScene.swift in Sources */,
+				BBD641052BF9095800EA27E0 /* BaseBarrier.swift in Sources */,
 				BB0EE5E92BAF4E9D0035F36B /* GameScene.swift in Sources */,
 				BBA5F89A2BF051ED00D4E1EB /* Weapon.swift in Sources */,
 				BB0EE5EB2BAF4E9D0035F36B /* GameViewController.swift in Sources */,
