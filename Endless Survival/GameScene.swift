@@ -36,7 +36,7 @@ class GameScene: SKScene {
 
     // World
     private var worldSize = CGSize(width: 0, height: 0)
-    private var scaleFactor: CGFloat = 10
+    private var scaleFactor: CGFloat = 1
     
     // Enemies
     private var enemies: [Enemy] = []
@@ -122,13 +122,19 @@ class GameScene: SKScene {
         cameraNode.addChild(baseCircle)
         
         // Create health bar nodes
-        if let safeAreaInsets = view.window?.safeAreaInsets {
-            let healthBarYPosition = size.height / 2 - safeAreaInsets.top - 20
-            let healthBarSize = CGSize(width: size.width - safeAreaInsets.left - safeAreaInsets.right - 40, height: 20)
+        if let window = view.window {
+            let safeAreaInsets = window.safeAreaInsets
+            let adjustedWidth = size.width - safeAreaInsets.left - safeAreaInsets.right
+            let adjustedHeight = size.height - safeAreaInsets.top - safeAreaInsets.bottom
             
+            // Calculate health bar size and position
+            let healthBarSize = CGSize(width: adjustedWidth / 2, height: 20)
+            let healthBarYPosition = size.height / 2 - safeAreaInsets.top - 20
+            let healthBarXPosition = -size.width / 2 + safeAreaInsets.left + 20 + healthBarSize.width / 2
+
             healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
             healthBarGray.zPosition = 10
-            healthBarGray.position = CGPoint(x: 0, y: healthBarYPosition)
+            healthBarGray.position = CGPoint(x: healthBarXPosition, y: healthBarYPosition)
             uiContainer.addChild(healthBarGray)
             
             healthBarRed = SKSpriteNode(color: .red, size: healthBarSize)
