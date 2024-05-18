@@ -37,7 +37,6 @@ class GameScene: SKScene {
     // World
     private let worldSizeScaleFactor: Int = 1
     private var worldSize = CGSize(width: 0, height: 0)
-    private var scaleFactor: CGFloat = 1
     
     // Enemies
     private var enemies: [Enemy] = []
@@ -76,7 +75,6 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
-        let scaleFactor = min(view.bounds.width / worldSize.width, view.bounds.height / worldSize.height)
         // Create the background
         let background = SKSpriteNode(color: SKColor.green, size: worldSize)
         background.position = CGPoint(x: worldSize.width / 2, y: worldSize.height / 2)
@@ -86,7 +84,6 @@ class GameScene: SKScene {
 
         // Set player initial position and other properties
         weapon = Rocket()
-        //player = Player(color: .blue, size: CGSize(width: 25 * scaleFactor, height: 25 * scaleFactor))
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.weapon = weapon
         player.movementLevel = LevelManager.shared.movementLevel
