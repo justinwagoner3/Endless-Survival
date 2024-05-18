@@ -66,38 +66,39 @@ class GameScene: SKScene {
     }
 
     override func sceneDidLoad() {
-        //super.sceneDidLoad()
-                
+        super.sceneDidLoad()
+
+        // This can stay in sceneDidLoad
+        weapon = Rocket()
+        player = Player(color: .blue, size: CGSize(width: 25, height: 25))
+        player.weapon = weapon
+        player.movementLevel = LevelManager.shared.movementLevel
+        addChild(player)
+    }
+
+    override func didMove(to view: SKView) {
+        super.didMove(to: view)
+        
+        // Set up world size
         worldSize = CGSize(width: self.size.width * scaleFactor, height: self.size.height * scaleFactor)
 
         // Create the background (solid green)
         let background = SKSpriteNode(color: SKColor.green, size: worldSize)
         background.size = worldSize
-        background.position = CGPoint(x: worldSize.width/2, y: worldSize.height/2)
+        background.position = CGPoint(x: worldSize.width / 2, y: worldSize.height / 2)
         background.zPosition = 0
         addChild(background)
         
-        // Create the weapon
-        weapon = Rocket()
-
-        // Create player
-        player = Player(color: .blue, size: CGSize(width: 25, height: 25))
+        // Set player initial position and other properties
         player.position = background.position
         player.zPosition = 3
-        player.weapon = weapon
-        player.movementLevel = LevelManager.shared.movementLevel
-        //player.delegate = self
-        addChild(player)
-        
-        // Create drones
-        //player.addDrone(AssaultDrone())
-        //player.addDrone(AssaultDrone())
-        //player.addDrone(AssaultDrone())
 
         // Set up the camera
-        self.camera = cameraNode;
+        self.camera = cameraNode
         cameraNode.position = player.position
         addChild(cameraNode)
+        let uiContainer = SKNode()
+        cameraNode.addChild(uiContainer)
 
         // Joystick
         joystick = Joystick(radius: 100.0, position: CGPoint(x: -819.2000122070312, y: -283.40283203125), parent: cameraNode)
@@ -121,17 +122,21 @@ class GameScene: SKScene {
         cameraNode.addChild(baseCircle)
         
         // Create health bar nodes
-        let healthBarSize = CGSize(width: 400, height: 20) // Adjust size as needed
-        healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
-        healthBarGray.zPosition = 10 // Place on top of other nodes
-        healthBarGray.position = CGPoint(x: -750, y: 400)
-        cameraNode.addChild(healthBarGray)
-        
-        healthBarRed = SKSpriteNode(color: .red, size: healthBarSize)
-        healthBarRed.zPosition = 11 // Place on top of gray bar
-        healthBarRed.position = healthBarGray.position
-        cameraNode.addChild(healthBarRed)
-        
+        if let safeAreaInsets = view.window?.safeAreaInsets {
+            let healthBarYPosition = size.height / 2 - safeAreaInsets.top - 20
+            let healthBarSize = CGSize(width: size.width - safeAreaInsets.left - safeAreaInsets.right - 40, height: 20)
+            
+            healthBarGray = SKSpriteNode(color: .gray, size: healthBarSize)
+            healthBarGray.zPosition = 10
+            healthBarGray.position = CGPoint(x: 0, y: healthBarYPosition)
+            uiContainer.addChild(healthBarGray)
+            
+            healthBarRed = SKSpriteNode(color: .red, size: healthBarSize)
+            healthBarRed.zPosition = 11
+            healthBarRed.position = healthBarGray.position
+            uiContainer.addChild(healthBarRed)
+        }
+
         updateHealthBar()
         
         // Create resource counter node
@@ -144,13 +149,13 @@ class GameScene: SKScene {
         spawnEnemies(count: 50)
         
         // Spawn resources
-        let wood = Wood(spawnBounds:worldSize,resourceCount:10, collectionHarvestTime: 1.0)
+        let wood = Wood(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 1.0)
         addChild(wood)
         resources.append(wood)
-        let stone = Stone(spawnBounds:worldSize,resourceCount:10, collectionHarvestTime: 2.0)
+        let stone = Stone(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 2.0)
         addChild(stone)
         resources.append(stone)
-        let ore = Ore(spawnBounds:worldSize,resourceCount:10, collectionHarvestTime: 3.0)
+        let ore = Ore(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 3.0)
         addChild(ore)
         resources.append(ore)
         
@@ -164,33 +169,21 @@ class GameScene: SKScene {
         let woodComponent = WoodComponent()
         let stoneComponent = StoneComponent()
         let oreComponent = OreComponent()
-        //let sentryComponent = SentryComponent()
-        //let rocketComponent = RocketComponent()
         base.addComponent(woodComponent)
         base.addComponent(stoneComponent)
         base.addComponent(oreComponent)
-        //base.addComponent(sentryComponent)
-        //base.addComponent(rocketComponent)
         addChild(woodComponent)
         addChild(stoneComponent)
         addChild(oreComponent)
-        //addChild(sentryComponent)
-        //addChild(rocketComponent)
 
-
-        // Add workers
+        // Example Worker setup (if needed)
         let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
         harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
-        harvester.zPosition = 3;
-        //addChild(harvester)
-        //workers.append(harvester)
+        harvester.zPosition = 3
         
         let shooter = Shooter(color: .purple, size: CGSize(width: 25, height: 25))
         shooter.position = CGPoint(x: background.position.x - 200, y: background.position.y)
-        shooter.zPosition = 3;
-        //addChild(shooter)
-        //workers.append(shooter)
-
+        shooter.zPosition = 3
     }
 
     override func willMove(from view: SKView) {
