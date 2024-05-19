@@ -391,22 +391,19 @@ class GameScene: SKScene {
                         hideUpgradeOverlay()
                     case "increaseMovementButton":
                         print("Increase movement button clicked")
-                        // Handle increase movement button action
                     case "addComponentButton":
                         print("Add component button clicked")
                         // Handle add component button action
                     case "playerTab":
                         print("Player tab clicked")
-                        // Handle player tab action
+                        showPlayerUpgradeContent()
                     case "baseTab":
-                        print("Base tab clicked")
-                        // Handle base tab action
+                        showBaseUpgradeContent()
                     case "dronesTab":
                         print("Drones tab clicked")
-                        // Handle drones tab action
+                        showDronesUpgradeContent()
                     case "workersTab":
-                        print("Workers tab clicked")
-                        // Handle workers tab action
+                        showWorkersUpgradeContent()
                     default:
                         break
                 }
