@@ -19,7 +19,7 @@ class GameScene: SKScene {
     var graphs = [String : GKGraph]()
     
     // Upgrade Menu
-    private var upgradeOverlay: SKSpriteNode?
+    var upgradeOverlay: SKSpriteNode?
 
     
     // Pause Button
@@ -70,136 +70,6 @@ class GameScene: SKScene {
         self.isPaused = isGamePaused
     }
     
-    // Upgrade
-    // TODO - hardcoded, but only a problem if i ever have multiple bases
-    func showUpgradeOverlay(in view: SKView) {
-        guard upgradeOverlay == nil else { return }
-
-        // Calculate overlay size and position using safe area insets
-        //let safeAreaInsets = view.safeAreaInsets
-        let overlaySize = CGSize(width: 1600, height: 900)
-
-        // Set up upgradeOverlay using overlaySize and overlayPosition
-        upgradeOverlay = SKSpriteNode(color: .white, size: overlaySize)
-        upgradeOverlay?.zPosition = 100
-        upgradeOverlay?.alpha = 0.9
-        upgradeOverlay?.position = CGPoint(x: 824.0, y: 768.0)
-
-        isGamePaused = true
-        self.isPaused = true
-
-        // Create the close button
-        //let returnButton = SKSpriteNode(imageNamed: "closeButton")
-        let returnButton = SKLabelNode(text: "X")
-        returnButton.name = "returnButton"
-        returnButton.fontSize = 60
-        returnButton.fontColor = .black
-        returnButton.position = CGPoint(x: -(overlaySize.width / 2) + 50, y: overlaySize.height / 2 - 50)
-        returnButton.zPosition = self.zPosition + 1
-        upgradeOverlay?.addChild(returnButton)
-
-        // Create the tab buttons
-        let tabNames = ["Player", "Base", "Drones", "Workers"]
-        let tabButtonWidth = overlaySize.width / CGFloat(tabNames.count)
-        for (index, name) in tabNames.enumerated() {
-            let tabButton = SKLabelNode(text: name)
-            tabButton.name = "\(name.lowercased())Tab"
-            tabButton.fontSize = 60
-            tabButton.fontColor = .black
-            tabButton.position = CGPoint(x: -(overlaySize.width / 2) + (CGFloat(index) + 0.5) * tabButtonWidth, y: overlaySize.height / 2 - 100)
-            tabButton.zPosition = self.zPosition + 1
-            mp("tabButton.zPosition",tabButton.zPosition)
-            mp("tabButton.position",tabButton.position)
-            upgradeOverlay?.addChild(tabButton)
-        }
-
-        // Add initial content (Player tab content)
-        showPlayerUpgradeContent()
-
-        addChild(upgradeOverlay!)
-    }
-
-    func hideUpgradeOverlay() {
-        upgradeOverlay?.removeFromParent()
-        upgradeOverlay = nil
-        isGamePaused = false
-        self.isPaused = false
-    }
-
-    func clearUpgradeContent() {
-        upgradeOverlay?.childNode(withName: "contentNode")?.removeFromParent()
-    }
-
-    func showPlayerUpgradeContent() {
-        clearUpgradeContent()
-
-        let contentNode = SKNode()
-        contentNode.name = "contentNode"
-
-        // Create increase movement button
-        let increaseMovementButton = SKLabelNode(text: "Increase Movement: \(LevelManager.shared.movementLevel)")
-        increaseMovementButton.fontSize = 24
-        increaseMovementButton.fontColor = .black
-        increaseMovementButton.position = CGPoint(x: 0, y: -50)
-        increaseMovementButton.name = "increaseMovementButton"
-        contentNode.addChild(increaseMovementButton)
-
-        upgradeOverlay?.addChild(contentNode)
-    }
-
-    func showBaseUpgradeContent() {
-        clearUpgradeContent()
-
-        let contentNode = SKNode()
-        contentNode.name = "contentNode"
-
-        // Add your base upgrade buttons here
-        let addComponentButton = SKLabelNode(text: "Add Component to Base")
-        addComponentButton.fontSize = 24
-        addComponentButton.fontColor = .black
-        addComponentButton.position = CGPoint(x: 0, y: -50)
-        addComponentButton.name = "addComponentButton"
-        contentNode.addChild(addComponentButton)
-
-        upgradeOverlay?.addChild(contentNode)
-    }
-
-    func showDronesUpgradeContent() {
-        clearUpgradeContent()
-
-        let contentNode = SKNode()
-        contentNode.name = "contentNode"
-
-        // Add your drones upgrade buttons here
-        // Example button
-        let upgradeDroneButton = SKLabelNode(text: "Upgrade Drone")
-        upgradeDroneButton.fontSize = 24
-        upgradeDroneButton.fontColor = .black
-        upgradeDroneButton.position = CGPoint(x: 0, y: -50)
-        upgradeDroneButton.name = "upgradeDroneButton"
-        contentNode.addChild(upgradeDroneButton)
-
-        upgradeOverlay?.addChild(contentNode)
-    }
-
-    func showWorkersUpgradeContent() {
-        clearUpgradeContent()
-
-        let contentNode = SKNode()
-        contentNode.name = "contentNode"
-
-        // Add your workers upgrade buttons here
-        // Example button
-        let upgradeWorkerButton = SKLabelNode(text: "Upgrade Worker")
-        upgradeWorkerButton.fontSize = 24
-        upgradeWorkerButton.fontColor = .black
-        upgradeWorkerButton.position = CGPoint(x: 0, y: -50)
-        upgradeWorkerButton.name = "upgradeWorkerButton"
-        contentNode.addChild(upgradeWorkerButton)
-
-        upgradeOverlay?.addChild(contentNode)
-    }
-
     // Save/Load Game
     public func startNewGame() {
         print("startNewGame")
@@ -448,33 +318,7 @@ class GameScene: SKScene {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
-    
-    private func switchToUpgradeScene(){
-        print("switching to upgrade scene")
-        // Present the upgrade screen when the base circle is touched
-        // Get the screen size
-        let screenSize = UIScreen.main.bounds.size
-        
-        // Determine the aspect ratio
-        let aspectRatio = screenSize.width / screenSize.height
-        
-        // Define the base size for your scene (you can adjust this as needed)
-        let baseWidth: CGFloat = 2048.0
-        //let baseHeight: CGFloat = 1536.0
-        
-        // Calculate the scaled size based on the aspect ratio
-        let sceneSize = CGSize(width: baseWidth, height: baseWidth / aspectRatio)
-        
-        // Load the SKScene with the calculated size
-        let scene = UpgradeScene(size: sceneSize)
-        scene.baseInteractionDelegate = self
-        scene.scaleMode = .aspectFill
-        
-        // Present the scene
-        self.view?.presentScene(scene)
-
-    }
-        
+            
     // Method to spawn multiple enemies
     private func spawnEnemies(count: Int) {
         for _ in 0..<count {
@@ -764,8 +608,4 @@ struct GameState: Codable {
     var stone: [Stone]
     var ore: [Ore]
     var base: Base
-}
-
-protocol BaseInteractionDelegate: AnyObject {
-    func addComponentToBase(_ component: BaseComponent)
 }

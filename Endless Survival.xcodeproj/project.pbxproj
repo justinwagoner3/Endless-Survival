@@ -22,11 +22,9 @@
 		BBA5F8862BE825AE00D4E1EB /* EnemyExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */; };
 		BBA5F8882BE825F600D4E1EB /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8872BE825F600D4E1EB /* Resource.swift */; };
 		BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */; };
-		BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */; };
 		BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88D2BE828C900D4E1EB /* Player.swift */; };
 		BBA5F8902BE845E000D4E1EB /* PlayerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */; };
 		BBA5F8922BE861D700D4E1EB /* Joystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8912BE861D700D4E1EB /* Joystick.swift */; };
-		BBA5F8942BE866CC00D4E1EB /* UpgradeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */; };
 		BBA5F8962BE88D7D00D4E1EB /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8952BE88D7D00D4E1EB /* MainMenuScene.swift */; };
 		BBA5F89A2BF051ED00D4E1EB /* Weapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F8992BF051ED00D4E1EB /* Weapon.swift */; };
 		BBA5F8A02BF14FCA00D4E1EB /* Drone.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F89F2BF14FCA00D4E1EB /* Drone.swift */; };
@@ -38,6 +36,7 @@
 		BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641002BF6F26500EA27E0 /* BaseComponent.swift */; };
 		BBD641032BF6FEC500EA27E0 /* BaseComponentExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */; };
 		BBD641052BF9095800EA27E0 /* BaseBarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641042BF9095800EA27E0 /* BaseBarrier.swift */; };
+		BBD641072BF9A76500EA27E0 /* GameSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,11 +75,9 @@
 		BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemyExt.swift; sourceTree = "<group>"; };
 		BBA5F8872BE825F600D4E1EB /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCounter.swift; sourceTree = "<group>"; };
-		BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExt.swift; sourceTree = "<group>"; };
 		BBA5F88D2BE828C900D4E1EB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerExt.swift; sourceTree = "<group>"; };
 		BBA5F8912BE861D700D4E1EB /* Joystick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Joystick.swift; sourceTree = "<group>"; };
-		BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeScene.swift; sourceTree = "<group>"; };
 		BBA5F8952BE88D7D00D4E1EB /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 		BBA5F8992BF051ED00D4E1EB /* Weapon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weapon.swift; sourceTree = "<group>"; };
 		BBA5F89F2BF14FCA00D4E1EB /* Drone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drone.swift; sourceTree = "<group>"; };
@@ -93,6 +90,7 @@
 		BBD641002BF6F26500EA27E0 /* BaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponent.swift; sourceTree = "<group>"; };
 		BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponentExt.swift; sourceTree = "<group>"; };
 		BBD641042BF9095800EA27E0 /* BaseBarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBarrier.swift; sourceTree = "<group>"; };
+		BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,8 +144,7 @@
 				BBD640FD2BF1A5F200EA27E0 /* zPositions.md */,
 				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
 				BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */,
-				BBA5F88B2BE8265D00D4E1EB /* GameSceneExt.swift */,
-				BBA5F8932BE866CC00D4E1EB /* UpgradeScene.swift */,
+				BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */,
 				BBA5F8952BE88D7D00D4E1EB /* MainMenuScene.swift */,
 				BBA5F88D2BE828C900D4E1EB /* Player.swift */,
 				BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */,
@@ -326,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBD641072BF9A76500EA27E0 /* GameSceneExt.swift in Sources */,
 				BBD641032BF6FEC500EA27E0 /* BaseComponentExt.swift in Sources */,
 				BBA5F8842BE8252900D4E1EB /* Enemy.swift in Sources */,
 				BBD640F72BF17B4A00EA27E0 /* Worker.swift in Sources */,
@@ -339,7 +337,6 @@
 				BBA5F8862BE825AE00D4E1EB /* EnemyExt.swift in Sources */,
 				BBA5F8922BE861D700D4E1EB /* Joystick.swift in Sources */,
 				BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */,
-				BBA5F88C2BE8265D00D4E1EB /* GameSceneExt.swift in Sources */,
 				BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */,
 				BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */,
 				BBD640F52BF177E200EA27E0 /* DroneExt.swift in Sources */,
@@ -348,7 +345,6 @@
 				BBA5F8A02BF14FCA00D4E1EB /* Drone.swift in Sources */,
 				BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */,
 				BBD640F92BF17C9B00EA27E0 /* LevelManager.swift in Sources */,
-				BBA5F8942BE866CC00D4E1EB /* UpgradeScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
