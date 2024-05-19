@@ -71,33 +71,47 @@ class GameScene: SKScene {
     }
     
     // Upgrade
+    // TODO - hardcoded, but only a problem if i ever have multiple bases
     func showUpgradeOverlay(in view: SKView) {
         guard upgradeOverlay == nil else { return }
 
         // Calculate overlay size and position using safe area insets
-        let safeAreaInsets = view.safeAreaInsets
-        let overlaySize = CGSize(width: size.width - safeAreaInsets.left - safeAreaInsets.right,
-                                 height: size.height - safeAreaInsets.top - safeAreaInsets.bottom)
-        //let overlayPosition = CGPoint(x: -overlaySize.width / 2 + safeAreaInsets.left,
-        //                              y: -overlaySize.height / 2 + safeAreaInsets.bottom)
-        
+        //let safeAreaInsets = view.safeAreaInsets
+        let overlaySize = CGSize(width: 1600, height: 900)
 
         // Set up upgradeOverlay using overlaySize and overlayPosition
-        upgradeOverlay = SKSpriteNode(color:.white,size:overlaySize)
-        upgradeOverlay?.zPosition = 100 // Ensure it is on top
-        upgradeOverlay?.alpha = 0.8 // Ensure it is on top
-        //upgradeOverlay?.position = overlayPosition
-        // TODO - hardcoded, but only a problem if i ever have multiple bases
+        upgradeOverlay = SKSpriteNode(color: .white, size: overlaySize)
+        upgradeOverlay?.zPosition = 100
+        upgradeOverlay?.alpha = 0.9
         upgradeOverlay?.position = CGPoint(x: 824.0, y: 768.0)
-        //upgradeOverlay?.position = overlayPosition
 
         isGamePaused = true
         self.isPaused = true
 
+        // Create the close button
+        //let returnButton = SKSpriteNode(imageNamed: "closeButton")
+        let returnButton = SKLabelNode(text: "X")
+        returnButton.name = "returnButton"
+        returnButton.fontSize = 60
+        returnButton.fontColor = .black
+        returnButton.position = CGPoint(x: -(overlaySize.width / 2) + 50, y: overlaySize.height / 2 - 50)
+        returnButton.zPosition = self.zPosition + 1
+        upgradeOverlay?.addChild(returnButton)
 
         // Create the tab buttons
-
-        // Create return button
+        let tabNames = ["Player", "Base", "Drones", "Workers"]
+        let tabButtonWidth = overlaySize.width / CGFloat(tabNames.count)
+        for (index, name) in tabNames.enumerated() {
+            let tabButton = SKLabelNode(text: name)
+            tabButton.name = "\(name.lowercased())Tab"
+            tabButton.fontSize = 60
+            tabButton.fontColor = .black
+            tabButton.position = CGPoint(x: -(overlaySize.width / 2) + (CGFloat(index) + 0.5) * tabButtonWidth, y: overlaySize.height / 2 - 100)
+            tabButton.zPosition = self.zPosition + 1
+            mp("tabButton.zPosition",tabButton.zPosition)
+            mp("tabButton.position",tabButton.position)
+            upgradeOverlay?.addChild(tabButton)
+        }
 
         // Add initial content (Player tab content)
         showPlayerUpgradeContent()
@@ -112,80 +126,79 @@ class GameScene: SKScene {
         self.isPaused = false
     }
 
+    func clearUpgradeContent() {
+        upgradeOverlay?.childNode(withName: "contentNode")?.removeFromParent()
+    }
+
     func showPlayerUpgradeContent() {
         clearUpgradeContent()
-        
+
         let contentNode = SKNode()
         contentNode.name = "contentNode"
-        
+
         // Create increase movement button
         let increaseMovementButton = SKLabelNode(text: "Increase Movement: \(LevelManager.shared.movementLevel)")
         increaseMovementButton.fontSize = 24
         increaseMovementButton.fontColor = .black
-        increaseMovementButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.6)
+        increaseMovementButton.position = CGPoint(x: 0, y: -50)
         increaseMovementButton.name = "increaseMovementButton"
         contentNode.addChild(increaseMovementButton)
-        
+
         upgradeOverlay?.addChild(contentNode)
     }
 
     func showBaseUpgradeContent() {
         clearUpgradeContent()
-        
+
         let contentNode = SKNode()
         contentNode.name = "contentNode"
-        
+
         // Add your base upgrade buttons here
         let addComponentButton = SKLabelNode(text: "Add Component to Base")
         addComponentButton.fontSize = 24
         addComponentButton.fontColor = .black
-        addComponentButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.6)
+        addComponentButton.position = CGPoint(x: 0, y: -50)
         addComponentButton.name = "addComponentButton"
         contentNode.addChild(addComponentButton)
-        
+
         upgradeOverlay?.addChild(contentNode)
     }
 
     func showDronesUpgradeContent() {
         clearUpgradeContent()
-        
+
         let contentNode = SKNode()
         contentNode.name = "contentNode"
-        
+
         // Add your drones upgrade buttons here
         // Example button
         let upgradeDroneButton = SKLabelNode(text: "Upgrade Drone")
         upgradeDroneButton.fontSize = 24
         upgradeDroneButton.fontColor = .black
-        upgradeDroneButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.6)
+        upgradeDroneButton.position = CGPoint(x: 0, y: -50)
         upgradeDroneButton.name = "upgradeDroneButton"
         contentNode.addChild(upgradeDroneButton)
-        
+
         upgradeOverlay?.addChild(contentNode)
     }
 
     func showWorkersUpgradeContent() {
         clearUpgradeContent()
-        
+
         let contentNode = SKNode()
         contentNode.name = "contentNode"
-        
+
         // Add your workers upgrade buttons here
         // Example button
         let upgradeWorkerButton = SKLabelNode(text: "Upgrade Worker")
         upgradeWorkerButton.fontSize = 24
         upgradeWorkerButton.fontColor = .black
-        upgradeWorkerButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.6)
+        upgradeWorkerButton.position = CGPoint(x: 0, y: -50)
         upgradeWorkerButton.name = "upgradeWorkerButton"
         contentNode.addChild(upgradeWorkerButton)
-        
+
         upgradeOverlay?.addChild(contentNode)
     }
-
-    func clearUpgradeContent() {
-        upgradeOverlay?.childNode(withName: "contentNode")?.removeFromParent()
-    }
-
 
     // Save/Load Game
     public func startNewGame() {
@@ -361,31 +374,42 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        
         let touchLocation = touch.location(in: cameraNode) // Convert touch location to camera's coordinate system
         
-        // Upgrade Tabs
-        if let node = atPoint(touchLocation) as? SKLabelNode {
-            switch node.name {
-            case "returnButton":
-                hideUpgradeOverlay()
-            case "increaseMovementButton":
-                // Increase player movement logic here
-                print("TODO - need to update the logic for this")
-            case "addComponentButton":
-                // Add component to base logic here
-                print("TODO - need to update the logic for this")
-            case "playerTab":
-                print("clicked player tab")
-                showPlayerUpgradeContent()
-            case "baseTab":
-                showBaseUpgradeContent()
-            case "dronesTab":
-                showDronesUpgradeContent()
-            case "workersTab":
-                showWorkersUpgradeContent()
-            default:
-                break
+        print("Touch location in cameraNode: \(touchLocation)")
+        
+        if let upgradeOverlay = upgradeOverlay {
+            let touchLocationInUpgradeOverlay = touch.location(in: upgradeOverlay) // Convert touch location to upgrade overlay's coordinate system
+            
+            print("Touch location in upgradeOverlay: \(touchLocationInUpgradeOverlay)")
+            
+            if let node = upgradeOverlay.atPoint(touchLocationInUpgradeOverlay) as? SKLabelNode {
+                print("Touched node: \(node.name ?? "Unknown")")
+                switch node.name {
+                    case "returnButton":
+                        print("Return button clicked")
+                        hideUpgradeOverlay()
+                    case "increaseMovementButton":
+                        print("Increase movement button clicked")
+                        // Handle increase movement button action
+                    case "addComponentButton":
+                        print("Add component button clicked")
+                        // Handle add component button action
+                    case "playerTab":
+                        print("Player tab clicked")
+                        // Handle player tab action
+                    case "baseTab":
+                        print("Base tab clicked")
+                        // Handle base tab action
+                    case "dronesTab":
+                        print("Drones tab clicked")
+                        // Handle drones tab action
+                    case "workersTab":
+                        print("Workers tab clicked")
+                        // Handle workers tab action
+                    default:
+                        break
+                }
             }
         }
         
@@ -393,22 +417,21 @@ class GameScene: SKScene {
         joystick.handleTouch(touch)
         
         // Check if the touch occurred inside the harvest circle
-        if (harvestCircle.contains(touchLocation) && !harvestCircle.isHidden) {
+        if harvestCircle.contains(touchLocation) && !harvestCircle.isHidden {
             player.isHarvesting = true
         }
         
         // Check if touch occurred inside base circle
-        if (baseCircle.contains(touchLocation) && !baseCircle.isHidden) {
+        if baseCircle.contains(touchLocation) && !baseCircle.isHidden {
             if let view = self.view {
                 showUpgradeOverlay(in: view)
             }
         }
+        
         // Pause Button
-        // TODO - because of this pause button, currentTime still advance, so player could shoot, pause, wait, then play to skip the fireRate cooldown
         if pauseButton.contains(touchLocation) {
             togglePause()
         }
-
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
