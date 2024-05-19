@@ -3,6 +3,15 @@ import SpriteKit
 class Worker: SKSpriteNode{
     var movementLevel: Int = 1
     let movementSpeed: CGFloat = 200.0 // Adjust this value based on your game's settings
+    
+    init(size: CGSize, color: UIColor){
+        super.init(texture: nil, color: color, size: size)
+        self.zPosition = 3
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 class Harvester: Worker {
@@ -19,6 +28,15 @@ class Harvester: Worker {
     var curResource: Resource?
     var resourceHarvestTime: TimeInterval = 0
     var lastUpdateHarvestTime: TimeInterval = 0
+    
+    init(){
+        super.init(size: CGSize(width: 25, height: 25), color: .purple)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 
     func moveToResource(resources: [Resource]) {
         // Find the closest resource
@@ -128,6 +146,14 @@ class Shooter: Worker{
     var attackLevel: Int = 1
     var weapon: Weapon = Pistol()
     var lastAttackTime: TimeInterval = 0
+    
+    init(){
+        super.init(size: CGSize(width: 25, height: 25), color: .cyan)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // Method to make the shooter walk towards the closest enemy
     func walkTowardsEnemy(enemies: [Enemy]) {

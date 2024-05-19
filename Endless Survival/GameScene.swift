@@ -215,13 +215,13 @@ class GameScene: SKScene {
         }
                         
         // Example Worker setup (if needed)
-        let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
-        harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
-        harvester.zPosition = 3
+        //let harvester = Harvester(color: .purple, size: CGSize(width: 25, height: 25))
+        //harvester.position = CGPoint(x: background.position.x - 200, y: background.position.y)
+        //harvester.zPosition = 3
         
-        let shooter = Shooter(color: .purple, size: CGSize(width: 25, height: 25))
-        shooter.position = CGPoint(x: background.position.x - 200, y: background.position.y)
-        shooter.zPosition = 3
+        //let shooter = Shooter(color: .purple, size: CGSize(width: 25, height: 25))
+        //shooter.position = CGPoint(x: background.position.x - 200, y: background.position.y)
+        //shooter.zPosition = 3
 
 
         player.position = base.position
@@ -256,26 +256,24 @@ class GameScene: SKScene {
             if let node = upgradeOverlay.atPoint(touchLocationInUpgradeOverlay) as? SKLabelNode {
                 print("Touched node: \(node.name ?? "Unknown")")
                 switch node.name {
-                    case "returnButton":
-                        print("Return button clicked")
-                        hideUpgradeOverlay()
-                    case "increaseMovementButton":
-                        print("Increase movement button clicked")
-                    case "addComponentButton":
-                        print("Add component button clicked")
-                        // Handle add component button action
-                    case "playerTab":
-                        print("Player tab clicked")
-                        showPlayerUpgradeContent()
-                    case "baseTab":
-                        showBaseUpgradeContent()
-                    case "dronesTab":
-                        print("Drones tab clicked")
-                        showDronesUpgradeContent()
-                    case "workersTab":
-                        showWorkersUpgradeContent()
-                    default:
-                        break
+                case "returnButton":
+                    print("Return button clicked")
+                    hideUpgradeOverlay()
+                case "playerTab":
+                    print("Player tab clicked")
+                    showPlayerUpgradeContent()
+                case "baseTab":
+                    showBaseUpgradeContent()
+                case "dronesTab":
+                    print("Drones tab clicked")
+                    showDronesUpgradeContent()
+                case "workersTab":
+                    showWorkersUpgradeContent()
+                case "addWorkerButton":
+                    print("addWorkerButton clicked")
+                    addWorker(Harvester())
+                default:
+                    break
                 }
             }
         }
@@ -370,6 +368,13 @@ class GameScene: SKScene {
             baseCircle.isHidden = true
         }
     }
+    
+    // Add Workers
+    private func addWorker(_ worker: Worker){
+        workers.append(worker)
+        worker.position = CGPoint(x: background.position.x - 200, y: background.position.y)
+        addChild(worker)
+    }
 
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
@@ -418,6 +423,8 @@ class GameScene: SKScene {
         // Worker actions
         for worker in workers {
             if let harvester = worker as? Harvester {
+                mp("harvester",harvester)
+                mp("harvester.zPosition",harvester.zPosition)
                 // Not on resource and has bag space: move to resource
                 if(!harvester.isOnResource && harvester.bagSpace != 0){
                     harvester.moveToResource(resources: resources)

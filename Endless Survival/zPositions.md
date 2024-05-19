@@ -19,6 +19,7 @@ shooter
 enemy
 drone
 player
+worker
 
 # 4
 

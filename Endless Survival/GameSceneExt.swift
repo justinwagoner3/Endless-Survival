@@ -225,11 +225,11 @@ extension GameScene{
         let contentNode = SKNode()
         contentNode.name = "contentNode"
 
-        let upgradeWorkerButton = SKLabelNode(text: "Upgrade Worker")
+        let upgradeWorkerButton = SKLabelNode(text: "Add Worker")
         upgradeWorkerButton.fontSize = 24
         upgradeWorkerButton.fontColor = .black
         upgradeWorkerButton.position = CGPoint(x: 0, y: -50)
-        upgradeWorkerButton.name = "upgradeWorkerButton"
+        upgradeWorkerButton.name = "addWorkerButton"
         contentNode.addChild(upgradeWorkerButton)
 
         upgradeOverlay?.addChild(contentNode)
