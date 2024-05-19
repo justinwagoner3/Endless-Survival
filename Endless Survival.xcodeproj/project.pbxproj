@@ -30,7 +30,6 @@
 		BBA5F8A02BF14FCA00D4E1EB /* Drone.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA5F89F2BF14FCA00D4E1EB /* Drone.swift */; };
 		BBD640F52BF177E200EA27E0 /* DroneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640F42BF177E200EA27E0 /* DroneExt.swift */; };
 		BBD640F72BF17B4A00EA27E0 /* Worker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640F62BF17B4A00EA27E0 /* Worker.swift */; };
-		BBD640F92BF17C9B00EA27E0 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */; };
 		BBD640FB2BF19C9800EA27E0 /* WorkerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */; };
 		BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD640FE2BF1AE0A00EA27E0 /* Base.swift */; };
 		BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641002BF6F26500EA27E0 /* BaseComponent.swift */; };
@@ -83,7 +82,6 @@
 		BBA5F89F2BF14FCA00D4E1EB /* Drone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drone.swift; sourceTree = "<group>"; };
 		BBD640F42BF177E200EA27E0 /* DroneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneExt.swift; sourceTree = "<group>"; };
 		BBD640F62BF17B4A00EA27E0 /* Worker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Worker.swift; sourceTree = "<group>"; };
-		BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 		BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerExt.swift; sourceTree = "<group>"; };
 		BBD640FD2BF1A5F200EA27E0 /* zPositions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = zPositions.md; sourceTree = "<group>"; };
 		BBD640FE2BF1AE0A00EA27E0 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
@@ -147,7 +145,6 @@
 				BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */,
 				BBA5F8952BE88D7D00D4E1EB /* MainMenuScene.swift */,
 				BBA5F88D2BE828C900D4E1EB /* Player.swift */,
-				BBD640F82BF17C9B00EA27E0 /* LevelManager.swift */,
 				BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */,
 				BBA5F8832BE8252900D4E1EB /* Enemy.swift */,
 				BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */,
@@ -344,7 +341,6 @@
 				BBD640FB2BF19C9800EA27E0 /* WorkerExt.swift in Sources */,
 				BBA5F8A02BF14FCA00D4E1EB /* Drone.swift in Sources */,
 				BBD641012BF6F26500EA27E0 /* BaseComponent.swift in Sources */,
-				BBD640F92BF17C9B00EA27E0 /* LevelManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

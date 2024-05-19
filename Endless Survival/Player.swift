@@ -3,6 +3,7 @@ import GameplayKit
 
 class Player : SKSpriteNode {
     
+    var movementLevel: CGFloat = 1
     var totalHealth: CGFloat = 100.0
     var currentHealth: CGFloat = 100.0
     var coinCount: Int = 0
@@ -10,7 +11,6 @@ class Player : SKSpriteNode {
     var stoneCount: Int = 0
     var oreCount: Int = 0
     var lastUpdateHarvestTime : TimeInterval = 0
-    var movementLevel: CGFloat = 1
     var isHarvesting = false
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?

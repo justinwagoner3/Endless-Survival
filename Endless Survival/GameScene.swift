@@ -100,7 +100,6 @@ class GameScene: SKScene {
         weapon = Rocket()
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         player.weapon = weapon
-        player.movementLevel = LevelManager.shared.movementLevel
         addChild(player)
         player.position = background.position
         player.zPosition = 3
@@ -575,15 +574,12 @@ class GameScene: SKScene {
         if let encoded = try? encoder.encode(gameState) {
             UserDefaults.standard.set(encoded, forKey: "gameState")
         }
-        UserDefaults.standard.set(LevelManager.shared.movementLevel, forKey: "movementLevel")
 
     }
 
     // Method to restore the game state
     public func restoreGameState() {
         print("restoreGameState")
-        LevelManager.shared.movementLevel = UserDefaults.standard.object(forKey: "movementLevel") as? CGFloat ?? 1
-        
         if let savedData = UserDefaults.standard.data(forKey: "gameState"),
            let gameState = try? JSONDecoder().decode(GameState.self, from: savedData) {
             print("found saved data")
@@ -595,7 +591,7 @@ class GameScene: SKScene {
             player.stoneCount = gameState.stoneCount
             player.oreCount = gameState.oreCount
             player.lastUpdateHarvestTime = gameState.lastUpdateHarvestTime
-            player.movementLevel = LevelManager.shared.movementLevel
+            player.movementLevel = gameState.movementLevel
             player.isHarvesting = gameState.isHarvesting
             player.lastHealTime = gameState.lastHealTime
             player.lastInjuryTime = gameState.lastInjuryTime
@@ -611,7 +607,6 @@ class GameScene: SKScene {
             enemies = gameState.enemies
             
             // Restore resources
-            
             for resource in resources{
                 resource.removeFromParent()
             }
