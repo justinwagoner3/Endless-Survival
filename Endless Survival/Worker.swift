@@ -22,7 +22,7 @@ class Harvester: Worker {
     var oreCount: Int = 0
     var harvestLevel: Int = 1
     //var axe: Axe
-    //var pikcaxe: Pickaxe
+    //var pickaxe: Pickaxe
     var isOnResource: Bool = false
     var isOnBase: Bool = false
     var curResource: Resource?

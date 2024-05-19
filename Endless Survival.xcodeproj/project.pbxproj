@@ -36,6 +36,7 @@
 		BBD641032BF6FEC500EA27E0 /* BaseComponentExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */; };
 		BBD641052BF9095800EA27E0 /* BaseBarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641042BF9095800EA27E0 /* BaseBarrier.swift */; };
 		BBD641072BF9A76500EA27E0 /* GameSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */; };
+		BBD641092BFA9ED900EA27E0 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641082BFA9ED900EA27E0 /* Tool.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponentExt.swift; sourceTree = "<group>"; };
 		BBD641042BF9095800EA27E0 /* BaseBarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBarrier.swift; sourceTree = "<group>"; };
 		BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExt.swift; sourceTree = "<group>"; };
+		BBD641082BFA9ED900EA27E0 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,26 +142,27 @@
 			isa = PBXGroup;
 			children = (
 				BBD640FD2BF1A5F200EA27E0 /* zPositions.md */,
+				BBD640FE2BF1AE0A00EA27E0 /* Base.swift */,
+				BBD641042BF9095800EA27E0 /* BaseBarrier.swift */,
+				BBD641002BF6F26500EA27E0 /* BaseComponent.swift */,
+				BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */,
+				BBA5F89F2BF14FCA00D4E1EB /* Drone.swift */,
+				BBD640F42BF177E200EA27E0 /* DroneExt.swift */,
+				BBA5F8832BE8252900D4E1EB /* Enemy.swift */,
+				BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */,
 				BB0EE5EA2BAF4E9D0035F36B /* GameViewController.swift */,
 				BB0EE5E82BAF4E9D0035F36B /* GameScene.swift */,
 				BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */,
+				BBA5F8912BE861D700D4E1EB /* Joystick.swift */,
 				BBA5F8952BE88D7D00D4E1EB /* MainMenuScene.swift */,
 				BBA5F88D2BE828C900D4E1EB /* Player.swift */,
 				BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */,
-				BBA5F8832BE8252900D4E1EB /* Enemy.swift */,
-				BBA5F8852BE825AE00D4E1EB /* EnemyExt.swift */,
 				BBA5F8872BE825F600D4E1EB /* Resource.swift */,
 				BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */,
+				BBD641082BFA9ED900EA27E0 /* Tool.swift */,
 				BBA5F8992BF051ED00D4E1EB /* Weapon.swift */,
-				BBA5F89F2BF14FCA00D4E1EB /* Drone.swift */,
-				BBD640F42BF177E200EA27E0 /* DroneExt.swift */,
 				BBD640F62BF17B4A00EA27E0 /* Worker.swift */,
 				BBD640FA2BF19C9800EA27E0 /* WorkerExt.swift */,
-				BBD640FE2BF1AE0A00EA27E0 /* Base.swift */,
-				BBD641002BF6F26500EA27E0 /* BaseComponent.swift */,
-				BBD641022BF6FEC500EA27E0 /* BaseComponentExt.swift */,
-				BBD641042BF9095800EA27E0 /* BaseBarrier.swift */,
-				BBA5F8912BE861D700D4E1EB /* Joystick.swift */,
 				BB0EE5E22BAF4E9D0035F36B /* AppDelegate.swift */,
 				BB0EE5E42BAF4E9D0035F36B /* GameScene.sks */,
 				BB0EE5E62BAF4E9D0035F36B /* Actions.sks */,
@@ -323,6 +326,7 @@
 				BBD641072BF9A76500EA27E0 /* GameSceneExt.swift in Sources */,
 				BBD641032BF6FEC500EA27E0 /* BaseComponentExt.swift in Sources */,
 				BBA5F8842BE8252900D4E1EB /* Enemy.swift in Sources */,
+				BBD641092BFA9ED900EA27E0 /* Tool.swift in Sources */,
 				BBD640F72BF17B4A00EA27E0 /* Worker.swift in Sources */,
 				BBA5F8962BE88D7D00D4E1EB /* MainMenuScene.swift in Sources */,
 				BBD641052BF9095800EA27E0 /* BaseBarrier.swift in Sources */,

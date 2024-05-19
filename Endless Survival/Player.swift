@@ -15,8 +15,12 @@ class Player : SKSpriteNode {
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
     var selectedEnemy: Enemy?
-    var weapon: Weapon!
+    // TODO change to arary and add equiped weapon
+    var weapon: Weapon = Pistol()
     var drones: [Drone] = []
+    var tools: [Tool] = []
+    var equippedPickaxe: Pickaxe = Pickaxe(rarity: .common, efficiency: 20)
+    var equippedAxe: Axe = Axe(rarity: .common, efficiency: 20)
 
     // Movement
     func move(_ joystick: Joystick, _ isJoystickActive: Bool, _ worldSize: CGSize){
@@ -273,4 +277,18 @@ class Player : SKSpriteNode {
             drone.position = CGPoint(x: newX, y: newY)
         }
     }
+    
+    func addTool(_ tool: Tool){
+        tools.append(tool)
+    }
+    
+    func equipPickaxe(_ pickaxe: Pickaxe){
+        
+    }
+    
+    func equipAxe(_ axe: Axe){
+        
+    }
+
+    
 }

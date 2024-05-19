@@ -12,7 +12,7 @@ extension GameScene{
         // Set up upgradeOverlay using overlaySize and overlayPosition
         upgradeOverlay = SKSpriteNode(color: .white, size: overlaySize)
         upgradeOverlay?.zPosition = 100
-        upgradeOverlay?.alpha = 0.97
+        //upgradeOverlay?.alpha = 0.97
         upgradeOverlay?.position = CGPoint(x: 824.0, y: 768.0)
 
         isGamePaused = true
@@ -96,12 +96,41 @@ extension GameScene{
         let contentNode = SKNode()
         contentNode.name = "contentNode"
 
-        let increaseMovementButton = SKLabelNode(text: "Increase Movement: \(LevelManager.shared.movementLevel)")
+        let increaseMovementButton = SKLabelNode(text: "Increase Movement: ")
         increaseMovementButton.fontSize = 24
         increaseMovementButton.fontColor = .black
         increaseMovementButton.position = CGPoint(x: 0, y: -50)
         increaseMovementButton.name = "increaseMovementButton"
         contentNode.addChild(increaseMovementButton)
+
+        upgradeOverlay?.addChild(contentNode)
+    }
+    
+    func showToolsContent() {
+        clearContent()
+        
+        let contentNode = SKNode()
+        contentNode.name = "contentNode"
+        
+        let columnCount = 3
+        let columnWidth: CGFloat = 300
+        let rowHeight: CGFloat = 50
+        
+        // Assuming player.tools is an array of Tool objects
+        for (index, tool) in player.tools.enumerated() {
+            let columnIndex = index % columnCount
+            let rowIndex = index / columnCount
+            
+            let toolType = type(of: tool) == Pickaxe.self ? "Pickaxe" : "Axe"
+            let equippedText = tool.isEquipped ? " (E)" : ""
+            let toolLabel = SKLabelNode(text: "\(toolType) - Eff: \(tool.efficiency)\(equippedText)")
+            toolLabel.fontSize = 24
+            toolLabel.fontColor = tool.rarity.color
+            toolLabel.position = CGPoint(x: CGFloat(columnIndex) * columnWidth - columnWidth,
+                                         y: -CGFloat(rowIndex) * rowHeight + 100)
+            toolLabel.name = "toolLabel\(index)"
+            contentNode.addChild(toolLabel)
+        }
 
         upgradeOverlay?.addChild(contentNode)
     }

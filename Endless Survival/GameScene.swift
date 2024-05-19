@@ -96,13 +96,21 @@ class GameScene: SKScene {
         addChild(background)
 
 
-        // Create Player + Weapon
-        weapon = Rocket()
+        // Create Player + Tools
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
-        player.weapon = weapon
         addChild(player)
         player.position = background.position
         player.zPosition = 3
+        player.addTool(Axe(rarity: .common, efficiency: 20, isEquipped: true) )
+        player.addTool(Axe(rarity: .uncommon, efficiency: 40))
+        player.addTool(Axe(rarity: .rare, efficiency: 60))
+        player.addTool(Axe(rarity: .epic, efficiency: 80))
+        player.addTool(Axe(rarity: .legendary, efficiency: 1000))
+        player.addTool(Pickaxe(rarity: .common, efficiency: 20, isEquipped: true))
+        player.addTool(Pickaxe(rarity: .uncommon, efficiency: 40))
+        player.addTool(Pickaxe(rarity: .rare, efficiency: 60))
+        player.addTool(Pickaxe(rarity: .epic, efficiency: 80))
+        player.addTool(Pickaxe(rarity: .legendary, efficiency: 1000))
 
         // Create a base
         base = Base()
@@ -260,9 +268,13 @@ class GameScene: SKScene {
                 case "returnButton":
                     print("Return button clicked")
                     hideUpgradeOverlay()
+                // Player tab
                 case "playerTab":
                     print("Player tab clicked")
                     showPlayerSubTabs()
+                case "toolsTab":
+                    print("toolsTab clicked")
+                    showToolsContent()
                 case "baseTab":
                     showBaseSubTabs()
                 // Drone
