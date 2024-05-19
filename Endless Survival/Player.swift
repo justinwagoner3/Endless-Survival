@@ -17,10 +17,16 @@ class Player : SKSpriteNode {
     var selectedEnemy: Enemy?
     // TODO change to arary and add equiped weapon
     var weapon: Weapon = Pistol()
+    // TODO these are not being saved in savegamestate, but should probably make player codable instead of doing what im doing
     var drones: [Drone] = []
     var tools: [Tool] = []
     var equippedPickaxe: Pickaxe = Pickaxe(rarity: .common, efficiency: 20)
     var equippedAxe: Axe = Axe(rarity: .common, efficiency: 20)
+    var totalBagSpace: Int = 2
+    var curBagCount: Int = 0
+    var curBagWoodCount: Int = 0
+    var curBagStoneCount: Int = 0
+    var curBagOreCount: Int = 0
 
     // Movement
     func move(_ joystick: Joystick, _ isJoystickActive: Bool, _ worldSize: CGSize){
@@ -201,33 +207,54 @@ class Player : SKSpriteNode {
 
     // Method to check for player-resource contact and collect resources
     func checkAndCollectResources(_ resource: inout Resource, _ resources: inout [Resource]) {
-        // Check if the total hold time exceeds the required harvest time
-        if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
-            // Perform resource collection logic based on the resource type
-            switch resource {
-            case is Wood:
-                woodCount += 1
-            case is Stone:
-                stoneCount += 1
-            case is Ore:
-                oreCount += 1
-            default:
-                break
-            }
-            // Update resource count
-            resource.resourceCount -= 1
-            if(resource.resourceCount <= 0){
-                resource.removeFromParent()
-                if let index = resources.firstIndex(of: resource) {
-                    resources.remove(at: index)
+        if curBagCount < totalBagSpace {
+            // Check if the total hold time exceeds the required harvest time
+            if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
+                // Perform resource collection logic based on the resource type
+                switch resource {
+                case is Wood:
+                    curBagWoodCount += 1
+                case is Stone:
+                    curBagStoneCount += 1
+                case is Ore:
+                    curBagOreCount += 1
+                default:
+                    break
                 }
+                curBagCount += 1
+                // Update resource count
+                resource.resourceCount -= 1
+                if(resource.resourceCount <= 0){
+                    resource.removeFromParent()
+                    if let index = resources.firstIndex(of: resource) {
+                        resources.remove(at: index)
+                    }
+                }
+                
+                resource.totalHarvestButtonHoldTime = 0
+                
+                return
             }
-            
-            resource.totalHarvestButtonHoldTime = 0
-                                
-            return
         }
-    }    
+        else{
+            displayBagFullMessage()
+            resource.totalHarvestButtonHoldTime = 0
+        }
+    }
+    
+    //if player.frame.intersects(resource.frame) {
+
+    func depositBag(baseFrame: CGRect){
+        if(self.frame.intersects(baseFrame)){
+            woodCount += curBagWoodCount
+            stoneCount += curBagStoneCount
+            oreCount += curBagOreCount
+            curBagWoodCount = 0
+            curBagStoneCount = 0
+            curBagOreCount = 0
+            curBagCount = 0
+        }
+    }
     
     func addDrone(_ drone: Drone) {
         // Check if the player can have more drones

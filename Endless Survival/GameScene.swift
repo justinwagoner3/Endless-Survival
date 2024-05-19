@@ -490,7 +490,7 @@ class GameScene: SKScene {
                 assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCointCount: &player.coinCount)
             }
             if let healDrone = drone as? HealDrone {
-                healDrone.healPlayer(&player.currentHealth, currentTime)
+                healDrone.healPlayer(&player.currentHealth, player.totalHealth, currentTime)
             }
         }
         
@@ -537,11 +537,15 @@ class GameScene: SKScene {
             }
         }
         
+        // Deposit Bag
+        player.depositBag(baseFrame: base.frame)
+        
         // UI Update
         resourceCounter?.updateCoinCount(player.coinCount)
         resourceCounter?.updateWoodCount(player.woodCount)
         resourceCounter?.updateStoneCount(player.stoneCount)
         resourceCounter?.updateOreCount(player.oreCount)
+        resourceCounter?.updateBagCount(player.curBagCount)
         updateHealthBar()
 
     }

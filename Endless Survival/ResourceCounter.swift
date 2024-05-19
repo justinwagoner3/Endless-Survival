@@ -6,6 +6,7 @@ class ResourceCounter: SKNode {
     private var woodCountLabel: SKLabelNode!
     private var stoneCountLabel: SKLabelNode!
     private var oreCountLabel: SKLabelNode!
+    private var bagCountLabel: SKLabelNode!
 
     override init() {
         super.init()
@@ -26,6 +27,10 @@ class ResourceCounter: SKNode {
         oreCountLabel = createLabel(text: "Ore: 0")
         oreCountLabel.position = CGPoint(x: 0, y: -90) // Adjust vertical position as needed
         addChild(oreCountLabel)
+
+        bagCountLabel = createLabel(text: "Bag: 0")
+        bagCountLabel.position = CGPoint(x: 0, y: -120) // Adjust vertical position as needed
+        addChild(bagCountLabel)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -52,6 +57,11 @@ class ResourceCounter: SKNode {
         oreCountLabel.text = "Ore: \(count)"
     }
     
+    // Method to update bag count
+    func updateBagCount(_ count: Int) {
+        bagCountLabel.text = "Bag: \(count)"
+    }
+
 
     // Helper method to create and configure label nodes
     private func createLabel(text: String) -> SKLabelNode {

@@ -89,7 +89,7 @@ class HealDrone: Drone {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func healPlayer(_ playerHealth: inout CGFloat, _ currentTime: TimeInterval){
+    func healPlayer(_ playerHealth: inout CGFloat, _ playerTotalHealth: CGFloat, _ currentTime: TimeInterval){
         // Calculate the time since the last frame
         let deltaTime = currentTime - lastCheckTime
         
@@ -99,10 +99,10 @@ class HealDrone: Drone {
         // Update the last update time for the next frame
         lastCheckTime = currentTime
 
-        if(remainingTime <= 0){
+        if(remainingTime <= 0 && playerHealth < playerTotalHealth){
             mp("healing player from ",playerHealth)
             mp("to ",playerHealth+healAmount)
-            playerHealth += healAmount
+            playerHealth += max(healAmount,playerTotalHealth)
             remainingTime = healInterval
 
         }
