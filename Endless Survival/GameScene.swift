@@ -285,7 +285,7 @@ class GameScene: SKScene {
                     showDroneContent(for: currentDroneSubTabIndex)
                 case "createHealDroneButton":
                     print("createHealDroneButton clicked but this is not yet implemented")
-                    //player.addDrone(HealDrone())
+                    player.addDrone(HealDrone())
                     showDroneContent(for: currentDroneSubTabIndex)
                 case "createHarvestDroneButton":
                     print("createHarvestDroneButton clicked but this is not yet implemented")
@@ -477,6 +477,9 @@ class GameScene: SKScene {
         for drone in player.drones {
             if let assaultDrone = drone as? AssaultDrone {
                 assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCointCount: &player.coinCount)
+            }
+            if let healDrone = drone as? HealDrone {
+                healDrone.healPlayer(&player.currentHealth, currentTime)
             }
         }
         
