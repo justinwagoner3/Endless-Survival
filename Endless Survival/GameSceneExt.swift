@@ -1,7 +1,6 @@
 import SpriteKit
 
 extension GameScene{
-    // Upgrade
     // TODO - hardcoded, but only a problem if i ever have multiple bases
     func showUpgradeOverlay(in view: SKView) {
         guard upgradeOverlay == nil else { return }
@@ -42,7 +41,7 @@ extension GameScene{
             upgradeOverlay?.addChild(tabButton)
         }
 
-        showPlayerUpgradeContent()
+        showPlayerSubTabs()
 
         addChild(upgradeOverlay!)
     }
@@ -54,13 +53,17 @@ extension GameScene{
         self.isPaused = false
     }
 
-    func clearUpgradeContent() {
-        upgradeOverlay?.childNode(withName: "contentNode")?.removeFromParent()
+    func clearSubTabs() {
         upgradeOverlay?.childNode(withName: "subTabs")?.removeFromParent()
     }
+    
+    func clearContent() {
+        upgradeOverlay?.childNode(withName: "contentNode")?.removeFromParent()
+    }
 
-    func showPlayerUpgradeContent() {
-        clearUpgradeContent()
+    func showPlayerSubTabs() {
+        clearSubTabs()
+        clearContent()
         
         let subTabs = SKNode()
         subTabs.name = "subTabs"
@@ -103,8 +106,9 @@ extension GameScene{
         upgradeOverlay?.addChild(contentNode)
     }
 
-    func showBaseUpgradeContent() {
-        clearUpgradeContent()
+    func showBaseSubTabs() {
+        clearSubTabs()
+        clearContent()
 
         let subTabs = SKNode()
         subTabs.name = "subTabs"
@@ -147,8 +151,9 @@ extension GameScene{
         upgradeOverlay?.addChild(contentNode)
     }
 
-    func showDronesUpgradeContent() {
-        clearUpgradeContent()
+    func showDronesSubTabs() {
+        clearSubTabs()
+        clearContent()
 
         let subTabs = SKNode()
         subTabs.name = "subTabs"
@@ -191,8 +196,9 @@ extension GameScene{
         upgradeOverlay?.addChild(contentNode)
     }
 
-    func showWorkersUpgradeContent() {
-        clearUpgradeContent()
+    func showWorkersSubTabs() {
+        clearSubTabs()
+        clearContent()
 
         let subTabs = SKNode()
         subTabs.name = "subTabs"
@@ -221,18 +227,43 @@ extension GameScene{
         }
         
         upgradeOverlay?.addChild(subTabs)
+        
+        showWorkerContent(for: 0)
+    }
+    
+    func showWorkerContent(for index: Int) {
+        currentWorkerSubTabIndex = index
+        clearContent()
 
         let contentNode = SKNode()
         contentNode.name = "contentNode"
+        mp("workers.count",workers.count)
+        
+        if index < workers.count {
+            let worker = workers[index]
 
-        let upgradeWorkerButton = SKLabelNode(text: "Add Worker")
-        upgradeWorkerButton.fontSize = 24
-        upgradeWorkerButton.fontColor = .black
-        upgradeWorkerButton.position = CGPoint(x: 0, y: -50)
-        upgradeWorkerButton.name = "addWorkerButton"
-        contentNode.addChild(upgradeWorkerButton)
+            let upgradeMovementButton = SKLabelNode(text: "Upgrade Movement Level: \(worker.movementLevel)")
+            upgradeMovementButton.fontSize = 24
+            upgradeMovementButton.fontColor = .black
+            upgradeMovementButton.position = CGPoint(x: 0, y: -50)
+            upgradeMovementButton.name = "upgradeMovementButton"
+            contentNode.addChild(upgradeMovementButton)
+        } else {
+            let createHarvesterButton = SKLabelNode(text: "Create Harvester Worker")
+            createHarvesterButton.fontSize = 24
+            createHarvesterButton.fontColor = .black
+            createHarvesterButton.position = CGPoint(x: 0, y: -50)
+            createHarvesterButton.name = "createHarvesterButton"
+            contentNode.addChild(createHarvesterButton)
+            
+            let createShooterButton = SKLabelNode(text: "Create Shooter Worker")
+            createShooterButton.fontSize = 24
+            createShooterButton.fontColor = .black
+            createShooterButton.position = CGPoint(x: 0, y: -100)
+            createShooterButton.name = "createShooterButton"
+            contentNode.addChild(createShooterButton)
+        }
 
         upgradeOverlay?.addChild(contentNode)
     }
-
 }

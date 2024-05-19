@@ -20,6 +20,7 @@ class GameScene: SKScene {
     
     // Upgrade Menu
     var upgradeOverlay: SKSpriteNode?
+    var currentWorkerSubTabIndex: Int = 1
 
     
     // Pause Button
@@ -261,17 +262,48 @@ class GameScene: SKScene {
                     hideUpgradeOverlay()
                 case "playerTab":
                     print("Player tab clicked")
-                    showPlayerUpgradeContent()
+                    showPlayerSubTabs()
                 case "baseTab":
-                    showBaseUpgradeContent()
+                    showBaseSubTabs()
                 case "dronesTab":
                     print("Drones tab clicked")
-                    showDronesUpgradeContent()
+                    showDronesSubTabs()
+                // Workers
                 case "workersTab":
-                    showWorkersUpgradeContent()
-                case "addWorkerButton":
-                    print("addWorkerButton clicked")
+                    print("workersTab clicked")
+                    showWorkersSubTabs()
+                case "worker1Tab":
+                    print("Worker1Tab clicked")
+                    showWorkerContent(for: 0)
+                case "worker2Tab":
+                    print("Worker2Tab clicked")
+                    showWorkerContent(for: 1)
+                case "worker3Tab":
+                    print("Worker3Tab clicked")
+                    showWorkerContent(for: 2)
+                case "worker4Tab":
+                    print("Worker4Tab clicked")
+                    showWorkerContent(for: 3)
+                case "worker5Tab":
+                    print("Worker5Tab clicked")
+                    showWorkerContent(for: 4)
+                case "worker6Tab":
+                    print("Worker6Tab clicked")
+                    showWorkerContent(for: 5)
+                case "worker7Tab":
+                    print("Worker7Tab clicked")
+                    showWorkerContent(for: 6)
+                case "worker8Tab":
+                    print("Worker8Tab clicked")
+                    showWorkerContent(for: 7)
+                case "createHarvesterButton":
+                    print("createHarvesterButton clicked")
                     addWorker(Harvester())
+                    showWorkerContent(for: currentWorkerSubTabIndex)
+                case "createShooterButton":
+                    print("createShooterButton clicked")
+                    addWorker(Shooter())
+                    showWorkerContent(for: currentWorkerSubTabIndex)
                 default:
                     break
                 }
@@ -423,8 +455,6 @@ class GameScene: SKScene {
         // Worker actions
         for worker in workers {
             if let harvester = worker as? Harvester {
-                mp("harvester",harvester)
-                mp("harvester.zPosition",harvester.zPosition)
                 // Not on resource and has bag space: move to resource
                 if(!harvester.isOnResource && harvester.bagSpace != 0){
                     harvester.moveToResource(resources: resources)
