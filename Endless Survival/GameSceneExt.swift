@@ -279,7 +279,7 @@ extension GameScene{
             upgradeMovementButton.fontSize = 24
             upgradeMovementButton.fontColor = .black
             upgradeMovementButton.position = CGPoint(x: 0, y: -50)
-            upgradeMovementButton.name = "upgradeMovementButton"
+            upgradeMovementButton.name = "upgradeWorkerMovementButton"
             contentNode.addChild(upgradeMovementButton)
         } else {
             let createHarvesterButton = SKLabelNode(text: "Create Harvester Worker")

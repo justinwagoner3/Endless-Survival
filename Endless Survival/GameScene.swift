@@ -327,6 +327,11 @@ class GameScene: SKScene {
                     print("createShooterButton clicked")
                     addWorker(Shooter())
                     showWorkerContent(for: currentWorkerSubTabIndex)
+                case "upgradeWorkerMovementButton":
+                    print("upgradeWorkerMovementButton clicked")
+                    workers[currentWorkerSubTabIndex].movementLevel += 1
+                    showWorkerContent(for: currentWorkerSubTabIndex)
+                    
                 default:
                     break
                 }
