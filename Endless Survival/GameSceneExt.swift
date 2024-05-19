@@ -183,18 +183,51 @@ extension GameScene{
         
         upgradeOverlay?.addChild(subTabs)
 
+        showDroneContent(for: 0)
+    }
+    
+    func showDroneContent(for index: Int) {
+        currentDroneSubTabIndex = index
+        clearContent()
+
         let contentNode = SKNode()
         contentNode.name = "contentNode"
+        
+        if index < player.drones.count {
+            let drone = player.drones[index]
 
-        let upgradeDroneButton = SKLabelNode(text: "Upgrade Drone")
-        upgradeDroneButton.fontSize = 24
-        upgradeDroneButton.fontColor = .black
-        upgradeDroneButton.position = CGPoint(x: 0, y: -50)
-        upgradeDroneButton.name = "upgradeDroneButton"
-        contentNode.addChild(upgradeDroneButton)
+            let upgradeMovementButton = SKLabelNode(text: "Fix this")
+            upgradeMovementButton.fontSize = 24
+            upgradeMovementButton.fontColor = .black
+            upgradeMovementButton.position = CGPoint(x: 0, y: -50)
+            upgradeMovementButton.name = "fixThisButton"
+            contentNode.addChild(upgradeMovementButton)
+        } else {
+            let createAssaultDroneButton = SKLabelNode(text: "Create Assault Drone")
+            createAssaultDroneButton.fontSize = 24
+            createAssaultDroneButton.fontColor = .black
+            createAssaultDroneButton.position = CGPoint(x: 0, y: -50)
+            createAssaultDroneButton.name = "createAssaultDroneButton"
+            contentNode.addChild(createAssaultDroneButton)
+            
+            let createHealDroneButton = SKLabelNode(text: "Create Heal Drone")
+            createHealDroneButton.fontSize = 24
+            createHealDroneButton.fontColor = .black
+            createHealDroneButton.position = CGPoint(x: 0, y: -100)
+            createHealDroneButton.name = "createHealDroneButton"
+            contentNode.addChild(createHealDroneButton)
+            
+            let createHarvestDroneButton = SKLabelNode(text: "Create Harvest Drone")
+            createHarvestDroneButton.fontSize = 24
+            createHarvestDroneButton.fontColor = .black
+            createHarvestDroneButton.position = CGPoint(x: 0, y: -150)
+            createHarvestDroneButton.name = "createHarvestDroneButton"
+            contentNode.addChild(createHarvestDroneButton)
+        }
 
         upgradeOverlay?.addChild(contentNode)
     }
+
 
     func showWorkersSubTabs() {
         clearSubTabs()

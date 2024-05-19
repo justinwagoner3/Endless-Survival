@@ -1,55 +1,9 @@
 import SpriteKit
 
-class Drone: SKSpriteNode, Codable {
-    var radius: CGFloat
-    var fireRate: TimeInterval
-    var damage: CGFloat
-    var lastAttackTime: TimeInterval
-
-    enum CodingKeys: String, CodingKey {
-        case radius
-        case fireRate
-        case damage
-        case lastAttackTime
-    }
+class Drone: SKSpriteNode {
     
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(radius, forKey: .radius)
-        try container.encode(fireRate, forKey: .fireRate)
-        try container.encode(damage, forKey: .damage)
-        try container.encode(lastAttackTime, forKey: .lastAttackTime)
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let radius = try container.decode(CGFloat.self, forKey: .radius)
-        let fireRate = try container.decode(TimeInterval.self, forKey: .fireRate)
-        let damage = try container.decode(CGFloat.self, forKey: .damage)
-        let lastAttackTime = try container.decode(TimeInterval.self, forKey: .lastAttackTime)
-
-        self.radius = radius
-        self.fireRate = fireRate
-        self.damage = damage
-        self.lastAttackTime = lastAttackTime
-        
-        let size = CGSize(width: 25, height: 25)
-        let color = UIColor.blue
-        super.init(texture: nil, color: color, size: size)
-        
-        self.zPosition = 3
-
-    }
-    
-    init(radius: CGFloat, fireRate: TimeInterval, damage: CGFloat) {
-        self.radius = radius
-        self.fireRate = fireRate
-        self.damage = damage
-        self.lastAttackTime = 0
-        
-        let size = CGSize(width: 25, height: 25)
-        let color = UIColor.blue
-        super.init(texture: nil, color: color, size: size)
+    init(color: UIColor) {
+        super.init(texture: nil, color: color, size: CGSize(width: 25, height: 25))
         
         self.zPosition = 3
 
@@ -61,8 +15,18 @@ class Drone: SKSpriteNode, Codable {
 }
 
 class AssaultDrone: Drone {
+    var radius: CGFloat
+    var fireRate: TimeInterval
+    var damageLevel: CGFloat
+    var lastAttackTime: TimeInterval
+
     init() {
-        super.init(radius: 100, fireRate: 2, damage: 2)
+        self.radius = 100
+        self.fireRate = 2
+        self.damageLevel = 1
+        self.lastAttackTime = 0
+        
+        super.init(color: .blue)
     }
     
     required init(from decoder: Decoder) throws {
@@ -92,7 +56,7 @@ class AssaultDrone: Drone {
             if let closestEnemy = closestEnemy {
                 animateDroneAttack()
                 // Perform attack logic
-                closestEnemy.hitpoints -= Int(damage)
+                closestEnemy.hitpoints -= Int(damageLevel)
                 
                 // Check if the enemy's hitpoints have reached zero
                 if closestEnemy.hitpoints <= 0 {
@@ -109,6 +73,4 @@ class AssaultDrone: Drone {
             }
         }
     }
-
-    
 }

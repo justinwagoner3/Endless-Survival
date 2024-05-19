@@ -21,6 +21,7 @@ class GameScene: SKScene {
     // Upgrade Menu
     var upgradeOverlay: SKSpriteNode?
     var currentWorkerSubTabIndex: Int = 1
+    var currentDroneSubTabIndex: Int = 1
 
     
     // Pause Button
@@ -265,9 +266,31 @@ class GameScene: SKScene {
                     showPlayerSubTabs()
                 case "baseTab":
                     showBaseSubTabs()
+                // Drone
                 case "dronesTab":
                     print("Drones tab clicked")
                     showDronesSubTabs()
+                case "drone1Tab":
+                    print("Drone1tab clicked")
+                    showDroneContent(for: 0)
+                case "drone2Tab":
+                    print("Drone2tab clicked")
+                    showDroneContent(for: 1)
+                case "drone3Tab":
+                    print("Drone3tab clicked")
+                    showDroneContent(for: 2)
+                case "createAssaultDroneButton":
+                    print("createAssaultDroneButton clicked")
+                    player.addDrone(AssaultDrone())
+                    showDroneContent(for: currentDroneSubTabIndex)
+                case "createHealDroneButton":
+                    print("createHealDroneButton clicked")
+                    //player.addDrone(AssaultDrone())
+                    showDroneContent(for: currentDroneSubTabIndex)
+                case "createHarvestDroneButton":
+                    print("createHarvestDroneButton clicked")
+                    //player.addDrone(AssaultDrone())
+                    showDroneContent(for: currentDroneSubTabIndex)
                 // Workers
                 case "workersTab":
                     print("workersTab clicked")
@@ -407,7 +430,7 @@ class GameScene: SKScene {
         worker.position = CGPoint(x: background.position.x - 200, y: background.position.y)
         addChild(worker)
     }
-
+    
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
         guard !isGamePaused else { return }
