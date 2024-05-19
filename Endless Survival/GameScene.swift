@@ -284,12 +284,12 @@ class GameScene: SKScene {
                     player.addDrone(AssaultDrone())
                     showDroneContent(for: currentDroneSubTabIndex)
                 case "createHealDroneButton":
-                    print("createHealDroneButton clicked")
-                    //player.addDrone(AssaultDrone())
+                    print("createHealDroneButton clicked but this is not yet implemented")
+                    //player.addDrone(HealDrone())
                     showDroneContent(for: currentDroneSubTabIndex)
                 case "createHarvestDroneButton":
-                    print("createHarvestDroneButton clicked")
-                    //player.addDrone(AssaultDrone())
+                    print("createHarvestDroneButton clicked but this is not yet implemented")
+                    //player.addDrone(HarvestDrone())
                     showDroneContent(for: currentDroneSubTabIndex)
                 // Workers
                 case "workersTab":

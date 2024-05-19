@@ -74,3 +74,11 @@ class AssaultDrone: Drone {
         }
     }
 }
+
+class HealDrone: Drone {
+    
+}
+
+class HarvestDrone: Drone {
+    
+}
