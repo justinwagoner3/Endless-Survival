@@ -104,7 +104,8 @@ class GameScene: SKScene {
         player = Player(color: .blue, size: CGSize(width: 25, height: 25))
         addChild(player)
         player.position = background.position
-        player.zPosition = 3
+        // TODO - needed to increase this by a lot because player would appear behind base components; this is probably happening with workers and drones too
+        player.zPosition = 10
         player.addTool(Axe(rarity: .common, efficiency: 20, isEquipped: true) )
         player.addTool(Axe(rarity: .uncommon, efficiency: 40))
         player.addTool(Axe(rarity: .rare, efficiency: 60))
@@ -119,7 +120,6 @@ class GameScene: SKScene {
         // Create a base
         base = Base()
         base.position = CGPoint(x: background.position.x - 200, y: background.position.y)
-        mp("base.position",base.position)
         addChild(base)
         
         // Add components to the base
@@ -252,7 +252,6 @@ class GameScene: SKScene {
 
 
         player.position = base.position
-        mp("player.position",player.position)
     }
 
     override func willMove(from view: SKView) {

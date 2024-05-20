@@ -19,7 +19,6 @@ harvester
 shooter
 enemy
 drone
-player
 worker
 
 # 4
@@ -37,6 +36,7 @@ worker
 # 10
 healthBarGray
 resourceCounter
+player
 
 # 11
 healthBarRed
