@@ -3,7 +3,7 @@ import GameplayKit
 
 class Player : SKSpriteNode {
     
-    var movementLevel: CGFloat = 1
+    var movementLevel: CGFloat = 5
     var totalHealth: CGFloat = 100.0
     var currentHealth: CGFloat = 100.0
     var coinCount: Int = 0
@@ -15,9 +15,9 @@ class Player : SKSpriteNode {
     var lastHealTime: TimeInterval = 0
     var lastInjuryTime: TimeInterval?
     var selectedEnemy: Enemy?
-    // TODO change to arary and add equiped weapon
-    var weapon: Weapon = Pistol()
     // TODO these are not being saved in savegamestate, but should probably make player codable instead of doing what im doing
+    var weapons: [Weapon] = [Pistol(isEquipped: true), AssaultRifle(), SniperRifle(), Rocket()]
+    var equippedWeapon: Weapon = Pistol()
     var drones: [Drone] = []
     var tools: [Tool] = []
     var equippedPickaxe: Pickaxe = Pickaxe(rarity: .common, efficiency: 20)
@@ -96,16 +96,16 @@ class Player : SKSpriteNode {
         }
         
         if !isHarvesting {
-            let timeSinceLastAttack = currentTime - weapon.lastAttackTime
-            if timeSinceLastAttack >= weapon.fireRate {
-                weapon.lastAttackTime = currentTime
+            let timeSinceLastAttack = currentTime - equippedWeapon.lastAttackTime
+            if timeSinceLastAttack >= equippedWeapon.fireRate {
+                equippedWeapon.lastAttackTime = currentTime
                 
                 //print("attacking")
                 animatePlayerAttack()
                 var enemiesToAttack: [Enemy] = []
                 
                 // Add enemies to attack if isAOE
-                if weapon.isAOE, let rocket = weapon as? Rocket {
+                if equippedWeapon.isAOE, let rocket = equippedWeapon as? Rocket {
                     for enemy in enemies {
                         let distanceFromTargetEnemy = closestEnemy.distance(to: enemy.position)
                         if distanceFromTargetEnemy <= rocket.aoeRadius {
@@ -119,7 +119,7 @@ class Player : SKSpriteNode {
                 // Perform attack logic
                 for enemy in enemiesToAttack{
                     // TODO - update this in all attack methods
-                    enemy.decreaseHealth(Int(weapon.damage))
+                    enemy.decreaseHealth(Int(equippedWeapon.damage))
                     
                     // Check if the enemy's hitpoints have reached zero
                     // TODO - move this into decreaseHealth and update all attack methods

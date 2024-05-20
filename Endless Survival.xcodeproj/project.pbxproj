@@ -37,6 +37,7 @@
 		BBD641052BF9095800EA27E0 /* BaseBarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641042BF9095800EA27E0 /* BaseBarrier.swift */; };
 		BBD641072BF9A76500EA27E0 /* GameSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */; };
 		BBD641092BFA9ED900EA27E0 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641082BFA9ED900EA27E0 /* Tool.swift */; };
+		BBD6410B2BFACD9900EA27E0 /* SupplyDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD6410A2BFACD9900EA27E0 /* SupplyDrop.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		BBD641042BF9095800EA27E0 /* BaseBarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseBarrier.swift; sourceTree = "<group>"; };
 		BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExt.swift; sourceTree = "<group>"; };
 		BBD641082BFA9ED900EA27E0 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
+		BBD6410A2BFACD9900EA27E0 /* SupplyDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplyDrop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				BBA5F88F2BE845E000D4E1EB /* PlayerExt.swift */,
 				BBA5F8872BE825F600D4E1EB /* Resource.swift */,
 				BBA5F8892BE8262800D4E1EB /* ResourceCounter.swift */,
+				BBD6410A2BFACD9900EA27E0 /* SupplyDrop.swift */,
 				BBD641082BFA9ED900EA27E0 /* Tool.swift */,
 				BBA5F8992BF051ED00D4E1EB /* Weapon.swift */,
 				BBD640F62BF17B4A00EA27E0 /* Worker.swift */,
@@ -339,6 +342,7 @@
 				BBA5F8922BE861D700D4E1EB /* Joystick.swift in Sources */,
 				BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */,
 				BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */,
+				BBD6410B2BFACD9900EA27E0 /* SupplyDrop.swift in Sources */,
 				BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */,
 				BBD640F52BF177E200EA27E0 /* DroneExt.swift in Sources */,
 				BB0EE5E32BAF4E9D0035F36B /* AppDelegate.swift in Sources */,

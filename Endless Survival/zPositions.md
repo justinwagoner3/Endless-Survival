@@ -12,6 +12,7 @@ barrier
 resource
 joystickInnerCircle
 BaseComponent
+SupplyDrop
 
 # 3
 harvester

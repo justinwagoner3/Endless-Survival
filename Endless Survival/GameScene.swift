@@ -63,6 +63,10 @@ class GameScene: SKScene {
     private var resourceCounter: ResourceCounter?
     private var harvestCircle: SKShapeNode!
 
+    // Supply Drops
+    var supplyDrops: [SupplyDrop] = []
+    private var supplyDropCircle: SKShapeNode!
+
     // Workers
     var workers: [Worker] = []
     
@@ -105,12 +109,12 @@ class GameScene: SKScene {
         player.addTool(Axe(rarity: .uncommon, efficiency: 40))
         player.addTool(Axe(rarity: .rare, efficiency: 60))
         player.addTool(Axe(rarity: .epic, efficiency: 80))
-        player.addTool(Axe(rarity: .legendary, efficiency: 1000))
+        player.addTool(Axe(rarity: .legendary, efficiency: 100))
         player.addTool(Pickaxe(rarity: .common, efficiency: 20, isEquipped: true))
         player.addTool(Pickaxe(rarity: .uncommon, efficiency: 40))
         player.addTool(Pickaxe(rarity: .rare, efficiency: 60))
         player.addTool(Pickaxe(rarity: .epic, efficiency: 80))
-        player.addTool(Pickaxe(rarity: .legendary, efficiency: 1000))
+        player.addTool(Pickaxe(rarity: .legendary, efficiency: 100))
 
         // Create a base
         base = Base()
@@ -136,6 +140,11 @@ class GameScene: SKScene {
         let ore = Ore(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 3.0)
         addChild(ore)
         resources.append(ore)
+        
+        // Spawn resources
+        let supplyDrop = SupplyDrop(spawnBounds: worldSize, tools: [Pickaxe(rarity: .legendary, efficiency: 99),Axe(rarity: .legendary, efficiency: 99)])
+        addChild(supplyDrop)
+        supplyDrops.append(supplyDrop)
 
         // Spawn enemies
         spawnEnemies(count: 10)
@@ -161,6 +170,15 @@ class GameScene: SKScene {
         harvestCircle.zPosition = 1
         harvestCircle.isHidden = true
         cameraNode.addChild(harvestCircle)
+        
+        // Create supplydrop circle as child of camera
+        supplyDropCircle = SKShapeNode(circleOfRadius: 50)
+        supplyDropCircle.position = CGPoint(x: -850, y: -150)
+        supplyDropCircle.fillColor = .gray
+        supplyDropCircle.alpha = 0.5
+        supplyDropCircle.zPosition = 1
+        supplyDropCircle.isHidden = true
+        cameraNode.addChild(supplyDropCircle)
 
         // Create base circle as child of camera
         baseCircle = SKShapeNode(circleOfRadius: 50)
@@ -357,6 +375,12 @@ class GameScene: SKScene {
             player.isHarvesting = true
         }
         
+        // Check if the touch occurred inside the suppy drop circle
+        if supplyDropCircle.contains(touchLocation) && !supplyDropCircle.isHidden {
+            //player.isHarvesting = true
+            collectSupplyDrop()
+        }
+
         // Check if touch occurred inside base circle
         if baseCircle.contains(touchLocation) && !baseCircle.isHidden {
             if let view = self.view {
@@ -428,7 +452,34 @@ class GameScene: SKScene {
         harvestCircle.isHidden = true
         return nil
     }
+
+    private func updateSupplyDropCircleVisibility() {
+        supplyDropCircle.isHidden = true
+        // Check if there are any resources nearby
+        for supplyDrop in supplyDrops {
+            if player.frame.intersects(supplyDrop.frame) {
+                // Show or hide the harvest circle accordingly
+                supplyDropCircle.isHidden = false
+                return
+            }
+        }
+    }
     
+    private func collectSupplyDrop() {
+        for supplyDrop in supplyDrops {
+            if player.frame.intersects(supplyDrop.frame) {
+                player.weapons += supplyDrop.weapons
+                player.tools += supplyDrop.tools
+
+                supplyDrop.removeFromParent()
+                if let index = supplyDrops.firstIndex(of: supplyDrop) {
+                    supplyDrops.remove(at: index)
+                }
+                return
+            }
+        }
+    }
+
     // Update this method to show/hide the harvest circle based on the player's proximity to resources
     private func updateBaseCircleVisibility(){
         if player.frame.intersects(base.frame) {
@@ -457,7 +508,7 @@ class GameScene: SKScene {
 
         // Highlight + Attack closest enemy
         // TODO - move most of this logic into player class like i did for Drone class
-        player.highlightClosestEnemy(radius: player.weapon.radius, enemies)
+        player.highlightClosestEnemy(radius: player.equippedWeapon.radius, enemies)
         player.attackClosestEnemy(&enemies, currentTime)
         
         // Get attacked
@@ -477,6 +528,9 @@ class GameScene: SKScene {
             player.updateHarvestTime(currentTime: currentTime, &resource)
             player.checkAndCollectResources(&resource, &resources)
         }
+        
+        // Supply Drops - collected in touches began
+        updateSupplyDropCircleVisibility()
         
         // Base Circle
         updateBaseCircleVisibility()
@@ -579,7 +633,6 @@ class GameScene: SKScene {
                                   isHarvesting: player.isHarvesting,
                                   lastHealTime: player.lastHealTime,
                                   lastInjuryTime: player.lastInjuryTime ?? 0,
-                                  weapon: weapon,
                                   enemies: enemies,
                                   wood: wood,
                                   stone: stone,
@@ -611,7 +664,6 @@ class GameScene: SKScene {
             player.isHarvesting = gameState.isHarvesting
             player.lastHealTime = gameState.lastHealTime
             player.lastInjuryTime = gameState.lastInjuryTime
-            player.weapon = gameState.weapon
             
             // Restore enemies
             for enemy in enemies{
@@ -681,7 +733,6 @@ struct GameState: Codable {
     var isHarvesting: Bool
     var lastHealTime: TimeInterval
     var lastInjuryTime: TimeInterval
-    var weapon: Weapon
     var enemies: [Enemy]
     var wood: [Wood]
     var stone: [Stone]
