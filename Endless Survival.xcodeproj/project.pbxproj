@@ -38,6 +38,7 @@
 		BBD641072BF9A76500EA27E0 /* GameSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */; };
 		BBD641092BFA9ED900EA27E0 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD641082BFA9ED900EA27E0 /* Tool.swift */; };
 		BBD6410B2BFACD9900EA27E0 /* SupplyDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD6410A2BFACD9900EA27E0 /* SupplyDrop.swift */; };
+		BBD6410D2BFAF1C600EA27E0 /* Armor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD6410C2BFAF1C600EA27E0 /* Armor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		BBD641062BF9A76500EA27E0 /* GameSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneExt.swift; sourceTree = "<group>"; };
 		BBD641082BFA9ED900EA27E0 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
 		BBD6410A2BFACD9900EA27E0 /* SupplyDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplyDrop.swift; sourceTree = "<group>"; };
+		BBD6410C2BFAF1C600EA27E0 /* Armor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Armor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				BBD640FD2BF1A5F200EA27E0 /* zPositions.md */,
+				BBD6410C2BFAF1C600EA27E0 /* Armor.swift */,
 				BBD640FE2BF1AE0A00EA27E0 /* Base.swift */,
 				BBD641042BF9095800EA27E0 /* BaseBarrier.swift */,
 				BBD641002BF6F26500EA27E0 /* BaseComponent.swift */,
@@ -341,6 +344,7 @@
 				BBA5F8862BE825AE00D4E1EB /* EnemyExt.swift in Sources */,
 				BBA5F8922BE861D700D4E1EB /* Joystick.swift in Sources */,
 				BBA5F88A2BE8262800D4E1EB /* ResourceCounter.swift in Sources */,
+				BBD6410D2BFAF1C600EA27E0 /* Armor.swift in Sources */,
 				BBD640FF2BF1AE0A00EA27E0 /* Base.swift in Sources */,
 				BBD6410B2BFACD9900EA27E0 /* SupplyDrop.swift in Sources */,
 				BBA5F88E2BE828C900D4E1EB /* Player.swift in Sources */,
