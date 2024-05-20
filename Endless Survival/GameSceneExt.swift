@@ -1,5 +1,30 @@
 import SpriteKit
 
+// Enum for Rarity
+enum Rarity: String, Codable {
+    case common = "Common"
+    case uncommon = "Uncommon"
+    case rare = "Rare"
+    case epic = "Epic"
+    case legendary = "Legendary"
+    
+    // Computed property to return associated color
+    var color: UIColor {
+        switch self {
+        case .common:
+            return UIColor.gray
+        case .uncommon:
+            return UIColor.green
+        case .rare:
+            return UIColor.blue
+        case .epic:
+            return UIColor.purple
+        case .legendary:
+            return UIColor.orange
+        }
+    }
+}
+
 extension GameScene{
     // TODO - hardcoded, but only a problem if i ever have multiple bases
     func showUpgradeOverlay(in view: SKView) {

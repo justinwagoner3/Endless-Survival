@@ -21,8 +21,8 @@ class Harvester: Worker {
     var stoneCount: Int = 0
     var oreCount: Int = 0
     var harvestLevel: Int = 1
-    //var axe: Axe
-    //var pickaxe: Pickaxe
+    var axe: Axe = Axe(rarity: .common, efficiency: 0)
+    var pickaxe: Pickaxe = Pickaxe(rarity: .common, efficiency: 0)
     var isOnResource: Bool = false
     var isOnBase: Bool = false
     var curResource: Resource?

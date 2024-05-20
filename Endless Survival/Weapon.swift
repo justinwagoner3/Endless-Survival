@@ -7,6 +7,7 @@ class Weapon: Codable {
     var lastAttackTime: TimeInterval
     var isAOE: Bool
     var isEquipped: Bool
+    var rarity: Rarity
 
     enum CodingKeys: String, CodingKey {
         case radius
@@ -15,6 +16,7 @@ class Weapon: Codable {
         case lastAttackTime
         case isAOE
         case isEquipped
+        case rarity
     }
     
     func encode(to encoder: Encoder) throws {
@@ -25,6 +27,7 @@ class Weapon: Codable {
         try container.encode(lastAttackTime, forKey: .lastAttackTime)
         try container.encode(isAOE, forKey: .isAOE)
         try container.encode(isEquipped, forKey: .isEquipped)
+        try container.encode(rarity, forKey: .rarity)
     }
     
     required init(from decoder: Decoder) throws {
@@ -35,6 +38,7 @@ class Weapon: Codable {
         let lastAttackTime = try container.decode(TimeInterval.self, forKey: .lastAttackTime)
         let isAOE = try container.decode(Bool.self, forKey: .isAOE)
         let isEquipped = try container.decode(Bool.self, forKey: .isEquipped)
+        let rarity = try container.decode(Rarity.self, forKey: .rarity)
 
         self.radius = radius
         self.fireRate = fireRate
@@ -42,21 +46,23 @@ class Weapon: Codable {
         self.lastAttackTime = lastAttackTime
         self.isAOE = isAOE
         self.isEquipped = isEquipped
+        self.rarity = rarity
     }
     
-    init(radius: CGFloat, fireRate: TimeInterval, damage: CGFloat, isAOE: Bool, isEquipped: Bool) {
+    init(radius: CGFloat, fireRate: TimeInterval, damage: CGFloat, isAOE: Bool, isEquipped: Bool, rarity: Rarity) {
         self.radius = radius
         self.fireRate = fireRate
         self.damage = damage
         self.isAOE = isAOE
         self.lastAttackTime = 0
         self.isEquipped = isEquipped
+        self.rarity = rarity
     }
 }
 
 class Pistol: Weapon {
-    init(isEquipped: Bool = false) {
-        super.init(radius: 100, fireRate: 2, damage: 2, isAOE: false, isEquipped: isEquipped)
+    init(isEquipped: Bool = false, rarity: Rarity = .common) {
+        super.init(radius: 100, fireRate: 2, damage: 2, isAOE: false, isEquipped: isEquipped, rarity: rarity)
     }
     
     required init(from decoder: Decoder) throws {
@@ -65,8 +71,8 @@ class Pistol: Weapon {
 }
 
 class AssaultRifle: Weapon {
-    init(isEquipped: Bool = false) {
-        super.init(radius: 150, fireRate: 1, damage: 1, isAOE: false, isEquipped: isEquipped)
+    init(isEquipped: Bool = false, rarity: Rarity = .common) {
+        super.init(radius: 150, fireRate: 1, damage: 1, isAOE: false, isEquipped: isEquipped, rarity: rarity)
     }
     
     required init(from decoder: Decoder) throws {
@@ -75,8 +81,8 @@ class AssaultRifle: Weapon {
 }
 
 class SniperRifle: Weapon {
-    init(isEquipped: Bool = false) {
-        super.init(radius: 500, fireRate: 3, damage: 10, isAOE: false, isEquipped: isEquipped)
+    init(isEquipped: Bool = false, rarity: Rarity = .common) {
+        super.init(radius: 500, fireRate: 3, damage: 10, isAOE: false, isEquipped: isEquipped, rarity: rarity)
     }
     
     required init(from decoder: Decoder) throws {
@@ -86,8 +92,8 @@ class SniperRifle: Weapon {
 
 class Rocket: Weapon {
     var aoeRadius: CGFloat = 100
-    init(isEquipped: Bool = false) {
-        super.init(radius: 500, fireRate: 3, damage: 0, isAOE: true, isEquipped: isEquipped)
+    init(isEquipped: Bool = false, rarity: Rarity = .common) {
+        super.init(radius: 500, fireRate: 3, damage: 0, isAOE: true, isEquipped: isEquipped, rarity: rarity)
     }
     
     required init(from decoder: Decoder) throws {
