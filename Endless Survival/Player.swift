@@ -27,6 +27,10 @@ class Player : SKSpriteNode {
     var curBagWoodCount: Int = 0
     var curBagStoneCount: Int = 0
     var curBagOreCount: Int = 0
+    var armors: [Armor] = []
+    var equippedHeadArmor: HeadArmor?
+    var equippedChestArmor: ChestArmor?
+    var equippedLegArmor: LegArmor?
 
     // Movement
     func move(_ joystick: Joystick, _ isJoystickActive: Bool, _ worldSize: CGSize){
