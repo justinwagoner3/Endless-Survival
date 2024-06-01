@@ -1,8 +1,9 @@
 import SpriteKit
 
 class BaseComponent: SKSpriteNode, Codable{
-    init(color: UIColor) {
-        super.init(texture: nil, color: color, size: CGSize(width: 75, height: 75))
+    init(textureName: String) {
+        let texture = SKTexture(imageNamed: textureName)
+        super.init(texture: texture, color: .clear, size: CGSize(width: 75, height: 75))
         self.zPosition = 2
     }
 
@@ -26,9 +27,9 @@ class ResourceComponent: BaseComponent{
     private var remainingTime: TimeInterval = 10.0
     private var lastCheckTime: TimeInterval = 0
 
-    init(color: UIColor, resourceLevel: Int = 1) {
+    init(textureName: String, resourceLevel: Int = 1) {
         self.resourceLevel = resourceLevel
-        super.init(color: color)
+        super.init(textureName: textureName)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -53,7 +54,7 @@ class ResourceComponent: BaseComponent{
 
         self.resourceLevel = resourceLevel
         self.remainingTime = remainingTime
-        super.init(color: .cyan)
+        super.init(textureName: "")
         self.position = curPosition
         mp("self.position at decode",self.position)
     }
@@ -90,7 +91,7 @@ class ResourceComponent: BaseComponent{
 
 class WoodComponent: ResourceComponent{
     init(resourceLevel: Int = 1) {
-        super.init(color: .brown)
+        super.init(textureName: "wood")
         self.resourceLevel = resourceLevel
     }
     
@@ -104,13 +105,13 @@ class WoodComponent: ResourceComponent{
     
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
-        self.color = .brown
+        self.texture = SKTexture(imageNamed: "wood")
     }
 }
 
 class StoneComponent: ResourceComponent{
     init(resourceLevel: Int = 1) {
-        super.init(color: .gray)
+        super.init(textureName: "stone")
         self.resourceLevel = resourceLevel
     }
     
@@ -124,13 +125,13 @@ class StoneComponent: ResourceComponent{
     
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
-        self.color = .gray
+        self.texture = SKTexture(imageNamed: "stone")
     }
 }
 
 class OreComponent: ResourceComponent{
     init(resourceLevel: Int = 1) {
-        super.init(color: .black)
+        super.init(textureName: "ore")
         self.resourceLevel = resourceLevel
     }
     
@@ -144,7 +145,7 @@ class OreComponent: ResourceComponent{
     
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
-        self.color = .black
+        self.texture = SKTexture(imageNamed: "ore")
     }
 }
 
@@ -155,9 +156,9 @@ class AttackComponent: BaseComponent{
     var damage: CGFloat = 2
     var isAOE: Bool = false
 
-    init(color: UIColor, isAOE: Bool) {
+    init(textureName: String, isAOE: Bool) {
         self.isAOE = isAOE
-        super.init(color: color)
+        super.init(textureName: textureName)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -225,7 +226,7 @@ class AttackComponent: BaseComponent{
 
 class SentryComponent: AttackComponent{
     init() {
-        super.init(color: .purple, isAOE: false)
+        super.init(textureName: "sentryComponent", isAOE: false)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -241,7 +242,7 @@ class RocketComponent: AttackComponent{
     var aoeRadius: CGFloat = 100
     
     init() {
-        super.init(color: .orange, isAOE: true)
+        super.init(textureName: "rocketLauncherComponent", isAOE: true)
     }
     
     required init?(coder aDecoder: NSCoder) {
