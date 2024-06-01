@@ -7,6 +7,8 @@ class Player : SKSpriteNode {
     var idleTextures: [SKTexture] = []
     var idleAnimationAction: SKAction?
     var attackTextures: [SKTexture] = []
+    var walkTextures: [SKTexture] = []
+    var walkAnimationAction: SKAction?
 
     // player
     var movementLevel: CGFloat = 5
@@ -43,9 +45,11 @@ class Player : SKSpriteNode {
         super.init(texture: texture, color: .clear, size: CGSize(width: 50, height: 50))
         loadIdleTextures()
         setupIdleAnimation()
+        loadWalkTextures()
+        setupWalkAnimation()
         loadAttackTextures()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

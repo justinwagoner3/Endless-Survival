@@ -5,13 +5,41 @@ extension Player {
     
     func updatePlayerState(isJoystickActive: Bool) {
         if isJoystickActive {
-            // Player is moving
-            stopIdleAnimation()
+            if self.action(forKey: "idleAnimation") != nil {
+                stopIdleAnimation()
+            }
+            if self.action(forKey: "walkAnimation") == nil {
+                if let walkAnimation = walkAnimationAction{
+                    self.run(walkAnimation, withKey: "walkAnimation")
+                }
+            }
         } else {
-            // Player is idle
+            if self.action(forKey: "walkAnimation") != nil {
+                self.removeAction(forKey: "walkAnimation")
+            }
             startIdleAnimation()
         }
     }
+
+    // walk
+    func loadWalkTextures() {
+        walkTextures = [
+            SKTexture(imageNamed: "player_walk0"),
+            SKTexture(imageNamed: "player_walk1"),
+            SKTexture(imageNamed: "player_walk2"),
+            SKTexture(imageNamed: "player_walk3"),
+            SKTexture(imageNamed: "player_walk4"),
+            SKTexture(imageNamed: "player_walk5"),
+            SKTexture(imageNamed: "player_walk6"),
+            SKTexture(imageNamed: "player_walk7")
+        ]
+    }
+
+    func setupWalkAnimation() {
+        let animateWalk = SKAction.animate(with: walkTextures, timePerFrame: 0.1, resize: false, restore: true)
+        walkAnimationAction = SKAction.repeatForever(animateWalk)
+    }
+
     
     // attack
     func loadAttackTextures() {
