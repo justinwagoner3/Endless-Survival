@@ -9,6 +9,8 @@ class Player : SKSpriteNode {
     var attackTextures: [SKTexture] = []
     var walkTextures: [SKTexture] = []
     var walkAnimationAction: SKAction?
+    var hurtTextures: [SKTexture] = []
+    var hurtAnimationAction: SKAction?
 
     // player
     var movementLevel: CGFloat = 5
@@ -25,7 +27,7 @@ class Player : SKSpriteNode {
     var selectedEnemy: Enemy?
     // TODO these are not being saved in savegamestate, but should probably make player codable instead of doing what im doing
     var weapons: [Weapon] = [Pistol(isEquipped: true), AssaultRifle(), SniperRifle(), Rocket()]
-    var equippedWeapon: Weapon = Pistol()
+    var equippedWeapon: Weapon = Bow()
     var drones: [Drone] = []
     var tools: [Tool] = []
     var equippedPickaxe: Pickaxe = Pickaxe(rarity: .common, efficiency: 20)
@@ -48,6 +50,8 @@ class Player : SKSpriteNode {
         loadWalkTextures()
         setupWalkAnimation()
         loadAttackTextures()
+        loadHurtTextures()
+        setupHurtAnimation()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -207,6 +211,10 @@ class Player : SKSpriteNode {
     
     // Method to decrease player's health
     public func decreaseHealth(amount: CGFloat) {
+        // Play hurt animation
+        if let hurtAnimation = hurtAnimationAction{
+            self.run(hurtAnimation, withKey: "hurtAnimation")
+        }
         currentHealth -= amount
         // Ensure current health doesn't go below 0
         currentHealth = max(currentHealth, 0)

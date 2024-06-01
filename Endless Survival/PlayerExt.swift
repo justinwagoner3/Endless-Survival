@@ -20,7 +20,22 @@ extension Player {
             startIdleAnimation()
         }
     }
+    // hurt
+    func loadHurtTextures() {
+        hurtTextures = [
+            SKTexture(imageNamed: "player_hurt0"),
+            SKTexture(imageNamed: "player_hurt1"),
+            SKTexture(imageNamed: "player_hurt2"),
+            SKTexture(imageNamed: "player_hurt3")
+        ]
+    }
 
+    func setupHurtAnimation() {
+        let animateHurt = SKAction.animate(with: hurtTextures, timePerFrame: 0.1, resize: false, restore: true)
+        hurtAnimationAction = animateHurt
+    }
+
+    
     // walk
     func loadWalkTextures() {
         walkTextures = [
