@@ -126,9 +126,11 @@ class GameScene: SKScene {
         let woodComponent = WoodComponent()
         let stoneComponent = StoneComponent()
         let oreComponent = OreComponent()
+        let bowComponent = BowComponent()
         base.addComponent(woodComponent)
         base.addComponent(stoneComponent)
         base.addComponent(oreComponent)
+        base.addComponent(bowComponent)
 
         // Spawn resources
         let wood = Wood(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 1.0)
@@ -147,7 +149,7 @@ class GameScene: SKScene {
         supplyDrops.append(supplyDrop)
 
         // Spawn enemies
-        spawnEnemies(count: 10)
+        spawnEnemies(count: 20)
 
 
     }

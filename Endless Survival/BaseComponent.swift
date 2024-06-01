@@ -1,6 +1,10 @@
 import SpriteKit
 
 class BaseComponent: SKSpriteNode, Codable{
+    // TODO - calculate the actual position based on the parent, used in attack
+    // currently just using the base position as an easy fix
+    //var globalPosition: CGPoint = .zero
+
     init(textureName: String) {
         let texture = SKTexture(imageNamed: textureName)
         super.init(texture: texture, color: .clear, size: CGSize(width: 75, height: 75))
@@ -150,6 +154,12 @@ class OreComponent: ResourceComponent{
 }
 
 class AttackComponent: BaseComponent{
+    
+    // animation
+    var attackTextures: [SKTexture] = []
+    var attackAnimationAction: SKAction?
+
+    // attack component
     var lastAttackTime: TimeInterval = 0
     var radius: CGFloat = 500
     var fireRate: TimeInterval = 2
@@ -159,6 +169,7 @@ class AttackComponent: BaseComponent{
     init(textureName: String, isAOE: Bool) {
         self.isAOE = isAOE
         super.init(textureName: textureName)
+        loadAttackTextures()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -176,7 +187,7 @@ class AttackComponent: BaseComponent{
             var closestEnemy: Enemy? = nil
             var closestDistance: CGFloat = CGFloat.infinity
             for enemy in enemies {
-                let distanceFromSentry = enemy.distance(to: self.position)
+                let distanceFromSentry = enemy.distance(to: parent!.position)
                 if distanceFromSentry <= radius && distanceFromSentry < closestDistance {
                     closestEnemy = enemy
                     closestDistance = distanceFromSentry
@@ -185,7 +196,7 @@ class AttackComponent: BaseComponent{
             
             // If an enemy is found within range, attack it
             if let closestEnemy = closestEnemy {
-                animateSentryComponentAttack()
+                animateBowComponentAttack()
                 var enemiesToAttack: [Enemy] = []
                 
                 // Add enemies to attack if isAOE
@@ -222,6 +233,20 @@ class AttackComponent: BaseComponent{
         }
     }
 
+}
+
+class BowComponent: AttackComponent{
+    init() {
+        super.init(textureName: "bowComponent0", isAOE: false)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
 }
 
 class SentryComponent: AttackComponent{

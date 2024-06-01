@@ -22,3 +22,31 @@ extension BaseComponent {
         whiteBorder.run(sequence)
     }
 }
+
+extension AttackComponent {
+    // Bow component attack
+    func loadAttackTextures() {
+        attackTextures = [
+            SKTexture(imageNamed: "bowComponent0"),
+            SKTexture(imageNamed: "bowComponent1"),
+            SKTexture(imageNamed: "bowComponent2"),
+            SKTexture(imageNamed: "bowComponent3"),
+            SKTexture(imageNamed: "bowComponent4"),
+            SKTexture(imageNamed: "bowComponent5")
+        ]
+    }
+    
+    func animateBowComponentAttack() {
+        // Calculate the time per frame based on the weapon's fire rate and the number of frames
+        let timePerFrame = fireRate / CGFloat(attackTextures.count)
+        
+        // Create the animation action
+        let attackAnimation = SKAction.animate(with: attackTextures, timePerFrame: timePerFrame, resize: false, restore: true)
+        // Remove the removeFromParent to prevent the sprite from disappearing
+        let attackSequence = SKAction.sequence([attackAnimation])
+
+        // Run the attack animation
+        self.run(attackSequence, withKey: "attacking")
+    }
+
+}
