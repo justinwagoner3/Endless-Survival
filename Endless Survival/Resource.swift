@@ -31,7 +31,7 @@ class Resource: SKSpriteNode, Codable {
         totalHarvestButtonHoldTime = try container.decode(TimeInterval.self, forKey: .totalHarvestButtonHoldTime)
         let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
 
-        super.init(texture: nil, color: .clear, size: CGSize(width: 50, height: 50))
+        super.init(texture: nil, color: .clear, size: CGSize(width: 100, height: 100))
         self.position = curPosition
         self.zPosition = 2
     }
@@ -42,7 +42,7 @@ class Resource: SKSpriteNode, Codable {
         self.collectionHarvestTime = collectionHarvestTime
         let texture = SKTexture(imageNamed: textureName)
 
-        super.init(texture: texture, color: .clear, size: texture.size())
+        super.init(texture: texture, color: .clear, size: CGSize(width: 100, height: 100))
         self.zPosition = 2
         self.position = randomPosition()
     }
