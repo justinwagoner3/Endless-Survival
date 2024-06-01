@@ -5,6 +5,10 @@ class Enemy: SKSpriteNode, Codable {
     // Reference to the GameScene instance
     weak var gameScene: GameScene?
 
+    // animation
+    var hurtTextures: [SKTexture] = []
+    var hurtAnimationAction: SKAction?
+
     // Enemy attributes
     var movementSpeed: CGFloat
     var hitpoints: Int
@@ -15,6 +19,7 @@ class Enemy: SKSpriteNode, Codable {
     private let attackRadius: CGFloat = 50.0
     private let attackCooldown: TimeInterval = 2
     private var lastAttackTime: TimeInterval = 0
+    
 
     // Initializer with default appearance
     init(movementSpeed: CGFloat, hitpoints: Int, spawnBounds: CGSize) {
@@ -22,12 +27,14 @@ class Enemy: SKSpriteNode, Codable {
         self.hitpoints = hitpoints
         self.spawnBounds = spawnBounds
         
-        let size = CGSize(width: 25, height: 25)
-        let color = UIColor.red
-        super.init(texture: nil, color: color, size: size)
+        let size = CGSize(width: 50, height: 50)
+        super.init(texture: SKTexture(imageNamed: "enemy_walk0"), color: .clear, size: size)
         
         self.zPosition = 3
         self.position = randomPosition()
+        
+        loadHurtTextures()
+        setupHurtAnimation()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -85,7 +92,9 @@ class Enemy: SKSpriteNode, Codable {
     
     func decreaseHealth(_ damage: Int){
         hitpoints -= damage
-        animateEnemyGotAttacked()
+        if let hurtAnimation = hurtAnimationAction{
+            self.run(hurtAnimation, withKey: "hurtAnimation")
+        }
     }
     
     enum CodingKeys: String, CodingKey {

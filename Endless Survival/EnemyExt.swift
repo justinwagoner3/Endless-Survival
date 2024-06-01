@@ -2,6 +2,21 @@ import SpriteKit
 import GameplayKit
 
 extension Enemy {
+    // hurt
+    func loadHurtTextures() {
+        hurtTextures = [
+            SKTexture(imageNamed: "enemy_hurt0"),
+            SKTexture(imageNamed: "enemy_hurt1"),
+            SKTexture(imageNamed: "enemy_hurt2"),
+            SKTexture(imageNamed: "enemy_hurt3")
+        ]
+    }
+
+    func setupHurtAnimation() {
+        let animateHurt = SKAction.animate(with: hurtTextures, timePerFrame: 0.1, resize: false, restore: true)
+        hurtAnimationAction = animateHurt
+    }
+
     // Function to animate the enemy's attack with a black border
     func animateEnemyAttack() {
         let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
@@ -35,25 +50,5 @@ extension Enemy {
         let sequence = SKAction.sequence([fadeOutAction, removeAction])
         blackBorder.run(sequence)
     }
-    
-    func animateEnemyGotAttacked() {
-        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
-        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
-        let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
-        run(attackAnimation)
-        
-        // Create a white border sprite
-        let whiteBorder = SKSpriteNode(color: .white, size: CGSize(width: size.width + 25, height: size.height + 25))
-        whiteBorder.zPosition = zPosition - 1 // Place behind the player
-        whiteBorder.position = position
-        parent?.addChild(whiteBorder)
-                
-        // Fade out and remove the white border sprite
-        let fadeOutAction = SKAction.fadeOut(withDuration: 0.2)
-        let removeAction = SKAction.removeFromParent()
-        let sequence = SKAction.sequence([fadeOutAction, removeAction])
-        whiteBorder.run(sequence)
-    }
-
     
 }
