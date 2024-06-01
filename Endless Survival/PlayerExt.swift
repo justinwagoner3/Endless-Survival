@@ -12,7 +12,37 @@ extension Player {
             startIdleAnimation()
         }
     }
+    
+    // attack
+    func loadAttackTextures() {
+        attackTextures = [
+            SKTexture(imageNamed: "player_attack_bow7"),
+            SKTexture(imageNamed: "player_attack_bow8"),
+            SKTexture(imageNamed: "player_attack_bow0"),
+            SKTexture(imageNamed: "player_attack_bow1"),
+            SKTexture(imageNamed: "player_attack_bow2"),
+            SKTexture(imageNamed: "player_attack_bow3"),
+            SKTexture(imageNamed: "player_attack_bow4"),
+            SKTexture(imageNamed: "player_attack_bow5"),
+            SKTexture(imageNamed: "player_attack_bow6")
+        ]
+    }
+    
+    func animatePlayerAttack() {
+        // Calculate the time per frame based on the weapon's fire rate and the number of frames
+        let timePerFrame = equippedWeapon.fireRate / CGFloat(attackTextures.count)
+        
+        // Create the animation action
+        let attackAnimation = SKAction.animate(with: attackTextures, timePerFrame: timePerFrame, resize: false, restore: true)
+        // Remove the removeFromParent to prevent the sprite from disappearing
+        let attackSequence = SKAction.sequence([attackAnimation])
 
+        // Run the attack animation
+        self.run(attackSequence, withKey: "attacking")
+    }
+
+
+    // idle
     func loadIdleTextures() {
         // Load textures for idle animation
         idleTextures = [
@@ -44,31 +74,6 @@ extension Player {
     func stopIdleAnimation() {
         // Stop the idle animation
         self.removeAction(forKey: "idleAnimation")
-    }
-
-    // Function to animate the player's attack with a white border
-    func animatePlayerAttack() {
-        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
-        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
-        let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
-        run(attackAnimation)
-        
-        // Create a white border sprite
-        let whiteBorder = SKSpriteNode(color: .white, size: CGSize(width: size.width + 25, height: size.height + 25))
-        whiteBorder.zPosition = zPosition - 1 // Place behind the player
-        whiteBorder.position = position
-        parent?.addChild(whiteBorder)
-                
-        // Fade out and remove the white border sprite
-        let fadeOutAction = SKAction.fadeOut(withDuration: 0.2)
-        let removeAction = SKAction.removeFromParent()
-        let sequence = SKAction.sequence([fadeOutAction, removeAction])
-        whiteBorder.run(sequence)
-        
-        // Perform the animation only on the player itself, excluding children
-        for child in children {
-            child.removeAllActions()
-        }
     }
     
     func displayBagFullMessage() {

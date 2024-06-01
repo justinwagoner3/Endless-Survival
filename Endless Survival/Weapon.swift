@@ -62,7 +62,7 @@ class Weapon: Codable {
 
 class Pistol: Weapon {
     init(isEquipped: Bool = false, rarity: Rarity = .common) {
-        super.init(radius: 100, fireRate: 2, damage: 2, isAOE: false, isEquipped: isEquipped, rarity: rarity)
+        super.init(radius: 100, fireRate: 0.5, damage: 2, isAOE: false, isEquipped: isEquipped, rarity: rarity)
     }
     
     required init(from decoder: Decoder) throws {

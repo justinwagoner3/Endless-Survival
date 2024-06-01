@@ -6,6 +6,7 @@ class Player : SKSpriteNode {
     // animation
     var idleTextures: [SKTexture] = []
     var idleAnimationAction: SKAction?
+    var attackTextures: [SKTexture] = []
 
     // player
     var movementLevel: CGFloat = 5
@@ -42,6 +43,7 @@ class Player : SKSpriteNode {
         super.init(texture: texture, color: .clear, size: CGSize(width: 50, height: 50))
         loadIdleTextures()
         setupIdleAnimation()
+        loadAttackTextures()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -122,6 +124,7 @@ class Player : SKSpriteNode {
                 
                 //print("attacking")
                 animatePlayerAttack()
+                
                 var enemiesToAttack: [Enemy] = []
                 
                 // Add enemies to attack if isAOE
