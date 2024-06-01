@@ -2,6 +2,50 @@ import SpriteKit
 import GameplayKit
 
 extension Player {
+    
+    func updatePlayerState(isJoystickActive: Bool) {
+        if isJoystickActive {
+            // Player is moving
+            stopIdleAnimation()
+        } else {
+            // Player is idle
+            startIdleAnimation()
+        }
+    }
+
+    func loadIdleTextures() {
+        // Load textures for idle animation
+        idleTextures = [
+            SKTexture(imageNamed: "player_idle0"),
+            SKTexture(imageNamed: "player_idle1"),
+            SKTexture(imageNamed: "player_idle2"),
+            SKTexture(imageNamed: "player_idle3"),
+            SKTexture(imageNamed: "player_idle4"),
+            SKTexture(imageNamed: "player_idle5")
+        ]
+    }
+    
+    func setupIdleAnimation() {
+        // Create an animation action from textures
+        let animateIdle = SKAction.animate(with: idleTextures, timePerFrame: 0.1, resize: false, restore: true)
+        idleAnimationAction = SKAction.repeatForever(animateIdle)
+    }
+
+    func startIdleAnimation() {
+        // Only start the idle animation if it is not already running
+        if self.action(forKey: "idleAnimation") == nil {
+            print("Starting idle animation")
+            if let idleAction = idleAnimationAction {
+                self.run(idleAction, withKey: "idleAnimation")
+            }
+        }
+    }
+
+    func stopIdleAnimation() {
+        // Stop the idle animation
+        self.removeAction(forKey: "idleAnimation")
+    }
+
     // Function to animate the player's attack with a white border
     func animatePlayerAttack() {
         let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)

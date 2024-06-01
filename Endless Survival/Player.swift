@@ -3,6 +3,11 @@ import GameplayKit
 
 class Player : SKSpriteNode {
     
+    // animation
+    var idleTextures: [SKTexture] = []
+    var idleAnimationAction: SKAction?
+
+    // player
     var movementLevel: CGFloat = 5
     var totalHealth: CGFloat = 100.0
     var currentHealth: CGFloat = 100.0
@@ -32,6 +37,17 @@ class Player : SKSpriteNode {
     var equippedChestArmor: ChestArmor?
     var equippedLegArmor: LegArmor?
 
+    init() {
+        let texture = SKTexture(imageNamed: "player_idle0")
+        super.init(texture: texture, color: .clear, size: CGSize(width: 50, height: 50))
+        loadIdleTextures()
+        setupIdleAnimation()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // Movement
     func move(_ joystick: Joystick, _ isJoystickActive: Bool, _ worldSize: CGSize){
         // Calculate distance between inner joystick and center of outer circle

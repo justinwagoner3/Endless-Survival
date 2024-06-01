@@ -101,7 +101,7 @@ class GameScene: SKScene {
 
 
         // Create Player + Tools
-        player = Player(color: .blue, size: CGSize(width: 25, height: 25))
+        player = Player()
         addChild(player)
         player.position = background.position
         // TODO - needed to increase this by a lot because player would appear behind base components; this is probably happening with workers and drones too
@@ -592,6 +592,9 @@ class GameScene: SKScene {
         
         // Deposit Bag
         player.depositBag(baseFrame: base.frame)
+        
+        // Animation
+        player.updatePlayerState(isJoystickActive: joystick.isActive)
         
         // UI Update
         resourceCounter?.updateCoinCount(player.coinCount)

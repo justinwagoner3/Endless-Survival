@@ -248,7 +248,7 @@ extension GameScene{
         contentNode.name = "contentNode"
         
         if index < player.drones.count {
-            let drone = player.drones[index]
+            //let drone = player.drones[index]
 
             let upgradeMovementButton = SKLabelNode(text: "Fix this")
             upgradeMovementButton.fontSize = 24
