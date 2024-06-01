@@ -25,30 +25,24 @@ class Resource: SKSpriteNode, Codable {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
-        let resourceCount = try container.decode(Int.self, forKey: .resourceCount)
-        let collectionHarvestTime = try container.decode(TimeInterval.self, forKey: .collectionHarvestTime)
-        let totalHarvestButtonHoldTime = try container.decode(TimeInterval.self, forKey: .totalHarvestButtonHoldTime)
+        spawnBounds = try container.decode(CGSize.self, forKey: .spawnBounds)
+        resourceCount = try container.decode(Int.self, forKey: .resourceCount)
+        collectionHarvestTime = try container.decode(TimeInterval.self, forKey: .collectionHarvestTime)
+        totalHarvestButtonHoldTime = try container.decode(TimeInterval.self, forKey: .totalHarvestButtonHoldTime)
         let curPosition = try container.decode(CGPoint.self, forKey: .curPosition)
 
-        self.spawnBounds = spawnBounds
-        self.resourceCount = resourceCount
-        self.collectionHarvestTime = collectionHarvestTime
-        self.totalHarvestButtonHoldTime = totalHarvestButtonHoldTime
-
         super.init(texture: nil, color: .clear, size: CGSize(width: 50, height: 50))
-
-        self.zPosition = 2
         self.position = curPosition
+        self.zPosition = 2
     }
 
-    init(color: UIColor, spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
+    init(textureName: String, spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
         self.spawnBounds = spawnBounds
         self.resourceCount = resourceCount
         self.collectionHarvestTime = collectionHarvestTime
+        let texture = SKTexture(imageNamed: textureName)
 
-        super.init(texture: nil, color: color, size: CGSize(width: 50, height: 50))
-
+        super.init(texture: texture, color: .clear, size: texture.size())
         self.zPosition = 2
         self.position = randomPosition()
     }
@@ -71,16 +65,16 @@ class Wood: Resource {
 
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
-        self.color = .brown
+        self.texture = SKTexture(imageNamed: "wood")
     }
 
     init(spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
-        super.init(color: .brown, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
+        super.init(textureName: "wood", spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
+    }    
 }
 
 class Stone: Resource {
@@ -88,17 +82,17 @@ class Stone: Resource {
         try super.encode(to: encoder)
     }
 
-    required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        self.color = .gray
-    }
-
     init(spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
-        super.init(color: .gray, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
+        super.init(textureName: "stone", spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        self.texture = SKTexture(imageNamed: "stone")
     }
 }
 
@@ -107,16 +101,16 @@ class Ore: Resource {
         try super.encode(to: encoder)
     }
 
-    required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        self.color = .black
-    }
-
     init(spawnBounds: CGSize, resourceCount: Int, collectionHarvestTime: TimeInterval) {
-        super.init(color: .black, spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
+        super.init(textureName: "ore", spawnBounds: spawnBounds, resourceCount: resourceCount, collectionHarvestTime: collectionHarvestTime)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        self.texture = SKTexture(imageNamed: "ore")
     }
 }
