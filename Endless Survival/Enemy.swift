@@ -10,6 +10,7 @@ class Enemy: SKSpriteNode, Codable {
     var hurtAnimationAction: SKAction?
     var deathTextures: [SKTexture] = []
     var deathAnimationAction: SKAction?
+    var attackTextures: [SKTexture] = []
 
     // Enemy attributes
     var movementSpeed: CGFloat
@@ -39,6 +40,7 @@ class Enemy: SKSpriteNode, Codable {
         setupHurtAnimation()
         loadDeathTextures()
         setupDeathAnimation()
+        loadAttackTextures()
     }
     
     required init?(coder aDecoder: NSCoder) {

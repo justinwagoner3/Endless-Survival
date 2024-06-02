@@ -2,6 +2,32 @@ import SpriteKit
 import GameplayKit
 
 extension Enemy {
+    // attack
+    func loadAttackTextures() {
+        attackTextures = [
+            SKTexture(imageNamed: "enemy_attack0"),
+            SKTexture(imageNamed: "enemy_attack1"),
+            SKTexture(imageNamed: "enemy_attack2"),
+            SKTexture(imageNamed: "enemy_attack3"),
+            SKTexture(imageNamed: "enemy_attack4"),
+            SKTexture(imageNamed: "enemy_attack5")
+        ]
+    }
+    
+    func animateEnemyAttack() {
+        // Calculate the time per frame based on the weapon's fire rate and the number of frames
+        //let timePerFrame = attackCooldown / CGFloat(attackTextures.count)
+        
+        // Create the animation action
+        let attackAnimation = SKAction.animate(with: attackTextures, timePerFrame: 0.1, resize: false, restore: true)
+        // Remove the removeFromParent to prevent the sprite from disappearing
+        let attackSequence = SKAction.sequence([attackAnimation])
+
+        // Run the attack animation
+        self.run(attackSequence, withKey: "attacking")
+    }
+
+    
     // hurt
     func loadHurtTextures() {
         hurtTextures = [
@@ -30,40 +56,6 @@ extension Enemy {
     func setupDeathAnimation() {
         let animateDeath = SKAction.animate(with: deathTextures, timePerFrame: 0.1, resize: false, restore: true)
         deathAnimationAction = animateDeath
-    }
-
-    // Function to animate the enemy's attack with a black border
-    func animateEnemyAttack() {
-        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
-        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
-        let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
-        run(attackAnimation)
-        
-        // Access the player instance
-        if let player = gameScene?.player {
-            // Temporarily change player color to red
-            player.color = .red
-            // Revert player color to blue after 0.5 seconds
-            let revertColorAction = SKAction.run {
-                player.color = .blue
-            }
-            let colorChangeDuration = 0.1
-            let waitAction = SKAction.wait(forDuration: colorChangeDuration)
-            let revertColorSequence = SKAction.sequence([waitAction, revertColorAction])
-            gameScene?.run(revertColorSequence)
-        }
-        
-        // Create a black border sprite
-        let blackBorder = SKSpriteNode(color: .black, size: CGSize(width: size.width + 25, height: size.height + 25))
-        blackBorder.zPosition = zPosition - 1 // Place behind the enemy
-        blackBorder.position = position
-        parent?.addChild(blackBorder)
-        
-        // Fade out and remove the black border sprite
-        let fadeOutAction = SKAction.fadeOut(withDuration: 0.2)
-        let removeAction = SKAction.removeFromParent()
-        let sequence = SKAction.sequence([fadeOutAction, removeAction])
-        blackBorder.run(sequence)
     }
     
 }
