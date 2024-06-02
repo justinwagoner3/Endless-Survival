@@ -84,9 +84,6 @@ class Base: SKSpriteNode, Codable {
     }
     
 
-    // TODO - this gets called when adding a component from upgrade
-    // because decode reorders the components array, the positions get changed
-    // don't need to worry about it eventually positions will get set in upgrade scene
     func positionComponents() {
         let offsets = [
             CGPoint(x: -baseLevel2ComponentSize, y: baseLevel2ComponentSize),   // Position 1

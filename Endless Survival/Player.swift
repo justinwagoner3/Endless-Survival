@@ -149,21 +149,7 @@ class Player : SKSpriteNode {
                 }
                 // Perform attack logic
                 for enemy in enemiesToAttack{
-                    // TODO - update this in all attack methods
-                    enemy.decreaseHealth(Int(equippedWeapon.damage))
-                    
-                    // Check if the enemy's hitpoints have reached zero
-                    // TODO - move this into decreaseHealth and update all attack methods
-                    if enemy.hitpoints <= 0 {
-                        coinCount += enemy.coinValue
-                        // Handle enemy defeat
-                        enemy.removeFromParent()
-                        if let index = enemies.firstIndex(of: enemy) {
-                            enemies.remove(at: index)
-                        }
-                        // won't be able to move this into decrease health though
-                        selectedEnemy = nil
-                    }
+                    enemy.decreaseHealth(Int(equippedWeapon.damage), &enemies, playerCoinCount: &coinCount)
                 }
             }
         }        

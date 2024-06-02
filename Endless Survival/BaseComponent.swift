@@ -213,19 +213,7 @@ class AttackComponent: BaseComponent{
                 }
                 // Perform attack logic
                 for enemy in enemiesToAttack{
-                    // TODO - update this in all attack methods
-                    enemy.decreaseHealth(Int(damage))
-                    
-                    // Check if the enemy's hitpoints have reached zero
-                    // TODO - move this into decreaseHealth and update all attack methods
-                    if enemy.hitpoints <= 0 {
-                        playerCoinCount += enemy.coinValue
-                        // Handle enemy defeat
-                        enemy.removeFromParent()
-                        if let index = enemies.firstIndex(of: enemy) {
-                            enemies.remove(at: index)
-                        }
-                    }
+                    enemy.decreaseHealth(Int(damage), &enemies, playerCoinCount: &playerCoinCount)
                 }
                 // Update last attack time for fire rate cooldown
                 lastAttackTime = currentTime

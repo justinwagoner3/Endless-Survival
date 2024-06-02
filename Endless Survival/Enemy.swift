@@ -8,6 +8,8 @@ class Enemy: SKSpriteNode, Codable {
     // animation
     var hurtTextures: [SKTexture] = []
     var hurtAnimationAction: SKAction?
+    var deathTextures: [SKTexture] = []
+    var deathAnimationAction: SKAction?
 
     // Enemy attributes
     var movementSpeed: CGFloat
@@ -35,6 +37,8 @@ class Enemy: SKSpriteNode, Codable {
         
         loadHurtTextures()
         setupHurtAnimation()
+        loadDeathTextures()
+        setupDeathAnimation()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,14 +61,14 @@ class Enemy: SKSpriteNode, Codable {
         
     // Method to highlight the enemy
     func highlight() {
-        self.colorBlendFactor = 0.5
-        self.color = UIColor.white
+        //self.colorBlendFactor = 0.5
+        //self.color = UIColor.white
     }
     
     // Method to remove highlighting from the enemy
     func unhighlight() {
-        self.colorBlendFactor = 0.0
-        self.color = UIColor.red
+        //self.colorBlendFactor = 0.0
+        //self.color = UIColor.red
     }
     
     // Move Enemy
@@ -90,11 +94,23 @@ class Enemy: SKSpriteNode, Codable {
         return nil
     }
     
-    func decreaseHealth(_ damage: Int){
-        hitpoints -= damage
+    func decreaseHealth(_ damage: Int, _ enemies: inout [Enemy], playerCoinCount: inout Int){
         if let hurtAnimation = hurtAnimationAction{
             self.run(hurtAnimation, withKey: "hurtAnimation")
         }
+        hitpoints -= damage
+        if hitpoints <= 0 {
+            if let deathAnimation = deathAnimationAction{
+                let sequence = SKAction.sequence([deathAnimation, SKAction.removeFromParent()])
+                self.run(sequence, withKey: "deathAnimation")
+            }
+            playerCoinCount += coinValue
+            // Handle enemy defeat
+            if let index = enemies.firstIndex(of: self) {
+                enemies.remove(at: index)
+            }
+        }
+
     }
     
     enum CodingKeys: String, CodingKey {

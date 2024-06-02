@@ -16,6 +16,21 @@ extension Enemy {
         let animateHurt = SKAction.animate(with: hurtTextures, timePerFrame: 0.1, resize: false, restore: true)
         hurtAnimationAction = animateHurt
     }
+    
+    // death
+    func loadDeathTextures() {
+        deathTextures = [
+            SKTexture(imageNamed: "enemy_death0"),
+            SKTexture(imageNamed: "enemy_death1"),
+            SKTexture(imageNamed: "enemy_death2"),
+            SKTexture(imageNamed: "enemy_death3")
+        ]
+    }
+
+    func setupDeathAnimation() {
+        let animateDeath = SKAction.animate(with: deathTextures, timePerFrame: 0.1, resize: false, restore: true)
+        deathAnimationAction = animateDeath
+    }
 
     // Function to animate the enemy's attack with a black border
     func animateEnemyAttack() {
