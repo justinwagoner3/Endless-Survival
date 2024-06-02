@@ -45,7 +45,7 @@ class AssaultDrone: Drone {
     }
     
     // Method to attack enemies
-    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerPosition: CGPoint, playerCoinCount: inout Int) {
+    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerPosition: CGPoint, playerCoinCount: inout Int, animateEnemyAttack: Bool) -> Bool {
         // Check if enough time has passed since the last attack
         if currentTime - lastAttackTime >= fireRate {
             // Find the closest enemy within the radius
@@ -62,12 +62,17 @@ class AssaultDrone: Drone {
             // If an enemy is found within range, attack it
             if let closestEnemy = closestEnemy {
                 animateAttack()
-                closestEnemy.decreaseHealth(Int(damageLevel), &enemies, playerCoinCount: &playerCoinCount)
+                mp("drone attacking at ", currentTime)
+                closestEnemy.decreaseHealth(Int(damageLevel), &enemies, playerCoinCount: &playerCoinCount, animate: animateEnemyAttack)
                 
                 // Update last attack time for fire rate cooldown
                 lastAttackTime = currentTime
+                
+                return true
             }
         }
+        
+        return false
     }
 }
 

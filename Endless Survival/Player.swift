@@ -119,10 +119,10 @@ class Player : SKSpriteNode {
     }
     
     // Method to attack the highlighted enemy
-    func attackClosestEnemy(_ enemies: inout [Enemy], _ currentTime: TimeInterval) {
+    func attackClosestEnemy(_ enemies: inout [Enemy], _ currentTime: TimeInterval, animateEnemyAttack: Bool) -> Bool {
         // If no enemy is selected, return false
         guard let closestEnemy = selectedEnemy else {
-            return
+            return false
         }
         
         if !isHarvesting {
@@ -130,8 +130,8 @@ class Player : SKSpriteNode {
             if timeSinceLastAttack >= equippedWeapon.fireRate {
                 equippedWeapon.lastAttackTime = currentTime
                 
-                //print("attacking")
                 animatePlayerAttack()
+                mp("player attacking at ", currentTime)
                 
                 var enemiesToAttack: [Enemy] = []
                 
@@ -149,10 +149,13 @@ class Player : SKSpriteNode {
                 }
                 // Perform attack logic
                 for enemy in enemiesToAttack{
-                    enemy.decreaseHealth(Int(equippedWeapon.damage), &enemies, playerCoinCount: &coinCount)
+                    enemy.decreaseHealth(Int(equippedWeapon.damage), &enemies, playerCoinCount: &coinCount, animate: animateEnemyAttack)
                 }
+                return true
             }
-        }        
+        }   
+        
+        return false
     }
 
     // Method to check if the player should receive passive healing

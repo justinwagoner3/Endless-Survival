@@ -130,7 +130,7 @@ class GameScene: SKScene {
         base.addComponent(woodComponent)
         base.addComponent(stoneComponent)
         base.addComponent(oreComponent)
-        base.addComponent(bowComponent)
+        //base.addComponent(bowComponent)
 
         // Spawn resources
         let wood = Wood(spawnBounds: worldSize, resourceCount: 10, collectionHarvestTime: 1.0)
@@ -502,6 +502,8 @@ class GameScene: SKScene {
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
         guard !isGamePaused else { return }
+        var animateEnemyAttack: Bool = true
+        
         player.move(joystick, joystick.isActive, worldSize)
         
         // Update the camera position to follow the player
@@ -510,7 +512,9 @@ class GameScene: SKScene {
         // Highlight + Attack closest enemy
         // TODO - move most of this logic into player class like i did for Drone class
         player.highlightClosestEnemy(radius: player.equippedWeapon.radius, enemies)
-        player.attackClosestEnemy(&enemies, currentTime)
+        if (player.attackClosestEnemy(&enemies, currentTime, animateEnemyAttack: animateEnemyAttack)){
+            animateEnemyAttack = false
+        }
         
         // Get attacked
         for enemy in enemies {
@@ -542,7 +546,9 @@ class GameScene: SKScene {
         // AssaultDrones attack
         for drone in player.drones {
             if let assaultDrone = drone as? AssaultDrone {
-                assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCoinCount: &player.coinCount)
+                if(assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCoinCount: &player.coinCount, animateEnemyAttack: animateEnemyAttack)){
+                    animateEnemyAttack = false
+                }
             }
             if let healDrone = drone as? HealDrone {
                 healDrone.healPlayer(&player.currentHealth, player.totalHealth, currentTime)
@@ -578,7 +584,9 @@ class GameScene: SKScene {
             }
             if let shooter = worker as? Shooter {
                 shooter.walkTowardsEnemy(enemies: enemies)
-                shooter.attack(&enemies, currentTime: currentTime, playerCoinCount: &player.coinCount)
+                if(shooter.attack(&enemies, currentTime: currentTime, playerCoinCount: &player.coinCount, animateEnemyAttack: animateEnemyAttack)){
+                    animateEnemyAttack = false
+                }
             }
         }
         
@@ -588,7 +596,9 @@ class GameScene: SKScene {
                 resourceComponent.autoCollectResources(&player, currentTime)
             }
             if let attackComponent = baseComponent as? AttackComponent {
-                attackComponent.attack(&enemies, currentTime: currentTime, playerCoinCount: &player.coinCount)
+                if(attackComponent.attack(&enemies, currentTime: currentTime, playerCoinCount: &player.coinCount, animateEnemyAttack: animateEnemyAttack)){
+                    animateEnemyAttack = false
+                }
             }
         }
         

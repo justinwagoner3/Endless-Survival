@@ -97,13 +97,16 @@ class Enemy: SKSpriteNode, Codable {
         return nil
     }
     
-    func decreaseHealth(_ damage: Int, _ enemies: inout [Enemy], playerCoinCount: inout Int){
-        if let hurtAnimation = hurtAnimationAction {
-            if self.action(forKey: "hurtAnimation") != nil {
-                print("removing action")
-                self.removeAction(forKey: "hurtAnimation")
+    func decreaseHealth(_ damage: Int, _ enemies: inout [Enemy], playerCoinCount: inout Int, animate: Bool){
+        if(animate){
+            print("enemy is animating")
+            if let hurtAnimation = hurtAnimationAction {
+                if self.action(forKey: "hurtAnimation") != nil {
+                    print("removing action")
+                    self.removeAction(forKey: "hurtAnimation")
+                }
+                self.run(hurtAnimation, withKey: "hurtAnimation")
             }
-            self.run(hurtAnimation, withKey: "hurtAnimation")
         }
         hitpoints -= damage
         if hitpoints <= 0 {

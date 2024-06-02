@@ -180,7 +180,7 @@ class AttackComponent: BaseComponent{
         fatalError("init(from:) has not been implemented")
     }
     
-    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerCoinCount: inout Int) {
+    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerCoinCount: inout Int, animateEnemyAttack: Bool) -> Bool {
         // Check if enough time has passed since the last attack
         if currentTime - lastAttackTime >= fireRate {
             // Find the closest enemy within the radius
@@ -213,12 +213,16 @@ class AttackComponent: BaseComponent{
                 }
                 // Perform attack logic
                 for enemy in enemiesToAttack{
-                    enemy.decreaseHealth(Int(damage), &enemies, playerCoinCount: &playerCoinCount)
+                    enemy.decreaseHealth(Int(damage), &enemies, playerCoinCount: &playerCoinCount, animate: animateEnemyAttack)
                 }
                 // Update last attack time for fire rate cooldown
                 lastAttackTime = currentTime
+                
+                return true
             }
         }
+        
+        return false
     }
 
 }
