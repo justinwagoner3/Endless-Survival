@@ -324,7 +324,6 @@ extension GameScene{
 
         let contentNode = SKNode()
         contentNode.name = "contentNode"
-        mp("workers.count",workers.count)
         
         if index < workers.count {
             let worker = workers[index]

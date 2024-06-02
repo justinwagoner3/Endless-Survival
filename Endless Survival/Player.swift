@@ -131,7 +131,6 @@ class Player : SKSpriteNode {
                 equippedWeapon.lastAttackTime = currentTime
                 
                 animatePlayerAttack()
-                mp("player attacking at ", currentTime)
                 
                 var enemiesToAttack: [Enemy] = []
                 

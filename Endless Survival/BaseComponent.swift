@@ -43,7 +43,6 @@ class ResourceComponent: BaseComponent{
     }
     
     override func encode(to encoder: Encoder) throws {
-        mp("self.position at encode",self.position)
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(resourceLevel, forKey: .resourceLevel)
         try container.encode(remainingTime, forKey: .remainingTime)
@@ -60,7 +59,6 @@ class ResourceComponent: BaseComponent{
         self.remainingTime = remainingTime
         super.init(textureName: "")
         self.position = curPosition
-        mp("self.position at decode",self.position)
     }
 
     required init?(coder aDecoder: NSCoder) {

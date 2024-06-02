@@ -99,7 +99,6 @@ class Enemy: SKSpriteNode, Codable {
     
     func decreaseHealth(_ damage: Int, _ enemies: inout [Enemy], playerCoinCount: inout Int, animate: Bool){
         if(animate){
-            print("enemy is animating")
             if let hurtAnimation = hurtAnimationAction {
                 if self.action(forKey: "hurtAnimation") != nil {
                     print("removing action")

@@ -62,7 +62,6 @@ class AssaultDrone: Drone {
             // If an enemy is found within range, attack it
             if let closestEnemy = closestEnemy {
                 animateAttack()
-                mp("drone attacking at ", currentTime)
                 closestEnemy.decreaseHealth(Int(damageLevel), &enemies, playerCoinCount: &playerCoinCount, animate: animateEnemyAttack)
                 
                 // Update last attack time for fire rate cooldown
@@ -101,8 +100,6 @@ class HealDrone: Drone {
         lastCheckTime = currentTime
 
         if(remainingTime <= 0 && playerHealth < playerTotalHealth){
-            mp("healing player from ",playerHealth)
-            mp("to ",playerHealth+healAmount)
             playerHealth += max(healAmount,playerTotalHealth)
             remainingTime = healInterval
 
@@ -111,5 +108,12 @@ class HealDrone: Drone {
 }
 
 class HarvestDrone: Drone {
+    init() {
+        super.init(textureName: "harvest_drone")
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
 }

@@ -74,7 +74,6 @@ class Base: SKSpriteNode, Codable {
         self.addChild(barrier)
         self.position = curPosition
         for component in components {
-            mp("self.position when being added", component.position)
             self.addChild(component)
         }
     }
