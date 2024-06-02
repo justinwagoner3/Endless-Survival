@@ -187,7 +187,7 @@ class Shooter: Worker{
     }
 
     // Method to make the shooter attack the enemy
-    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerCointCount: inout Int) {
+    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerCoinCount: inout Int) {
         // Check if enough time has passed since the last attack
         if currentTime - lastAttackTime >= weapon.fireRate {
             // Find the closest enemy within the radius
@@ -203,18 +203,8 @@ class Shooter: Worker{
             if let closestEnemy = closestEnemy {
                 animateShooterAttack()
                 // Perform attack logic
-                closestEnemy.hitpoints -= Int(weapon.damage)
-                
-                // Check if the enemy's hitpoints have reached zero
-                if closestEnemy.hitpoints <= 0 {
-                    playerCointCount += closestEnemy.coinValue
-                    // Handle enemy defeat
-                    closestEnemy.removeFromParent()
-                    if let index = enemies.firstIndex(of: closestEnemy) {
-                        enemies.remove(at: index)
-                    }
-                }
-                
+                closestEnemy.decreaseHealth(Int(weapon.damage), &enemies, playerCoinCount: &playerCoinCount)
+
                 // Update last attack time for fire rate cooldown
                 lastAttackTime = currentTime
             }

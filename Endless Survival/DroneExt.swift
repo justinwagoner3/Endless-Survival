@@ -1,24 +1,31 @@
 import SpriteKit
 import GameplayKit
 
-extension Drone {
-    // Function to animate the player's attack with a white border
-    func animateDroneAttack() {
-        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.1)
-        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.1)
-        let attackAnimation = SKAction.sequence([scaleUpAction, scaleDownAction])
-        run(attackAnimation)
-        
-        // Create a white border sprite
-        let whiteBorder = SKSpriteNode(color: .white, size: CGSize(width: size.width + 25, height: size.height + 25))
-        whiteBorder.zPosition = zPosition - 1 // Place behind the player
-        whiteBorder.position = position
-        parent?.addChild(whiteBorder)
-                
-        // Fade out and remove the white border sprite
-        let fadeOutAction = SKAction.fadeOut(withDuration: 0.2)
-        let removeAction = SKAction.removeFromParent()
-        let sequence = SKAction.sequence([fadeOutAction, removeAction])
-        whiteBorder.run(sequence)
+extension AssaultDrone {
+    // attack
+    func loadAttackTextures() {
+        attackTextures = [
+            SKTexture(imageNamed: "assault_drone_attack0"),
+            SKTexture(imageNamed: "assault_drone_attack1"),
+            SKTexture(imageNamed: "assault_drone_attack2"),
+            SKTexture(imageNamed: "assault_drone_attack3"),
+            SKTexture(imageNamed: "assault_drone_attack4"),
+            SKTexture(imageNamed: "assault_drone_attack5"),
+            SKTexture(imageNamed: "assault_drone_attack6")
+        ]
     }
+    
+    func animateAttack() {
+        // Calculate the time per frame based on the weapon's fire rate and the number of frames
+        let timePerFrame = fireRate / CGFloat(attackTextures.count)
+        
+        // Create the animation action
+        let attackAnimation = SKAction.animate(with: attackTextures, timePerFrame: timePerFrame, resize: false, restore: true)
+        // Remove the removeFromParent to prevent the sprite from disappearing
+        let attackSequence = SKAction.sequence([attackAnimation])
+
+        // Run the attack animation
+        self.run(attackSequence, withKey: "attacking")
+    }
+
 }

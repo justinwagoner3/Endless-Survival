@@ -2,8 +2,8 @@ import SpriteKit
 
 class Drone: SKSpriteNode {
     
-    init(color: UIColor) {
-        super.init(texture: nil, color: color, size: CGSize(width: 25, height: 25))
+    init(textureName: String) {
+        super.init(texture: SKTexture(imageNamed: textureName), color: .clear, size: CGSize(width: 50, height: 50))
         
         self.zPosition = 3
 
@@ -15,6 +15,11 @@ class Drone: SKSpriteNode {
 }
 
 class AssaultDrone: Drone {
+    
+    // animation
+    var attackTextures: [SKTexture] = []
+
+    // assault drone
     var radius: CGFloat
     var fireRate: TimeInterval
     var damageLevel: CGFloat
@@ -26,7 +31,9 @@ class AssaultDrone: Drone {
         self.damageLevel = 1
         self.lastAttackTime = 0
         
-        super.init(color: .blue)
+        super.init(textureName: "assault_drone_attack0")
+        
+        loadAttackTextures()
     }
     
     required init(from decoder: Decoder) throws {
@@ -38,7 +45,7 @@ class AssaultDrone: Drone {
     }
     
     // Method to attack enemies
-    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerPosition: CGPoint, playerCointCount: inout Int) {
+    func attack(_ enemies: inout [Enemy], currentTime: TimeInterval, playerPosition: CGPoint, playerCoinCount: inout Int) {
         // Check if enough time has passed since the last attack
         if currentTime - lastAttackTime >= fireRate {
             // Find the closest enemy within the radius
@@ -54,19 +61,8 @@ class AssaultDrone: Drone {
             
             // If an enemy is found within range, attack it
             if let closestEnemy = closestEnemy {
-                animateDroneAttack()
-                // Perform attack logic
-                closestEnemy.hitpoints -= Int(damageLevel)
-                
-                // Check if the enemy's hitpoints have reached zero
-                if closestEnemy.hitpoints <= 0 {
-                    playerCointCount += closestEnemy.coinValue
-                    // Handle enemy defeat
-                    closestEnemy.removeFromParent()
-                    if let index = enemies.firstIndex(of: closestEnemy) {
-                        enemies.remove(at: index)
-                    }
-                }
+                animateAttack()
+                closestEnemy.decreaseHealth(Int(damageLevel), &enemies, playerCoinCount: &playerCoinCount)
                 
                 // Update last attack time for fire rate cooldown
                 lastAttackTime = currentTime
@@ -82,7 +78,7 @@ class HealDrone: Drone {
     var lastCheckTime: TimeInterval = 0
     
     init() {
-        super.init(color: .systemGreen)
+        super.init(textureName: "heal_drone")
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -542,7 +542,7 @@ class GameScene: SKScene {
         // AssaultDrones attack
         for drone in player.drones {
             if let assaultDrone = drone as? AssaultDrone {
-                assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCointCount: &player.coinCount)
+                assaultDrone.attack(&enemies, currentTime: currentTime, playerPosition: player.position, playerCoinCount: &player.coinCount)
             }
             if let healDrone = drone as? HealDrone {
                 healDrone.healPlayer(&player.currentHealth, player.totalHealth, currentTime)
@@ -578,7 +578,7 @@ class GameScene: SKScene {
             }
             if let shooter = worker as? Shooter {
                 shooter.walkTowardsEnemy(enemies: enemies)
-                shooter.attack(&enemies, currentTime: currentTime, playerCointCount: &player.coinCount)
+                shooter.attack(&enemies, currentTime: currentTime, playerCoinCount: &player.coinCount)
             }
         }
         

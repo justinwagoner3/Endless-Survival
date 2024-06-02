@@ -11,6 +11,7 @@ class Enemy: SKSpriteNode, Codable {
     var deathTextures: [SKTexture] = []
     var deathAnimationAction: SKAction?
     var attackTextures: [SKTexture] = []
+    private var healthDeductionQueue: [(Int, TimeInterval)] = []
 
     // Enemy attributes
     var movementSpeed: CGFloat
@@ -97,7 +98,11 @@ class Enemy: SKSpriteNode, Codable {
     }
     
     func decreaseHealth(_ damage: Int, _ enemies: inout [Enemy], playerCoinCount: inout Int){
-        if let hurtAnimation = hurtAnimationAction{
+        if let hurtAnimation = hurtAnimationAction {
+            if self.action(forKey: "hurtAnimation") != nil {
+                print("removing action")
+                self.removeAction(forKey: "hurtAnimation")
+            }
             self.run(hurtAnimation, withKey: "hurtAnimation")
         }
         hitpoints -= damage
