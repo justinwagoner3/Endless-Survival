@@ -273,13 +273,9 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let touchLocation = touch.location(in: cameraNode) // Convert touch location to camera's coordinate system
-        
-        print("Touch location in cameraNode: \(touchLocation)")
-        
+                
         if let upgradeOverlay = upgradeOverlay {
             let touchLocationInUpgradeOverlay = touch.location(in: upgradeOverlay) // Convert touch location to upgrade overlay's coordinate system
-            
-            print("Touch location in upgradeOverlay: \(touchLocationInUpgradeOverlay)")
             
             if let node = upgradeOverlay.atPoint(touchLocationInUpgradeOverlay) as? SKLabelNode {
                 print("Touched node: \(node.name ?? "Unknown")")

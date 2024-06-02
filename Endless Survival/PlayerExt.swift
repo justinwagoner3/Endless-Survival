@@ -107,7 +107,6 @@ extension Player {
     func startIdleAnimation() {
         // Only start the idle animation if it is not already running
         if self.action(forKey: "idleAnimation") == nil {
-            print("Starting idle animation")
             if let idleAction = idleAnimationAction {
                 self.run(idleAction, withKey: "idleAnimation")
             }
