@@ -11,7 +11,7 @@ class SupplyDrop: SKSpriteNode {
         self.tools = tools
         self.weapons = weapons
 
-        super.init(texture: nil, color: .orange, size: CGSize(width: 50, height: 50))
+        super.init(texture: SKTexture(imageNamed: "chest"), color: .clear, size: CGSize(width: 100, height: 100))
 
         self.zPosition = 2
         self.position = randomPosition()

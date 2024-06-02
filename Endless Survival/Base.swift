@@ -19,7 +19,7 @@ class Base: SKSpriteNode, Codable {
     }
 
     init() {
-        super.init(texture: nil, color: .white, size: CGSize(width: 75, height: 75))
+        super.init(texture: SKTexture(imageNamed: "base"), color: .clear, size: CGSize(width: 75, height: 75))
         self.zPosition = 2
         self.barrier = BaseBarrier(size: CGSize(width: baseLevel2TotalSize + 100, height: baseLevel2TotalSize + 100), strokeColor: .black, lineWidth: 2.0)
         self.addChild(barrier)
