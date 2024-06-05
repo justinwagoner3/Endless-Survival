@@ -549,6 +549,34 @@ class GameScene: SKScene {
             if let healDrone = drone as? HealDrone {
                 healDrone.healPlayer(&player.currentHealth, player.totalHealth, currentTime)
             }
+            if let harvestDrone = drone as? HarvestDrone {
+                
+                // if too far away from player or bag full and not currently around player, return back to revolving around player
+                if(harvestDrone.tooFarFromPlayer(player) || (player.curBagCount == player.totalBagSpace && !harvestDrone.isRevolvingAroundPlayer)){
+                    print("too far away from player or bag full and not currently around player, return back to revolving around player")
+                    harvestDrone.returnToPlayer()
+                    harvestDrone.isOnResource = false
+                }
+                 
+                // TODO should create a bagFull flag and have logic control it instead of making bag checks like this
+                // or just make a Bag object actually is a better idea, but do this later
+                // not on resource, room in bag, and there is a resource nearby, go to it
+                if(!harvestDrone.isOnResource && player.curBagCount != player.totalBagSpace){
+                    if let nearbyResource = harvestDrone.findResourceNearby(player.position, resources){
+                        print("not on resource, room in bag, and there is a resource nearby, go to it")
+                        harvestDrone.moveToResource(resourceToMoveTo: nearbyResource)
+                        harvestDrone.isRevolvingAroundPlayer = false
+                    }
+                }
+                // if on resource and player has space in bag, harvest
+                if(harvestDrone.isOnResource && player.curBagCount != player.totalBagSpace){
+                    if var resource = harvestDrone.curResource{
+                        print("if on resource and player has space in bag, harvest")
+                        harvestDrone.updateHarvestTime(currentTime: currentTime, &resource)
+                        harvestDrone.checkAndCollectResources(&resource, &resources, playerTotalBagSpace: player.totalBagSpace, playerCurBagCount: &player.curBagCount, playerCurBagWoodCount: &player.curBagWoodCount, playerCurBagStoneCount: &player.curBagStoneCount, playerCurBagOreCount: &player.curBagOreCount)
+                    }
+                }
+            }
         }
         
         // Worker actions
