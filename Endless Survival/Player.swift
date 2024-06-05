@@ -32,7 +32,7 @@ class Player : SKSpriteNode {
     var tools: [Tool] = []
     var equippedPickaxe: Pickaxe = Pickaxe(rarity: .common, efficiency: 20)
     var equippedAxe: Axe = Axe(rarity: .common, efficiency: 20)
-    var totalBagSpace: Int = 20
+    var totalBagSpace: Int = 2
     var curBagCount: Int = 0
     var curBagWoodCount: Int = 0
     var curBagStoneCount: Int = 0
@@ -308,11 +308,7 @@ class Player : SKSpriteNode {
     func updateDronePositions() {
         // Loop through the drones and update their positions
         for drone in drones {
-            if let harvestDrone = drone as? HarvestDrone {
-                if harvestDrone.isOnResource{
-                    continue
-                }
-            }// Define circular path parameters
+            // Define circular path parameters
             let radius: CGFloat = 50 // adjust the radius as needed
             let angularSpeed: CGFloat = 0.03 // adjust the speed as needed
             let center = CGPoint(x: 0, y: 0) // center of the circular path, relative to the player
