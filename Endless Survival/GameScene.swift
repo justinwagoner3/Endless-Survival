@@ -126,7 +126,7 @@ class GameScene: SKScene {
         let woodComponent = WoodComponent()
         let stoneComponent = StoneComponent()
         let oreComponent = OreComponent()
-        let bowComponent = BowComponent()
+        //let bowComponent = BowComponent()
         base.addComponent(woodComponent)
         base.addComponent(stoneComponent)
         base.addComponent(oreComponent)
@@ -548,6 +548,12 @@ class GameScene: SKScene {
             }
             if let healDrone = drone as? HealDrone {
                 healDrone.healPlayer(&player.currentHealth, player.totalHealth, currentTime)
+            }
+            if let harvestDrone = drone as? HarvestDrone {
+                if var resource = harvestDrone.findResourceNearby(player.position, resources){
+                    harvestDrone.updateHarvestTime(currentTime: currentTime, &resource)
+                    harvestDrone.checkAndCollectResources(&resource, &resources, playerTotalBagSpace: player.totalBagSpace, playerCurBagCount: &player.curBagCount, playerCurBagWoodCount: &player.curBagWoodCount, playerCurBagStoneCount: &player.curBagStoneCount, playerCurBagOreCount: &player.curBagOreCount)
+                }
             }
         }
         

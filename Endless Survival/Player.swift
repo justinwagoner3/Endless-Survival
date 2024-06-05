@@ -32,7 +32,7 @@ class Player : SKSpriteNode {
     var tools: [Tool] = []
     var equippedPickaxe: Pickaxe = Pickaxe(rarity: .common, efficiency: 20)
     var equippedAxe: Axe = Axe(rarity: .common, efficiency: 20)
-    var totalBagSpace: Int = 2
+    var totalBagSpace: Int = 20
     var curBagCount: Int = 0
     var curBagWoodCount: Int = 0
     var curBagStoneCount: Int = 0

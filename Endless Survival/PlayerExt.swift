@@ -117,7 +117,7 @@ extension Player {
         // Stop the idle animation
         self.removeAction(forKey: "idleAnimation")
     }
-    
+    // TODO - there are 2x of these in Player and Drone
     func displayBagFullMessage() {
         let message = SKLabelNode(text: "Bag Full!")
         message.fontSize = 50

@@ -108,6 +108,11 @@ class HealDrone: Drone {
 }
 
 class HarvestDrone: Drone {
+    var curResource: Resource?
+    var resourceHarvestTime: TimeInterval = 0
+    var lastUpdateHarvestTime: TimeInterval = 0
+    var radius: CGFloat = 500
+    
     init() {
         super.init(textureName: "harvest_drone")
     }
@@ -115,5 +120,64 @@ class HarvestDrone: Drone {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func findResourceNearby(_ playerPosition: CGPoint, _ resources: [Resource]) -> Resource? {
+        var closestDistance: CGFloat = .infinity
+        var closestResource: Resource?
+        for resource in resources {
+            let distance = playerPosition.distance(to: resource.position)
+            if distance <= radius && distance < closestDistance {
+                closestDistance = distance
+                closestResource = resource
+            }
+        }
+        
+        return closestResource
+    }
 
+    func updateHarvestTime(currentTime: TimeInterval, _ resource: inout Resource){
+        // Calculate the time since the last frame
+        let deltaTime = currentTime - lastUpdateHarvestTime
+        
+        // Increment the total hold time by the time since the last frame
+        resource.totalHarvestButtonHoldTime += deltaTime
+        
+        // Update the last update time for the next frame
+        lastUpdateHarvestTime = currentTime
+    }
+
+    // Method to check for player-resource contact and collect resources
+    func checkAndCollectResources(_ resource: inout Resource, _ resources: inout [Resource], playerTotalBagSpace: Int, playerCurBagCount: inout Int, playerCurBagWoodCount: inout Int, playerCurBagStoneCount: inout Int, playerCurBagOreCount: inout Int) {
+        if(playerCurBagCount < playerTotalBagSpace){
+            // Check if the total hold time exceeds the required harvest time
+            if resource.totalHarvestButtonHoldTime >= resource.collectionHarvestTime {
+                // Perform resource collection logic based on the resource type
+                switch resource {
+                case is Wood:
+                    playerCurBagWoodCount += 1
+                case is Stone:
+                    playerCurBagStoneCount += 1
+                case is Ore:
+                    playerCurBagOreCount += 1
+                default:
+                    break
+                }
+                playerCurBagCount += 1
+                // Update resource count
+                resource.resourceCount -= 1
+                if(resource.resourceCount <= 0){
+                    resource.removeFromParent()
+                    if let index = resources.firstIndex(of: resource) {
+                        resources.remove(at: index)
+                    }
+                }
+                
+                resource.totalHarvestButtonHoldTime = 0
+            }
+        } 
+        else{
+            displayBagFullMessage()
+            resource.totalHarvestButtonHoldTime = 0
+        }
+    }
 }

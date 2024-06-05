@@ -27,5 +27,26 @@ extension AssaultDrone {
         // Run the attack animation
         self.run(attackSequence, withKey: "attacking")
     }
+}
 
+
+extension HarvestDrone {
+    // TODO - there are 2x of these in Player and Drone
+    func displayBagFullMessage() {
+        let message = SKLabelNode(text: "Bag Full!")
+        message.fontSize = 50
+        message.fontColor = .red
+        message.position = CGPoint(x: 0, y: self.size.height / 2 + 100) // Position slightly above the player
+        message.zPosition = 100 // Ensure the message is above other elements
+        
+        self.addChild(message)
+        
+        let fadeIn = SKAction.fadeIn(withDuration: 0.25)
+        let wait = SKAction.wait(forDuration: 0.5)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.25)
+        let remove = SKAction.removeFromParent()
+        let sequence = SKAction.sequence([fadeIn, wait, fadeOut, remove])
+        
+        message.run(sequence)
+    }
 }
